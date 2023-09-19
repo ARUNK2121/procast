@@ -1,13 +1,14 @@
 package utils
 
 import (
+	"github.com/ARUNK2121/procast/pkg/config"
 	"github.com/ARUNK2121/procast/pkg/domain"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
-func CheckAndCreateAdmin(db *gorm.DB) {
-	//check if any contents available at the admin table
+func CheckAndCreateAdmin(db *gorm.DB, cfg config.Config) {
+	//check if any rows available at the admin table
 	//if there is no existing admin create a super admin
 	var count int64
 	db.Model(&domain.Admin{}).Count(&count)
@@ -20,8 +21,8 @@ func CheckAndCreateAdmin(db *gorm.DB) {
 
 		admin := domain.Admin{
 			ID:        1,
-			Name:      "jerseyhub",
-			Email:     "jerseyhub@gmail.com",
+			Name:      "procast",
+			Email:     "admin@procast.com",
 			Password:  string(hashedPassword),
 			Previlege: "SUPER_ADMIN",
 		}

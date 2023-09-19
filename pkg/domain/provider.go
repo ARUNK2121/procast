@@ -1,7 +1,7 @@
 package domain
 
 type Provider struct {
-	ID       int    `json:"id" gorm:"unique;not null"`
+	ID       int    `json:"id" gorm:"primaryKey;autoIncrement"`
 	Name     string `json:"name" gorm:"not null"`
 	Email    string `json:"email" gorm:"not null"`
 	Password string `json:"password" gorm:"not null"`
@@ -10,7 +10,7 @@ type Provider struct {
 }
 
 type Probook struct {
-	ID           int        `json:"id" gorm:"unique;not null"`
+	ID           int        `json:"id" gorm:"primaryKey;autoIncrement"`
 	ProID        int        `json:"pro_id"`
 	Provider     Provider   `json:"-" gorm:"foreignkey:ProID;constraint:OnDelete:CASCADE"`
 	ProfessionID int        `json:"profession_id"`
@@ -18,7 +18,7 @@ type Probook struct {
 }
 
 type PreferredLocation struct {
-	ID         int      `json:"id" gorm:"unique;not null"`
+	ID         int      `json:"id" gorm:"primaryKey;autoIncrement"`
 	ProID      int      `json:"pro_id"`
 	Provider   Provider `json:"-" gorm:"foreignkey:ProID;constraint:OnDelete:CASCADE"`
 	DistrictID int      `json:"district_id"`
@@ -26,7 +26,7 @@ type PreferredLocation struct {
 }
 
 type ProviderNotification struct {
-	ID          int      `json:"id" gorm:"unique;not null"`
+	ID          int      `json:"id" gorm:"primaryKey;autoIncrement"`
 	ProID       int      `json:"pro_id"`
 	Provider    Provider `json:"-" gorm:"foreignkey:ProID;constraint:OnDelete:CASCADE"`
 	Description string   `json:"description"`
@@ -34,7 +34,7 @@ type ProviderNotification struct {
 }
 
 type Post struct {
-	ID          int      `json:"id" gorm:"unique;not null"`
+	ID          int      `json:"id" gorm:"primaryKey;autoIncrement"`
 	ProID       int      `json:"pro_id"`
 	Provider    Provider `json:"-" gorm:"foreignkey:ProID;constraint:OnDelete:CASCADE"`
 	WorkID      int      `json:"work_id"`
@@ -43,14 +43,14 @@ type Post struct {
 }
 
 type PostImages struct {
-	ID     int    `json:"id" gorm:"unique;not null"`
+	ID     int    `json:"id" gorm:"primaryKey;autoIncrement"`
 	PostID int    `json:"post_id"`
-	Post   Post   `json:"-" gorm:"foreignkey:postID;constraint:OnDelete:CASCADE"`
+	Post   Post   `json:"-" gorm:"foreignkey:PostID;constraint:OnDelete:CASCADE"`
 	Image  string `json:"image"`
 }
 
 type IdProof struct {
-	ID       int      `json:"id" gorm:"unique;not null"`
+	ID       int      `json:"id" gorm:"primaryKey;autoIncrement"`
 	ProID    int      `json:"pro_id"`
 	Provider Provider `json:"-" gorm:"foreignkey:ProID;constraint:OnDelete:CASCADE"`
 	IdProof  string   `json:"id_proof"`

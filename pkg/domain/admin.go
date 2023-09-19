@@ -1,7 +1,7 @@
 package domain
 
 type Admin struct {
-	ID        uint   `json:"id" gorm:"unique;not null"`
+	ID        uint   `json:"id" gorm:"primaryKey;autoIncrement"`
 	Name      string `json:"name" gorm:"validate:required"`
 	Email     string `json:"email" gorm:"validate:required"`
 	Password  string `json:"password" gorm:"validate:required"`
@@ -9,24 +9,24 @@ type Admin struct {
 }
 
 type Category struct {
-	ID       int    `json:"id" gorm:"unique;not null"`
+	ID       int    `json:"id" gorm:"primaryKey;autoIncrement"`
 	Category string `json:"category" gorm:"unique;not null"`
 }
 
 type Profession struct {
-	ID         int      `json:"id" gorm:"unique;not null"`
+	ID         int      `json:"id" gorm:"primaryKey;autoIncrement"`
 	Profession string   `json:"profession" gorm:"unique,not null"`
 	CategoryID int      `json:"category_id"`
 	Category   Category `json:"-" gorm:"foreignkey:CategoryID;constraint:OnDelete:CASCADE"`
 }
 
 type State struct {
-	ID    int    `json:"id" gorm:"unique;not null"`
+	ID    int    `json:"id" gorm:"primaryKey;autoIncrement"`
 	State string `json:"state" gorm:"unique;not null"`
 }
 
 type District struct {
-	ID       int    `json:"id" gorm:"unique;not null"`
+	ID       int    `json:"id" gorm:"primaryKey;autoIncrement"`
 	District string `json:"district" gorm:"unique;not null"`
 	StateID  int    `json:"state_id"`
 	State    State  `json:"-" gorm:"foreignkey:StateID;constraint:OnDelete:CASCADE"`
