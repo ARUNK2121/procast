@@ -37,3 +37,13 @@ type Rating struct {
 	WorkID   int    `json:"work_id"`
 	Work     Work   `json:"-" gorm:"foreignkey:WorkID;constraint:OnDelete:CASCADE"`
 }
+
+type Bid struct {
+	ID          int      `json:"id" gorm:"unique;not null"`
+	WorkID      int      `json:"work_id"`
+	Work        Work     `json:"-" gorm:"foreignkey:WorkID;constraint:OnDelete:CASCADE"`
+	ProID       int      `json:"pro_id"`
+	Provider    Provider `json:"-" gorm:"foreignkey:ProID;constraint:OnDelete:CASCADE"`
+	Estimate    float64  `json:"estimate"`
+	Description string   `json:"description"`
+}
