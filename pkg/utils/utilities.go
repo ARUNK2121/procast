@@ -13,7 +13,7 @@ func CheckAndCreateAdmin(db *gorm.DB, cfg config.Config) {
 	var count int64
 	db.Model(&domain.Admin{}).Count(&count)
 	if count == 0 {
-		password := "procastadminpassword"
+		password := cfg.ADMIN_PASSWORD
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 		if err != nil {
 			return
@@ -22,7 +22,7 @@ func CheckAndCreateAdmin(db *gorm.DB, cfg config.Config) {
 		admin := domain.Admin{
 			ID:        1,
 			Name:      "procast",
-			Email:     "admin@procast.com",
+			Email:     cfg.ADMIN_EMAIL,
 			Password:  string(hashedPassword),
 			Previlege: "SUPER_ADMIN",
 		}
