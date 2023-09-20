@@ -13,9 +13,10 @@ type Tokens struct {
 }
 
 type AdminDetailsResponse struct {
-	ID    int    `json:"id"`
-	Name  string `json:"name" `
-	Email string `json:"email" `
+	ID        int    `json:"id"`
+	Name      string `json:"name" `
+	Email     string `json:"email" `
+	Previlege string `json:"previlege"`
 }
 
 type AuthCustomClaims struct {
