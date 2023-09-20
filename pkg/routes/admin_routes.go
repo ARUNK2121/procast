@@ -6,4 +6,5 @@ import (
 )
 
 func AdminRoutes(engine *gin.RouterGroup, adminHandler *handler.AdminHandler) {
+	engine.GET("/login", adminHandler.AdminLogin)
 }

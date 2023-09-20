@@ -11,6 +11,7 @@ import (
 	"github.com/ARUNK2121/procast/pkg/api/handler"
 	"github.com/ARUNK2121/procast/pkg/config"
 	"github.com/ARUNK2121/procast/pkg/db"
+	"github.com/ARUNK2121/procast/pkg/helper"
 	"github.com/ARUNK2121/procast/pkg/repository"
 	"github.com/ARUNK2121/procast/pkg/usecase"
 )
@@ -23,7 +24,8 @@ func InitializeAPI(cfg config.Config) (*httpserver.ServerHTTP, error) {
 		return nil, err
 	}
 	adminRepository := repository.NewAdminRepository(gormDB)
-	adminUsecase := usecase.NewAdminUsecase(adminRepository)
+	interfacesHelper := helper.NewHelper(cfg)
+	adminUsecase := usecase.NewAdminUsecase(adminRepository, interfacesHelper)
 	adminHandler := handler.NewAdminHandler(adminUsecase)
 	serverHTTP := httpserver.NewServerHTTP(adminHandler)
 	return serverHTTP, nil
