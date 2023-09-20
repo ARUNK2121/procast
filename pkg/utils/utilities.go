@@ -24,7 +24,7 @@ func CheckAndCreateAdmin(db *gorm.DB, cfg config.Config) {
 			Name:      "procast",
 			Email:     cfg.ADMIN_EMAIL,
 			Password:  string(hashedPassword),
-			Previlege: "SUPER_ADMIN",
+			Previlege: "super_admin",
 		}
 		db.Create(&admin)
 	}
