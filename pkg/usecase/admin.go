@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"fmt"
 
 	helper "github.com/ARUNK2121/procast/pkg/helper/interfaces"
 	"github.com/ARUNK2121/procast/pkg/repository/interfaces"
@@ -28,8 +27,7 @@ func (ad *adminUsecase) AdminLogin(ctx context.Context, model models.AdminLogin)
 	if err != nil {
 		return models.Tokens{}, err
 	}
-	fmt.Println("admin compare password", adminCompareDetails.Password)
-	fmt.Println("models.password", model.Password, "length is", len(model.Password))
+
 	// compare password from database and that provided from admins
 	err = ad.helper.CompareHashAndPassword(adminCompareDetails.Password, model.Password)
 	if err != nil {
@@ -38,9 +36,10 @@ func (ad *adminUsecase) AdminLogin(ctx context.Context, model models.AdminLogin)
 
 	var adminDetailsResponse models.AdminDetailsResponse
 
-	adminDetailsResponse.Email = adminCompareDetails.Email
 	adminDetailsResponse.ID = int(adminCompareDetails.ID)
+	adminDetailsResponse.Email = adminCompareDetails.Email
 	adminDetailsResponse.Name = adminCompareDetails.Name
+	adminDetailsResponse.Previlege = adminCompareDetails.Previlege
 
 	access, refresh, err := ad.helper.GenerateTokenAdmin(adminDetailsResponse)
 	if err != nil {
