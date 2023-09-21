@@ -1,7 +1,13 @@
 package interfaces
 
-import "context"
+import (
+	"context"
+
+	"github.com/ARUNK2121/procast/pkg/domain"
+)
 
 type CategoryRepository interface {
 	CreateCategory(context.Context, string) error
+	ListCategories(context.Context) ([]domain.Category, error)
+	CheckIfCategoryAlreadyExists(context.Context, string) (bool, error)
 }

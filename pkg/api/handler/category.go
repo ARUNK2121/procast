@@ -43,3 +43,20 @@ func (ad *CategoryHandler) CreateCategory(c *gin.Context) {
 	successRes := response.Response{Data: "successfully created category", Error: nil}
 	c.JSON(http.StatusCreated, successRes)
 }
+
+func (ad *CategoryHandler) ListCategories(c *gin.Context) {
+
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	defer cancel()
+	//call usecase get array
+	categories, err := ad.usecase.ListCategories(ctx)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	//give array
+	successRes := response.Response{Data: categories, Error: nil}
+	c.JSON(http.StatusCreated, successRes)
+}

@@ -16,7 +16,7 @@ func AdminRoutes(engine *gin.RouterGroup, adminHandler *handler.AdminHandler, ca
 	category := engine.Group("/category")
 	{
 		category.POST("", categoryHandler.CreateCategory)
-		// category.GET("", adminHandler.ListCategories)
+		category.GET("", categoryHandler.ListCategories)
 		// category.DELETE("", adminHandler.DeleteCategory)
 		// category.PATCH("", adminHandler.EditCategoryName)
 	}
