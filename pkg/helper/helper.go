@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"errors"
 	"time"
 
 	"github.com/ARUNK2121/procast/pkg/config"
@@ -72,4 +73,14 @@ func (helper *helper) GenerateTokenAdmin(admin models.AdminDetailsResponse) (str
 	}
 
 	return accessTokenString, refreshTokenString, nil
+}
+
+func (h *helper) CreateHashPassword(password string) (string, error) {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 10)
+	if err != nil {
+		return "", errors.New("internal server error")
+	}
+
+	hash := string(hashedPassword)
+	return hash, nil
 }
