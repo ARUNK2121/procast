@@ -24,6 +24,10 @@ func NewAdminUsecase(repo interfaces.AdminRepository, helper helper.Helper) serv
 }
 
 func (ad *adminUsecase) AdminLogin(ctx context.Context, model models.AdminLogin) (models.Tokens, error) {
+
+	if ctx.Err() != nil {
+		return models.Tokens{}, errors.New("request time out")
+	}
 	// getting details of the admin based on the email provided
 	adminCompareDetails, err := ad.repository.GetAdminDetailsByEmail(ctx, model.Email)
 	if err != nil {
@@ -56,8 +60,13 @@ func (ad *adminUsecase) AdminLogin(ctx context.Context, model models.AdminLogin)
 }
 
 func (ad *adminUsecase) CreateNewAdmin(ctx context.Context, model domain.Admin) error {
+
+	if err := ctx.Err(); err != nil {
+		return errors.New("request time out")
+	}
+
 	//check if already there is an admin with existing mail
-	count, err := ad.repository.CountOfAdminByEmail(model.Email)
+	count, err := ad.repository.CountOfAdminByEmail(ctx, model.Email)
 	if err != nil {
 		return err
 	}
@@ -80,6 +89,16 @@ func (ad *adminUsecase) CreateNewAdmin(ctx context.Context, model domain.Admin) 
 	//if no admin create new admin
 	if err := ad.repository.CreateNewAdmin(ctx, model); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func (a *adminUsecase) DeleteAdmin(ctx context.Context, id int) error {
+
+	err := a.repository.DeleteAdmin(ctx, id)
+	if err != nil || ctx.Err() != nil {
+		return nil
 	}
 
 	return nil

@@ -20,8 +20,8 @@ type AdminDetailsResponse struct {
 }
 
 type AuthCustomClaims struct {
-	Id    int    `json:"id"`
-	Email string `json:"email"`
-	Role  string `json:"role"`
+	Id        int    `json:"id"`
+	Email     string `json:"email"`
+	Previlege string `json:"previlege"`
 	jwt.StandardClaims
 }

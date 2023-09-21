@@ -10,4 +10,5 @@ import (
 type AdminUsecase interface {
 	AdminLogin(context.Context, models.AdminLogin) (models.Tokens, error)
 	CreateNewAdmin(context.Context, domain.Admin) error
+	DeleteAdmin(context.Context, int) error
 }
