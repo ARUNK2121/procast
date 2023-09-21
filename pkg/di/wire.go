@@ -21,7 +21,11 @@ func InitializeAPI(cfg config.Config) (*httpserver.ServerHTTP, error) {
 		usecase.NewAdminUsecase,
 		handler.NewAdminHandler,
 		httpserver.NewServerHTTP,
-		helper.NewHelper)
+		helper.NewHelper,
+		handler.NewCategoryHandler,
+		usecase.NewCategoryUsecase,
+		repository.NewCategoryRepository,
+	)
 
 	return &httpserver.ServerHTTP{}, nil
 }

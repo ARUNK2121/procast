@@ -41,9 +41,9 @@ func (h *helper) Copy(a interface{}, b interface{}) (interface{}, error) {
 
 func (helper *helper) GenerateTokenAdmin(admin models.AdminDetailsResponse) (string, string, error) {
 	accessTokenClaims := &models.AuthCustomClaims{
-		Id:    admin.ID,
-		Email: admin.Email,
-		Role:  "admin",
+		Id:        admin.ID,
+		Email:     admin.Email,
+		Previlege: admin.Previlege,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Minute * 20).Unix(),
 			IssuedAt:  time.Now().Unix(),
@@ -51,9 +51,9 @@ func (helper *helper) GenerateTokenAdmin(admin models.AdminDetailsResponse) (str
 	}
 
 	refreshTokenClaims := &models.AuthCustomClaims{
-		Id:    admin.ID,
-		Email: admin.Email,
-		Role:  "admin",
+		Id:        admin.ID,
+		Email:     admin.Email,
+		Previlege: admin.Previlege,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 24 * 30).Unix(),
 			IssuedAt:  time.Now().Unix(),
