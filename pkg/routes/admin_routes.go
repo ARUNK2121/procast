@@ -5,8 +5,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AdminRoutes(engine *gin.RouterGroup, adminHandler *handler.AdminHandler, categoryHandler *handler.CategoryHandler) {
+func AdminRoutes(engine *gin.RouterGroup,
+	adminHandler *handler.AdminHandler,
+	categoryHandler *handler.CategoryHandler,
+	servicehandler *handler.ServiceHandler) {
+
 	engine.GET("/login", adminHandler.AdminLogin)
+	// engine.DELETE("/logout", adminHandler.AdminLogout)
+
 	panel := engine.Group("/panel")
 	{
 		panel.POST("", adminHandler.CreateNewAdmin)
@@ -16,45 +22,49 @@ func AdminRoutes(engine *gin.RouterGroup, adminHandler *handler.AdminHandler, ca
 	category := engine.Group("/category")
 	{
 		category.POST("", categoryHandler.CreateCategory)
-		// category.GET("", adminHandler.ListCategories)
-		// category.DELETE("", adminHandler.DeleteCategory)
-		// category.PATCH("", adminHandler.EditCategoryName)
+		category.GET("", categoryHandler.ListCategories)
+		category.DELETE("", categoryHandler.DeleteCategory)
+		category.PATCH("", categoryHandler.ReActivateCategory)
 	}
 
-	// services := engine.Group("/services")
-	// {
-	// 	services.GET("", adminHandler.GetServicesInACategory)
-	// 	services.POST("", adminHandler.AddServicesToACategory)
-	// 	services.DELETE("", adminHandler.DeleteServices)
-	// }
+	services := engine.Group("/services")
+	{
+		services.POST("", servicehandler.AddServicesToACategory)
+		services.GET("", servicehandler.GetServicesInACategory)
+		// services.DELETE("", adminHandler.DeleteServices)
+	}
 
 	// region := engine.Group("/region")
 	// {
 	// 	state := region.Group("/state")
 	// 	{
-	// 		state.GET("", adminHandler.GetStates)
 	// 		state.POST("", adminHandler.AddNewState)
+	// 		state.GET("", adminHandler.GetStates)
 	// 		state.DELETE("", adminHandler.DeleteState)
 	// 	}
 
 	// 	district := region.Group("district")
 	// 	{
-	// 		district.GET("", GetDistricts)
 	// 		district.POST("", AddDistricts)
+	// 		district.GET("", GetDistricts)
 	// 		district.DELETE("", DeleteDistrict)
 	// 	}
 	// }
 
 	// verification := engine.Group("/verify")
 	// {
-	// 	verification.GET("", adminHandler.GetPendingVerification)
-	// 	verification.PUT("", adminHandler.MakeProviderVerified)
+	// 	verification.GET("", adminHandler.GetAllPendingVerifications)
+
+	// 	request := verification.Group("request")
+	// 	{
+	// 		request.GET("", adminHandler.ViewVerificationRequest)
+	// 		request.PUT("", adminHandler.MakeProviderVerified)
+	// 	}
 	// }
 
 	// works := engine.Group("/works")
 	// {
 	// 	works.GET("", adminHandler.ListScheduledworks)
-
 	// }
 
 	// providers := engine.Group("/provider")

@@ -95,7 +95,7 @@ func (ad *AdminHandler) DeleteAdmin(c *gin.Context) {
 	}
 
 	successRes := response.Response{Data: "successfully deleted admin", Error: nil}
-	c.JSON(http.StatusCreated, successRes)
+	c.JSON(http.StatusOK, successRes)
 }
 
 // admin add category
