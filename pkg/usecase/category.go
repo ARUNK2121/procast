@@ -55,3 +55,31 @@ func (a *categoryUsecase) ListCategories(ctx context.Context) ([]domain.Category
 
 	return categories, nil
 }
+
+func (a *categoryUsecase) DeleteCategory(ctx context.Context, id int) error {
+
+	err := a.repository.DeleteCategory(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
+}
+
+func (a *categoryUsecase) ReActivateCategory(ctx context.Context, id int) error {
+
+	err := a.repository.ReActivateCategory(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
+}

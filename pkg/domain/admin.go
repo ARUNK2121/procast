@@ -9,8 +9,9 @@ type Admin struct {
 }
 
 type Category struct {
-	ID       int    `json:"id" gorm:"primaryKey;autoIncrement"`
-	Category string `json:"category" gorm:"unique;not null"`
+	ID        int    `json:"id" gorm:"primaryKey;autoIncrement"`
+	Category  string `json:"category" gorm:"unique;not null"`
+	IsDeleted bool   `json:"is_deleted" gorm:"Default:false" `
 }
 
 type Profession struct {
@@ -18,6 +19,7 @@ type Profession struct {
 	Profession string   `json:"profession" gorm:"unique,not null"`
 	CategoryID int      `json:"category_id"`
 	Category   Category `json:"-" gorm:"foreignkey:CategoryID;constraint:OnDelete:CASCADE"`
+	IsDeleted  bool     `json:"is_deleted" gorm:"Default:false" `
 }
 
 type State struct {
