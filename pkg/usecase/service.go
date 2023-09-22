@@ -55,3 +55,31 @@ func (a *serviceUsecase) GetServicesInACategory(ctx context.Context, id int) ([]
 
 	return service, nil
 }
+
+func (a *serviceUsecase) DeleteService(ctx context.Context, id int) error {
+
+	err := a.repository.DeleteService(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
+}
+
+func (a *serviceUsecase) ReActivateService(ctx context.Context, id int) error {
+
+	err := a.repository.ReActivateService(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
+}
