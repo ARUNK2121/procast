@@ -7,7 +7,8 @@ import (
 
 func AdminRoutes(engine *gin.RouterGroup,
 	adminHandler *handler.AdminHandler,
-	categoryHandler *handler.CategoryHandler) {
+	categoryHandler *handler.CategoryHandler,
+	servicehandler *handler.ServiceHandler) {
 
 	engine.GET("/login", adminHandler.AdminLogin)
 	// engine.DELETE("/logout", adminHandler.AdminLogout)
@@ -28,8 +29,8 @@ func AdminRoutes(engine *gin.RouterGroup,
 
 	services := engine.Group("/services")
 	{
-		services.POST("", adminHandler.AddServicesToACategory)
-		// services.GET("", adminHandler.GetServicesInACategory)
+		services.POST("", servicehandler.AddServicesToACategory)
+		services.GET("", servicehandler.GetServicesInACategory)
 		// services.DELETE("", adminHandler.DeleteServices)
 	}
 
