@@ -55,3 +55,17 @@ func (a *regionUsecase) GetStates(ctx context.Context) ([]domain.State, error) {
 
 	return states, nil
 }
+
+func (r *regionUsecase) DeleteState(ctx context.Context, id int) error {
+
+	err := r.repository.DeleteState(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
+}

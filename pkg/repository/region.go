@@ -21,7 +21,7 @@ func NewRegionRepository(db *gorm.DB) interfaces.RegionRepository {
 
 func (r *regionrepository) AddNewState(ctx context.Context, state string) error {
 	tx := r.DB.Begin()
-	err := r.DB.Exec("INSERT INTO states(state) VALUES($1)", state).Error
+	err := tx.Exec("INSERT INTO states(state) VALUES($1)", state).Error
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -63,4 +63,20 @@ func (r *regionrepository) GetStates(ctx context.Context) ([]domain.State, error
 	}
 
 	return states, nil
+}
+
+func (r *regionrepository) DeleteState(ctx context.Context, id int) error {
+	tx := r.DB.Begin()
+	err := tx.Exec("UPDATE states SET is_deleted = TRUE WHERE id = $1", id).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		tx.Rollback()
+		return errors.New("timeout")
+	}
+	tx.Commit()
+	return nil
 }

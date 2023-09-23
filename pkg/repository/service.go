@@ -39,7 +39,7 @@ func (s *serviceRepository) CheckIfServiceAlreadyExists(ctx context.Context, ser
 
 func (s *serviceRepository) AddServicesToACategory(ctx context.Context, service models.AddServicesToACategory) error {
 	tx := s.DB.Begin()
-	err := s.DB.Exec("INSERT INTO professions(profession,category_id) VALUES($1,$2)", service.ServiceName, service.CategoryID).Error
+	err := tx.Exec("INSERT INTO professions(profession,category_id) VALUES($1,$2)", service.ServiceName, service.CategoryID).Error
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -68,7 +68,7 @@ func (s *serviceRepository) GetServicesInACategory(ctx context.Context, id int) 
 
 func (s *serviceRepository) DeleteService(ctx context.Context, id int) error {
 	tx := s.DB.Begin()
-	err := s.DB.Exec("UPDATE professions SET is_deleted = TRUE WHERE id = $1", id).Error
+	err := tx.Exec("UPDATE professions SET is_deleted = TRUE WHERE id = $1", id).Error
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -84,7 +84,7 @@ func (s *serviceRepository) DeleteService(ctx context.Context, id int) error {
 
 func (s *serviceRepository) ReActivateService(ctx context.Context, id int) error {
 	tx := s.DB.Begin()
-	err := s.DB.Exec("UPDATE professions SET is_deleted = False WHERE id = $1", id).Error
+	err := tx.Exec("UPDATE professions SET is_deleted = False WHERE id = $1", id).Error
 	if err != nil {
 		tx.Rollback()
 		return err

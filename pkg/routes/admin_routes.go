@@ -43,15 +43,16 @@ func AdminRoutes(
 		{
 			state.POST("", regionHandler.AddNewState)
 			state.GET("", regionHandler.GetStates)
-			// state.DELETE("", adminHandler.DeleteState)
+			state.DELETE("", regionHandler.DeleteState)
+			state.PATCH("", regionHandler.ReActivateState)
 		}
 
-		// 	// district := region.Group("district")
-		// 	// {
-		// 	// 	district.POST("", AddDistrictsTostate)
-		// 	// 	district.GET("", GetDistrictsFromState)
-		// 	// 	district.DELETE("", DeleteDistrictFromState)
-		// 	// }
+		// district := region.Group("district")
+		// {
+		// 	district.POST("", AddDistrictsTostate)
+		// 	district.GET("", GetDistrictsFromState)
+		// 	district.DELETE("", DeleteDistrictFromState)
+		// }
 	}
 
 	// verification := engine.Group("/verify")

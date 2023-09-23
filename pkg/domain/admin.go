@@ -23,8 +23,9 @@ type Profession struct {
 }
 
 type State struct {
-	ID    int    `json:"id" gorm:"primaryKey;autoIncrement"`
-	State string `json:"state" gorm:"unique;not null"`
+	ID        int    `json:"id" gorm:"primaryKey;autoIncrement"`
+	State     string `json:"state" gorm:"unique;not null"`
+	IsDeleted bool   `json:"is_deleted" gorm:"Default:false"`
 }
 
 type District struct {

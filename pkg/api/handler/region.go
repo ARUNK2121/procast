@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/ARUNK2121/procast/pkg/usecase/interfaces"
@@ -57,5 +58,29 @@ func (r *RegionHandler) GetStates(c *gin.Context) {
 
 	//give array
 	successRes := response.Response{Data: states, Error: nil}
+	c.JSON(http.StatusOK, successRes)
+}
+
+func (r *RegionHandler) DeleteState(c *gin.Context) {
+
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	defer cancel()
+
+	id, err := strconv.Atoi(c.Query("state_id"))
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+	//call usecase get array
+	err = r.usecase.DeleteState(ctx, id)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	//give array
+	successRes := response.Response{Data: "successfully made state inactive", Error: nil}
 	c.JSON(http.StatusOK, successRes)
 }
