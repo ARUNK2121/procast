@@ -51,7 +51,7 @@ func AdminRoutes(
 		{
 			district.POST("", regionHandler.AddNewDistrict)
 			district.GET("", regionHandler.GetDistrictsFromState)
-			// district.DELETE("", DeleteDistrictFromState)
+			district.DELETE("", regionHandler.DeleteDistrictFromState)
 			// district.PATCH("",ReActivateDistrict)
 		}
 	}

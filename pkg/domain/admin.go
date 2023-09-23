@@ -29,8 +29,9 @@ type State struct {
 }
 
 type District struct {
-	ID       int    `json:"id" gorm:"primaryKey;autoIncrement"`
-	District string `json:"district" gorm:"unique;not null"`
-	StateID  int    `json:"state_id"`
-	State    State  `json:"-" gorm:"foreignkey:StateID;constraint:OnDelete:CASCADE"`
+	ID        int    `json:"id" gorm:"primaryKey;autoIncrement"`
+	District  string `json:"district" gorm:"unique;not null"`
+	StateID   int    `json:"state_id"`
+	State     State  `json:"-" gorm:"foreignkey:StateID;constraint:OnDelete:CASCADE"`
+	IsDeleted bool   `json:"is_deleted" gorm:"Default:false"`
 }

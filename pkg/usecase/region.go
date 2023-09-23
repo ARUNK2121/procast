@@ -121,3 +121,17 @@ func (a *regionUsecase) GetDistrictsFromState(ctx context.Context, id int) ([]do
 
 	return districts, nil
 }
+
+func (r *regionUsecase) DeleteDistrictFromState(ctx context.Context, id int) error {
+
+	err := r.repository.DeleteDistrictFromState(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
+}

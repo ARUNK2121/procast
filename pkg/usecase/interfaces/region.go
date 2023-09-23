@@ -14,4 +14,5 @@ type RegionUsecase interface {
 	ReActivateState(ctx context.Context, id int) error
 	AddNewDistrict(context.Context, models.AddNewDistrict) error
 	GetDistrictsFromState(context.Context, int) ([]domain.District, error)
+	DeleteDistrictFromState(context.Context, int) error
 }

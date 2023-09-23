@@ -143,3 +143,19 @@ func (r *regionrepository) GetDistrictsFromState(ctx context.Context, id int) ([
 
 	return districts, nil
 }
+
+func (r *regionrepository) DeleteDistrictFromState(ctx context.Context, id int) error {
+	tx := r.DB.Begin()
+	err := tx.Exec("UPDATE districts SET is_deleted = TRUE WHERE id = $1", id).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		tx.Rollback()
+		return errors.New("timeout")
+	}
+	tx.Commit()
+	return nil
+}
