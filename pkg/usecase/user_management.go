@@ -32,3 +32,31 @@ func (u *userManagementUsecase) GetProviders(ctx context.Context) ([]domain.Prov
 
 	return states, nil
 }
+
+func (a *userManagementUsecase) MakeProviderVerified(ctx context.Context, id int) error {
+
+	err := a.repository.MakeProviderVerified(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
+}
+
+func (a *userManagementUsecase) RevokeVerification(ctx context.Context, id int) error {
+
+	err := a.repository.RevokeVerification(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
+}
