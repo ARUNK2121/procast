@@ -130,3 +130,28 @@ func (r *RegionHandler) AddNewDistrict(c *gin.Context) {
 	successRes := response.Response{Data: "successfully added new District", Error: nil}
 	c.JSON(http.StatusCreated, successRes)
 }
+
+func (r *RegionHandler) GetDistrictsFromState(c *gin.Context) {
+
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	defer cancel()
+
+	id, err := strconv.Atoi(c.Query("state_id"))
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	//call usecase get array
+	districts, err := r.usecase.GetDistrictsFromState(ctx, id)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	//give array
+	successRes := response.Response{Data: districts, Error: nil}
+	c.JSON(http.StatusOK, successRes)
+}

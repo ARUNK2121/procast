@@ -130,3 +130,16 @@ func (r *regionrepository) AddNewDistrict(ctx context.Context, district models.A
 	tx.Commit()
 	return nil
 }
+
+func (r *regionrepository) GetDistrictsFromState(ctx context.Context, id int) ([]domain.District, error) {
+	if ctx.Err() != nil {
+		return []domain.District{}, errors.New("timeout")
+	}
+	var districts []domain.District
+	err := r.DB.Raw("SELECT * FROM districts WHERE state_id = $1", id).Scan(&districts).Error
+	if err != nil {
+		return []domain.District{}, err
+	}
+
+	return districts, nil
+}

@@ -50,7 +50,7 @@ func AdminRoutes(
 		district := region.Group("district")
 		{
 			district.POST("", regionHandler.AddNewDistrict)
-			// district.GET("", GetDistrictsFromState)
+			district.GET("", regionHandler.GetDistrictsFromState)
 			// district.DELETE("", DeleteDistrictFromState)
 			// district.PATCH("",ReActivateDistrict)
 		}

@@ -15,4 +15,5 @@ type RegionRepository interface {
 	ReActivateState(ctx context.Context, id int) error
 	AddNewDistrict(context.Context, models.AddNewDistrict) error
 	CheckIfDistrictAlreadyExists(context.Context, string) (bool, error)
+	GetDistrictsFromState(context.Context, int) ([]domain.District, error)
 }

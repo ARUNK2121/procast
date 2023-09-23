@@ -107,3 +107,17 @@ func (a *regionUsecase) AddNewDistrict(ctx context.Context, district models.AddN
 
 	return nil
 }
+
+func (a *regionUsecase) GetDistrictsFromState(ctx context.Context, id int) ([]domain.District, error) {
+
+	districts, err := a.repository.GetDistrictsFromState(ctx, id)
+	if err != nil {
+		return []domain.District{}, err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return []domain.District{}, errors.New("request timeout")
+	}
+
+	return districts, nil
+}
