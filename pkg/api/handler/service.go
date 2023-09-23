@@ -75,7 +75,7 @@ func (s *ServiceHandler) DeleteService(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
 	defer cancel()
 
-	id, err := strconv.Atoi(c.Query("id"))
+	id, err := strconv.Atoi(c.Query("service_id"))
 	if err != nil {
 		res := response.Response{Data: nil, Error: err.Error()}
 		c.JSON(http.StatusBadRequest, res)
@@ -99,7 +99,7 @@ func (s *ServiceHandler) ReActivateService(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
 	defer cancel()
 
-	id, err := strconv.Atoi(c.Query("id"))
+	id, err := strconv.Atoi(c.Query("service_id"))
 	if err != nil {
 		res := response.Response{Data: nil, Error: err.Error()}
 		c.JSON(http.StatusBadRequest, res)
