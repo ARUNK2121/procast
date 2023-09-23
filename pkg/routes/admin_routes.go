@@ -5,10 +5,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AdminRoutes(engine *gin.RouterGroup,
+func AdminRoutes(
+	engine *gin.RouterGroup,
 	adminHandler *handler.AdminHandler,
 	categoryHandler *handler.CategoryHandler,
-	servicehandler *handler.ServiceHandler) {
+	servicehandler *handler.ServiceHandler,
+	regionHandler *handler.RegionHandler) {
 
 	engine.GET("/login", adminHandler.AdminLogin)
 	// engine.DELETE("/logout", adminHandler.AdminLogout)
@@ -32,25 +34,25 @@ func AdminRoutes(engine *gin.RouterGroup,
 		services.POST("", servicehandler.AddServicesToACategory)
 		services.GET("", servicehandler.GetServicesInACategory)
 		services.DELETE("", servicehandler.DeleteService)
-		services.PUT("", servicehandler.ReActivateService)
+		services.PATCH("", servicehandler.ReActivateService)
 	}
 
-	// region := engine.Group("/region")
-	// {
-	// 	state := region.Group("/state")
-	// 	{
-	// 		state.POST("", adminHandler.AddNewState)
-	// 		state.GET("", adminHandler.GetStates)
-	// 		state.DELETE("", adminHandler.DeleteState)
-	// 	}
+	region := engine.Group("/region")
+	{
+		state := region.Group("/state")
+		{
+			state.POST("", regionHandler.AddNewState)
+			state.GET("", regionHandler.GetStates)
+			// state.DELETE("", adminHandler.DeleteState)
+		}
 
-	// 	district := region.Group("district")
-	// 	{
-	// 		district.POST("", AddDistricts)
-	// 		district.GET("", GetDistricts)
-	// 		district.DELETE("", DeleteDistrict)
-	// 	}
-	// }
+		// 	// district := region.Group("district")
+		// 	// {
+		// 	// 	district.POST("", AddDistrictsTostate)
+		// 	// 	district.GET("", GetDistrictsFromState)
+		// 	// 	district.DELETE("", DeleteDistrictFromState)
+		// 	// }
+	}
 
 	// verification := engine.Group("/verify")
 	// {
