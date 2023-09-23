@@ -80,3 +80,19 @@ func (r *regionrepository) DeleteState(ctx context.Context, id int) error {
 	tx.Commit()
 	return nil
 }
+
+func (r *regionrepository) ReActivateState(ctx context.Context, id int) error {
+	tx := r.DB.Begin()
+	err := tx.Exec("UPDATE states SET is_deleted = False WHERE id = $1", id).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		tx.Rollback()
+		return errors.New("timeout")
+	}
+	tx.Commit()
+	return nil
+}

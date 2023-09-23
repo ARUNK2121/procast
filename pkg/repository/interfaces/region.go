@@ -11,4 +11,5 @@ type RegionRepository interface {
 	CheckIfStateAlreadyExists(context.Context, string) (bool, error)
 	GetStates(context.Context) ([]domain.State, error)
 	DeleteState(context.Context, int) error
+	ReActivateState(ctx context.Context, id int) error
 }

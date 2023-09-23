@@ -69,3 +69,17 @@ func (r *regionUsecase) DeleteState(ctx context.Context, id int) error {
 
 	return nil
 }
+
+func (a *regionUsecase) ReActivateState(ctx context.Context, id int) error {
+
+	err := a.repository.ReActivateState(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
+}
