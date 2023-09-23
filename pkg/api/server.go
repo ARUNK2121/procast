@@ -10,12 +10,16 @@ type ServerHTTP struct {
 	engine *gin.Engine
 }
 
-func NewServerHTTP(adminHandler *handler.AdminHandler, categoryhandler *handler.CategoryHandler, serviceHandler *handler.ServiceHandler, regionHandler *handler.RegionHandler) *ServerHTTP {
+func NewServerHTTP(adminHandler *handler.AdminHandler,
+	categoryhandler *handler.CategoryHandler,
+	serviceHandler *handler.ServiceHandler,
+	regionHandler *handler.RegionHandler,
+	userManagementHandler *handler.UserManagementHandler) *ServerHTTP {
 	engine := gin.New()
 
 	engine.Use(gin.Logger())
 
-	routes.AdminRoutes(engine.Group("/admin"), adminHandler, categoryhandler, serviceHandler, regionHandler)
+	routes.AdminRoutes(engine.Group("/admin"), adminHandler, categoryhandler, serviceHandler, regionHandler, userManagementHandler)
 
 	return &ServerHTTP{engine: engine}
 }

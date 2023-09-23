@@ -5,7 +5,7 @@ package di
 
 import (
 	httpserver "github.com/ARUNK2121/procast/pkg/api"
-	"github.com/ARUNK2121/procast/pkg/api/handler"
+	handler "github.com/ARUNK2121/procast/pkg/api/handler"
 	"github.com/ARUNK2121/procast/pkg/config"
 	"github.com/ARUNK2121/procast/pkg/db"
 	"github.com/ARUNK2121/procast/pkg/helper"
@@ -31,6 +31,9 @@ func InitializeAPI(cfg config.Config) (*httpserver.ServerHTTP, error) {
 		repository.NewRegionRepository,
 		usecase.NewRegionUsecase,
 		handler.NewRegionHandler,
+		repository.NewUserManagementRepository,
+		usecase.NewUserManagementUsecase,
+		handler.NewUserManagementHandler,
 	)
 
 	return &httpserver.ServerHTTP{}, nil

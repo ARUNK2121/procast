@@ -10,7 +10,8 @@ func AdminRoutes(
 	adminHandler *handler.AdminHandler,
 	categoryHandler *handler.CategoryHandler,
 	servicehandler *handler.ServiceHandler,
-	regionHandler *handler.RegionHandler) {
+	regionHandler *handler.RegionHandler,
+	userManagementHandler *handler.UserManagementHandler) {
 
 	engine.GET("/login", adminHandler.AdminLogin)
 	// engine.DELETE("/logout", adminHandler.AdminLogout)
@@ -56,6 +57,25 @@ func AdminRoutes(
 		}
 	}
 
+	providers := engine.Group("/provider")
+	{
+		providers.GET("", userManagementHandler.GetProviders)
+		// 	providers.GET("/top", adminHandler.GetTopProviders)
+		// 	providers.DELETE("", adminHandler.RevokeVerification)
+		//  providers.PATCH("",VERIFY)
+	}
+
+	// users := engine.Group("/user")
+	// {
+	// 	users.GET("", adminHandler.GetUsers)
+	// 	users.DELETE("", adminHandler.BlockUser)
+	// }
+
+	// works := engine.Group("/works")
+	// {
+	// 	works.GET("", adminHandler.ListScheduledworks)
+	// }
+
 	// verification := engine.Group("/verify")
 	// {
 	// 	verification.GET("", adminHandler.GetAllPendingVerifications)
@@ -65,24 +85,6 @@ func AdminRoutes(
 	// 		request.GET("", adminHandler.ViewVerificationRequest)
 	// 		request.PUT("", adminHandler.MakeProviderVerified)
 	// 	}
-	// }
-
-	// works := engine.Group("/works")
-	// {
-	// 	works.GET("", adminHandler.ListScheduledworks)
-	// }
-
-	// providers := engine.Group("/provider")
-	// {
-	// 	providers.GET("/top", adminHandler.GetTopProviders)
-	// 	providers.GET("", adminHandler.GetProviders)
-	// 	providers.DELETE("", adminHandler.RevokeVerification)
-	// }
-
-	// users := engine.Group("/user")
-	// {
-	// 	users.GET("", adminHandler.GetUsers)
-	// 	users.DELETE("", adminHandler.BlockUser)
 	// }
 
 }
