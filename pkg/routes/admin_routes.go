@@ -52,7 +52,7 @@ func AdminRoutes(
 			district.POST("", regionHandler.AddNewDistrict)
 			district.GET("", regionHandler.GetDistrictsFromState)
 			district.DELETE("", regionHandler.DeleteDistrictFromState)
-			// district.PATCH("",ReActivateDistrict)
+			district.PATCH("", regionHandler.ReActivateDistrict)
 		}
 	}
 

@@ -179,3 +179,27 @@ func (r *RegionHandler) DeleteDistrictFromState(c *gin.Context) {
 	successRes := response.Response{Data: "successfully deleted district", Error: nil}
 	c.JSON(http.StatusOK, successRes)
 }
+
+func (r *RegionHandler) ReActivateDistrict(c *gin.Context) {
+
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	defer cancel()
+
+	id, err := strconv.Atoi(c.Query("district_id"))
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+	//call usecase get array
+	err = r.usecase.ReActivateDistrict(ctx, id)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	//give array
+	successRes := response.Response{Data: "successfully Activated district", Error: nil}
+	c.JSON(http.StatusOK, successRes)
+}

@@ -135,3 +135,17 @@ func (r *regionUsecase) DeleteDistrictFromState(ctx context.Context, id int) err
 
 	return nil
 }
+
+func (a *regionUsecase) ReActivateDistrict(ctx context.Context, id int) error {
+
+	err := a.repository.ReActivateDistrict(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
+}

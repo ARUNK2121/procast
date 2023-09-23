@@ -17,4 +17,5 @@ type RegionRepository interface {
 	CheckIfDistrictAlreadyExists(context.Context, string) (bool, error)
 	GetDistrictsFromState(context.Context, int) ([]domain.District, error)
 	DeleteDistrictFromState(context.Context, int) error
+	ReActivateDistrict(ctx context.Context, id int) error
 }
