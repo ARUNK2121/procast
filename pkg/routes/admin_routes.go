@@ -47,12 +47,13 @@ func AdminRoutes(
 			state.PATCH("", regionHandler.ReActivateState)
 		}
 
-		// district := region.Group("district")
-		// {
-		// 	district.POST("", AddDistrictsTostate)
-		// 	district.GET("", GetDistrictsFromState)
-		// 	district.DELETE("", DeleteDistrictFromState)
-		// }
+		district := region.Group("district")
+		{
+			district.POST("", regionHandler.AddNewDistrict)
+			// district.GET("", GetDistrictsFromState)
+			// district.DELETE("", DeleteDistrictFromState)
+			// district.PATCH("",ReActivateDistrict)
+		}
 	}
 
 	// verification := engine.Group("/verify")

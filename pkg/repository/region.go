@@ -6,6 +6,7 @@ import (
 
 	"github.com/ARUNK2121/procast/pkg/domain"
 	"github.com/ARUNK2121/procast/pkg/repository/interfaces"
+	"github.com/ARUNK2121/procast/pkg/utils/models"
 	"gorm.io/gorm"
 )
 
@@ -84,6 +85,39 @@ func (r *regionrepository) DeleteState(ctx context.Context, id int) error {
 func (r *regionrepository) ReActivateState(ctx context.Context, id int) error {
 	tx := r.DB.Begin()
 	err := tx.Exec("UPDATE states SET is_deleted = False WHERE id = $1", id).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		tx.Rollback()
+		return errors.New("timeout")
+	}
+	tx.Commit()
+	return nil
+}
+
+func (r *regionrepository) CheckIfDistrictAlreadyExists(ctx context.Context, district string) (bool, error) {
+	if ctx.Err() != nil {
+		return false, errors.New("timeout")
+	}
+	var count int64
+	err := r.DB.Raw("SELECT COUNT(*) FROM districts WHERE district = $1", district).Scan(&count).Error
+	if err != nil {
+		return false, err
+	}
+
+	if count != 0 {
+		return false, nil
+	}
+
+	return true, nil
+}
+
+func (r *regionrepository) AddNewDistrict(ctx context.Context, district models.AddNewDistrict) error {
+	tx := r.DB.Begin()
+	err := tx.Exec("INSERT INTO districts(district,state_id) VALUES($1,$2)", district.District, district.StateID).Error
 	if err != nil {
 		tx.Rollback()
 		return err

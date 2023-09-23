@@ -108,3 +108,25 @@ func (r *RegionHandler) ReActivateState(c *gin.Context) {
 	successRes := response.Response{Data: "successfully Activated state", Error: nil}
 	c.JSON(http.StatusOK, successRes)
 }
+
+func (r *RegionHandler) AddNewDistrict(c *gin.Context) {
+	var region models.AddNewDistrict
+	err := c.BindJSON(&region)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	defer cancel()
+
+	err = r.usecase.AddNewDistrict(ctx, region)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	successRes := response.Response{Data: "successfully added new District", Error: nil}
+	c.JSON(http.StatusCreated, successRes)
+}

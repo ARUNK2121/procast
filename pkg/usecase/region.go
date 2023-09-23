@@ -7,6 +7,7 @@ import (
 	"github.com/ARUNK2121/procast/pkg/domain"
 	"github.com/ARUNK2121/procast/pkg/repository/interfaces"
 	services "github.com/ARUNK2121/procast/pkg/usecase/interfaces"
+	"github.com/ARUNK2121/procast/pkg/utils/models"
 )
 
 type regionUsecase struct {
@@ -73,6 +74,29 @@ func (r *regionUsecase) DeleteState(ctx context.Context, id int) error {
 func (a *regionUsecase) ReActivateState(ctx context.Context, id int) error {
 
 	err := a.repository.ReActivateState(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
+}
+
+func (a *regionUsecase) AddNewDistrict(ctx context.Context, district models.AddNewDistrict) error {
+	//check if already a category exists in same name
+	exist, err := a.repository.CheckIfDistrictAlreadyExists(ctx, district.District)
+	if err != nil {
+		return err
+	}
+
+	if !exist {
+		return errors.New("district already exists")
+	}
+	//create new category
+	err = a.repository.AddNewDistrict(ctx, district)
 	if err != nil {
 		return err
 	}

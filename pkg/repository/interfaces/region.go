@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/ARUNK2121/procast/pkg/domain"
+	"github.com/ARUNK2121/procast/pkg/utils/models"
 )
 
 type RegionRepository interface {
@@ -12,4 +13,6 @@ type RegionRepository interface {
 	GetStates(context.Context) ([]domain.State, error)
 	DeleteState(context.Context, int) error
 	ReActivateState(ctx context.Context, id int) error
+	AddNewDistrict(context.Context, models.AddNewDistrict) error
+	CheckIfDistrictAlreadyExists(context.Context, string) (bool, error)
 }
