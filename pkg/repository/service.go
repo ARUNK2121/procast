@@ -53,15 +53,47 @@ func (s *serviceRepository) AddServicesToACategory(ctx context.Context, service 
 	return nil
 }
 
-func (cat *serviceRepository) GetServicesInACategory(ctx context.Context, id int) ([]domain.Profession, error) {
+func (s *serviceRepository) GetServicesInACategory(ctx context.Context, id int) ([]domain.Profession, error) {
 	if ctx.Err() != nil {
 		return []domain.Profession{}, errors.New("timeout")
 	}
 	var services []domain.Profession
-	err := cat.DB.Raw("SELECT * FROM professions WHERE category_id = $1", id).Scan(&services).Error
+	err := s.DB.Raw("SELECT * FROM professions WHERE category_id = $1", id).Scan(&services).Error
 	if err != nil {
 		return []domain.Profession{}, err
 	}
 
 	return services, nil
+}
+
+func (s *serviceRepository) DeleteService(ctx context.Context, id int) error {
+	tx := s.DB.Begin()
+	err := s.DB.Exec("UPDATE professions SET is_deleted = TRUE WHERE id = $1", id).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		tx.Rollback()
+		return errors.New("timeout")
+	}
+	tx.Commit()
+	return nil
+}
+
+func (s *serviceRepository) ReActivateService(ctx context.Context, id int) error {
+	tx := s.DB.Begin()
+	err := s.DB.Exec("UPDATE professions SET is_deleted = False WHERE id = $1", id).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		tx.Rollback()
+		return errors.New("timeout")
+	}
+	tx.Commit()
+	return nil
 }

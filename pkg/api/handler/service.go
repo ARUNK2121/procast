@@ -69,3 +69,51 @@ func (s *ServiceHandler) GetServicesInACategory(c *gin.Context) {
 	successRes := response.Response{Data: services, Error: nil}
 	c.JSON(http.StatusOK, successRes)
 }
+
+func (s *ServiceHandler) DeleteService(c *gin.Context) {
+
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	defer cancel()
+
+	id, err := strconv.Atoi(c.Query("id"))
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+	//call usecase get array
+	err = s.usecase.DeleteService(ctx, id)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	//give array
+	successRes := response.Response{Data: "successfully deleted category", Error: nil}
+	c.JSON(http.StatusOK, successRes)
+}
+
+func (s *ServiceHandler) ReActivateService(c *gin.Context) {
+
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	defer cancel()
+
+	id, err := strconv.Atoi(c.Query("id"))
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+	//call usecase get array
+	err = s.usecase.ReActivateService(ctx, id)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	//give array
+	successRes := response.Response{Data: "successfully Activated service", Error: nil}
+	c.JSON(http.StatusOK, successRes)
+}

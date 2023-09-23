@@ -10,4 +10,6 @@ import (
 type ServiceUsecase interface {
 	AddServicesToACategory(context.Context, models.AddServicesToACategory) error
 	GetServicesInACategory(context.Context, int) ([]domain.Profession, error)
+	DeleteService(context.Context, int) error
+	ReActivateService(ctx context.Context, id int) error
 }

@@ -31,7 +31,8 @@ func AdminRoutes(engine *gin.RouterGroup,
 	{
 		services.POST("", servicehandler.AddServicesToACategory)
 		services.GET("", servicehandler.GetServicesInACategory)
-		// services.DELETE("", adminHandler.DeleteServices)
+		services.DELETE("", servicehandler.DeleteService)
+		services.PUT("", servicehandler.ReActivateService)
 	}
 
 	// region := engine.Group("/region")
