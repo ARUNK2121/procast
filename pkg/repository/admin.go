@@ -35,7 +35,7 @@ func (a *AdminRepository) GetAdminDetailsByEmail(ctx context.Context, email stri
 func (a *AdminRepository) CreateNewAdmin(ctx context.Context, model domain.Admin) error {
 	tx := a.DB.Begin()
 	//insert new admin to admin table
-	err := a.DB.Exec("INSERT INTO admins (name,email,password,previlege) VALUES($1,$2,$3,$4)", model.Name, model.Email, model.Password, model.Previlege).Error
+	err := tx.Exec("INSERT INTO admins (name,email,password,previlege) VALUES($1,$2,$3,$4)", model.Name, model.Email, model.Password, model.Previlege).Error
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -58,7 +58,7 @@ func (a *AdminRepository) CountOfAdminByEmail(ctx context.Context, email string)
 func (a *AdminRepository) DeleteAdmin(ctx context.Context, id int) error {
 	tx := a.DB.Begin()
 	var count int
-	err := a.DB.Exec("DELETE FROM admins WHERE id = $1", id).Scan(&count).Error
+	err := tx.Exec("DELETE FROM admins WHERE id = $1", id).Scan(&count).Error
 	if err != nil {
 		tx.Rollback()
 		return err

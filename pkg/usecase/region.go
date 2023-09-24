@@ -7,6 +7,7 @@ import (
 	"github.com/ARUNK2121/procast/pkg/domain"
 	"github.com/ARUNK2121/procast/pkg/repository/interfaces"
 	services "github.com/ARUNK2121/procast/pkg/usecase/interfaces"
+	"github.com/ARUNK2121/procast/pkg/utils/models"
 )
 
 type regionUsecase struct {
@@ -54,4 +55,97 @@ func (a *regionUsecase) GetStates(ctx context.Context) ([]domain.State, error) {
 	}
 
 	return states, nil
+}
+
+func (r *regionUsecase) DeleteState(ctx context.Context, id int) error {
+
+	err := r.repository.DeleteState(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
+}
+
+func (a *regionUsecase) ReActivateState(ctx context.Context, id int) error {
+
+	err := a.repository.ReActivateState(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
+}
+
+func (a *regionUsecase) AddNewDistrict(ctx context.Context, district models.AddNewDistrict) error {
+	//check if already a category exists in same name
+	exist, err := a.repository.CheckIfDistrictAlreadyExists(ctx, district.District)
+	if err != nil {
+		return err
+	}
+
+	if !exist {
+		return errors.New("district already exists")
+	}
+	//create new category
+	err = a.repository.AddNewDistrict(ctx, district)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
+}
+
+func (a *regionUsecase) GetDistrictsFromState(ctx context.Context, id int) ([]domain.District, error) {
+
+	districts, err := a.repository.GetDistrictsFromState(ctx, id)
+	if err != nil {
+		return []domain.District{}, err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return []domain.District{}, errors.New("request timeout")
+	}
+
+	return districts, nil
+}
+
+func (r *regionUsecase) DeleteDistrictFromState(ctx context.Context, id int) error {
+
+	err := r.repository.DeleteDistrictFromState(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
+}
+
+func (a *regionUsecase) ReActivateDistrict(ctx context.Context, id int) error {
+
+	err := a.repository.ReActivateDistrict(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
 }

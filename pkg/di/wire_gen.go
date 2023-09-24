@@ -36,6 +36,9 @@ func InitializeAPI(cfg config.Config) (*httpserver.ServerHTTP, error) {
 	regionRepository := repository.NewRegionRepository(gormDB)
 	regionUsecase := usecase.NewRegionUsecase(regionRepository)
 	regionHandler := handler.NewRegionHandler(regionUsecase)
-	serverHTTP := httpserver.NewServerHTTP(adminHandler, categoryHandler, serviceHandler, regionHandler)
+	userManagementRepository := repository.NewUserManagementRepository(gormDB)
+	userManagementUsecase := usecase.NewUserManagementUsecase(userManagementRepository)
+	userManagementHandler := handler.NewUserManagementHandler(userManagementUsecase)
+	serverHTTP := httpserver.NewServerHTTP(adminHandler, categoryHandler, serviceHandler, regionHandler, userManagementHandler)
 	return serverHTTP, nil
 }

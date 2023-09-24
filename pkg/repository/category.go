@@ -21,7 +21,7 @@ func NewCategoryRepository(db *gorm.DB) interfaces.CategoryRepository {
 
 func (cat *categoryRepository) CreateCategory(ctx context.Context, category string) error {
 	tx := cat.DB.Begin()
-	err := cat.DB.Exec("INSERT INTO categories(category) VALUES($1)", category).Error
+	err := tx.Exec("INSERT INTO categories(category) VALUES($1)", category).Error
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -67,7 +67,7 @@ func (cat *categoryRepository) CheckIfCategoryAlreadyExists(ctx context.Context,
 
 func (cat *categoryRepository) DeleteCategory(ctx context.Context, id int) error {
 	tx := cat.DB.Begin()
-	err := cat.DB.Exec("UPDATE categories SET is_deleted = TRUE WHERE id = $1", id).Error
+	err := tx.Exec("UPDATE categories SET is_deleted = TRUE WHERE id = $1", id).Error
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -83,7 +83,7 @@ func (cat *categoryRepository) DeleteCategory(ctx context.Context, id int) error
 
 func (cat *categoryRepository) ReActivateCategory(ctx context.Context, id int) error {
 	tx := cat.DB.Begin()
-	err := cat.DB.Exec("UPDATE categories SET is_deleted = False WHERE id = $1", id).Error
+	err := tx.Exec("UPDATE categories SET is_deleted = False WHERE id = $1", id).Error
 	if err != nil {
 		tx.Rollback()
 		return err

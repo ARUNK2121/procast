@@ -10,7 +10,8 @@ func AdminRoutes(
 	adminHandler *handler.AdminHandler,
 	categoryHandler *handler.CategoryHandler,
 	servicehandler *handler.ServiceHandler,
-	regionHandler *handler.RegionHandler) {
+	regionHandler *handler.RegionHandler,
+	userManagementHandler *handler.UserManagementHandler) {
 
 	engine.GET("/login", adminHandler.AdminLogin)
 	// engine.DELETE("/logout", adminHandler.AdminLogout)
@@ -43,16 +44,37 @@ func AdminRoutes(
 		{
 			state.POST("", regionHandler.AddNewState)
 			state.GET("", regionHandler.GetStates)
-			// state.DELETE("", adminHandler.DeleteState)
+			state.DELETE("", regionHandler.DeleteState)
+			state.PATCH("", regionHandler.ReActivateState)
 		}
 
-		// 	// district := region.Group("district")
-		// 	// {
-		// 	// 	district.POST("", AddDistrictsTostate)
-		// 	// 	district.GET("", GetDistrictsFromState)
-		// 	// 	district.DELETE("", DeleteDistrictFromState)
-		// 	// }
+		district := region.Group("district")
+		{
+			district.POST("", regionHandler.AddNewDistrict)
+			district.GET("", regionHandler.GetDistrictsFromState)
+			district.DELETE("", regionHandler.DeleteDistrictFromState)
+			district.PATCH("", regionHandler.ReActivateDistrict)
+		}
 	}
+
+	providers := engine.Group("/provider")
+	{
+		providers.GET("", userManagementHandler.GetProviders)
+		providers.PUT("", userManagementHandler.MakeProviderVerified)
+		providers.DELETE("", userManagementHandler.RevokeVerification)
+	}
+
+	// users := engine.Group("/user")
+	// {
+	// 	users.GET("", adminHandler.GetUsers)
+	// 	users.DELETE("", adminHandler.BlockUser)
+	//  users.PUT("",adminHandler.UnBlockUser)
+	// }
+
+	// works := engine.Group("/works")
+	// {
+	// 	works.GET("", adminHandler.ListScheduledworks)
+	// }
 
 	// verification := engine.Group("/verify")
 	// {
@@ -61,26 +83,7 @@ func AdminRoutes(
 	// 	request := verification.Group("request")
 	// 	{
 	// 		request.GET("", adminHandler.ViewVerificationRequest)
-	// 		request.PUT("", adminHandler.MakeProviderVerified)
 	// 	}
-	// }
-
-	// works := engine.Group("/works")
-	// {
-	// 	works.GET("", adminHandler.ListScheduledworks)
-	// }
-
-	// providers := engine.Group("/provider")
-	// {
-	// 	providers.GET("/top", adminHandler.GetTopProviders)
-	// 	providers.GET("", adminHandler.GetProviders)
-	// 	providers.DELETE("", adminHandler.RevokeVerification)
-	// }
-
-	// users := engine.Group("/user")
-	// {
-	// 	users.GET("", adminHandler.GetUsers)
-	// 	users.DELETE("", adminHandler.BlockUser)
 	// }
 
 }
