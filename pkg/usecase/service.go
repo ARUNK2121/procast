@@ -97,7 +97,6 @@ func (s *serviceUsecase) ListCommittedWorks(ctx context.Context) ([]models.WorkD
 	}
 
 	for _, v := range works {
-		fmt.Println(v.ID)
 		//find district
 		fmt.Println("district", v.DistrictID)
 		DistrictName, err := s.RegionRepository.FindDistrictFromId(v.DistrictID)
@@ -105,25 +104,74 @@ func (s *serviceUsecase) ListCommittedWorks(ctx context.Context) ([]models.WorkD
 			return []models.WorkDetails{}, err
 		}
 		//find state
-		fmt.Println("state", v.StateID)
 		StateName, err := s.RegionRepository.FindStateFromId(v.StateID)
 		if err != nil {
 			return []models.WorkDetails{}, err
 		}
 		//find service
-		fmt.Println("TargetProfession", v.TargetProfessionID)
 		Service, err := s.repository.FindServiceFromId(v.TargetProfessionID)
 		if err != nil {
 			return []models.WorkDetails{}, err
 		}
 		//find user
-		fmt.Println("user", v.UserID)
 		user, err := s.UserManagementRepository.FindUserFromId(v.UserID)
 		if err != nil {
 			return []models.WorkDetails{}, err
 		}
 		//find provider
-		fmt.Println("provider", v.ProID)
+		provider, err := s.UserManagementRepository.FindProviderFromId(v.ProID)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+
+		//get images
+
+		result = append(result, models.WorkDetails{
+			ID:         v.ID,
+			Street:     v.Street,
+			District:   DistrictName,
+			State:      StateName,
+			Profession: Service,
+			User:       user,
+			Provider:   provider,
+			Images:     []string{},
+			WorkStatus: v.WorkStatus,
+		})
+	}
+
+	return result, nil
+}
+
+func (s *serviceUsecase) ListCompletedWorks(ctx context.Context) ([]models.WorkDetails, error) {
+	var result []models.WorkDetails
+	works, err := s.repository.GetCompletedWorks(ctx)
+	if err != nil {
+		return []models.WorkDetails{}, err
+	}
+
+	for _, v := range works {
+		//find district
+		fmt.Println("district", v.DistrictID)
+		DistrictName, err := s.RegionRepository.FindDistrictFromId(v.DistrictID)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+		//find state
+		StateName, err := s.RegionRepository.FindStateFromId(v.StateID)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+		//find service
+		Service, err := s.repository.FindServiceFromId(v.TargetProfessionID)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+		//find user
+		user, err := s.UserManagementRepository.FindUserFromId(v.UserID)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+		//find provider
 		provider, err := s.UserManagementRepository.FindProviderFromId(v.ProID)
 		if err != nil {
 			return []models.WorkDetails{}, err

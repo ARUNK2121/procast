@@ -74,18 +74,18 @@ func AdminRoutes(
 	works := engine.Group("/works")
 	{
 		works.GET("/committed", servicehandler.ListCommittedWorks)
-		// works.GET("/completed", servicehandler.ListCompletedWorks)
+		works.GET("/completed", servicehandler.ListCompletedWorks)
 	}
 
-	// verification := engine.Group("/verify")
-	// {
-	// 	verification.GET("", adminHandler.GetAllPendingVerifications)
+	verification := engine.Group("/verify")
+	{
+		verification.GET("", userManagementHandler.GetAllPendingVerifications)
 
-	// 	request := verification.Group("request")
-	// 	{
-	// 		request.GET("", adminHandler.ViewVerificationRequest)
-	// 	}
+		// request := verification.Group("request")
+		// {
+		// 	request.GET("", adminHandler.ViewVerificationRequest)
+		// }
 
-	// }
+	}
 
 }

@@ -15,4 +15,5 @@ type ServiceRepository interface {
 	ReActivateService(ctx context.Context, id int) error
 	GetCommittedWorks(context.Context) ([]domain.Work, error)
 	FindServiceFromId(id int) (string, error)
+	GetCompletedWorks(context.Context) ([]domain.Work, error)
 }

@@ -13,4 +13,5 @@ type ServiceUsecase interface {
 	DeleteService(context.Context, int) error
 	ReActivateService(ctx context.Context, id int) error
 	ListCommittedWorks(context.Context) ([]models.WorkDetails, error)
+	ListCompletedWorks(context.Context) ([]models.WorkDetails, error)
 }

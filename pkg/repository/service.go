@@ -100,7 +100,20 @@ func (s *serviceRepository) ReActivateService(ctx context.Context, id int) error
 
 func (s *serviceRepository) GetCommittedWorks(ctx context.Context) ([]domain.Work, error) {
 	var result []domain.Work
-	err := s.DB.Raw("SELECT * FROM works").Scan(&result).Error
+	err := s.DB.Raw("SELECT * FROM works WHERE work_status = $1", "committed").Scan(&result).Error
+	if err != nil {
+		return []domain.Work{}, err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return []domain.Work{}, errors.New("timeout")
+	}
+	return result, nil
+}
+
+func (s *serviceRepository) GetCompletedWorks(ctx context.Context) ([]domain.Work, error) {
+	var result []domain.Work
+	err := s.DB.Raw("SELECT * FROM works WHERE work_status = $1", "completed").Scan(&result).Error
 	if err != nil {
 		return []domain.Work{}, err
 	}
