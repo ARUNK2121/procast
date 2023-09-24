@@ -6,6 +6,7 @@ import (
 
 	"github.com/ARUNK2121/procast/pkg/domain"
 	"github.com/ARUNK2121/procast/pkg/repository/interfaces"
+	"github.com/ARUNK2121/procast/pkg/utils/models"
 	"gorm.io/gorm"
 )
 
@@ -24,7 +25,7 @@ func (r *userManagementRepository) GetProviders(ctx context.Context) ([]domain.P
 		return []domain.Provider{}, errors.New("timeout")
 	}
 	var providers []domain.Provider
-	err := r.DB.Raw("SELECT * FROM states").Scan(&providers).Error
+	err := r.DB.Raw("SELECT * FROM providers").Scan(&providers).Error
 	if err != nil {
 		return []domain.Provider{}, err
 	}
@@ -62,4 +63,17 @@ func (u *userManagementRepository) RevokeVerification(ctx context.Context, id in
 	}
 	tx.Commit()
 	return nil
+}
+
+func (r *userManagementRepository) GetUsers(ctx context.Context) ([]models.UserDetails, error) {
+	if ctx.Err() != nil {
+		return []models.UserDetails{}, errors.New("timeout")
+	}
+	var user []models.UserDetails
+	err := r.DB.Raw("SELECT * FROM users").Scan(&user).Error
+	if err != nil {
+		return []models.UserDetails{}, err
+	}
+
+	return user, nil
 }

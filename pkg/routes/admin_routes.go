@@ -60,16 +60,16 @@ func AdminRoutes(
 	providers := engine.Group("/provider")
 	{
 		providers.GET("", userManagementHandler.GetProviders)
-		providers.PUT("", userManagementHandler.MakeProviderVerified)
+		providers.PATCH("", userManagementHandler.MakeProviderVerified)
 		providers.DELETE("", userManagementHandler.RevokeVerification)
 	}
 
-	// users := engine.Group("/user")
-	// {
-	// 	users.GET("", adminHandler.GetUsers)
-	// 	users.DELETE("", adminHandler.BlockUser)
-	//  users.PUT("",adminHandler.UnBlockUser)
-	// }
+	users := engine.Group("/user")
+	{
+		users.GET("", userManagementHandler.GetUsers)
+		// users.DELETE("", adminHandler.BlockUser)
+		// users.PUT("", adminHandler.UnBlockUser)
+	}
 
 	// works := engine.Group("/works")
 	// {

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -83,5 +84,24 @@ func (u *UserManagementHandler) RevokeVerification(c *gin.Context) {
 
 	//give array
 	successRes := response.Response{Data: "revoked verification of provider", Error: nil}
+	c.JSON(http.StatusOK, successRes)
+}
+
+func (u *UserManagementHandler) GetUsers(c *gin.Context) {
+
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	defer cancel()
+	//call usecase get array
+	users, err := u.usecase.GetUsers(ctx)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	fmt.Println("users", users)
+
+	//give array
+	successRes := response.Response{Data: users, Error: nil}
 	c.JSON(http.StatusOK, successRes)
 }
