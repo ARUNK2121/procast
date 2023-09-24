@@ -25,3 +25,15 @@ type AuthCustomClaims struct {
 	Previlege string `json:"previlege"`
 	jwt.StandardClaims
 }
+
+type VerificationDetails struct {
+	ID            int      `json:"id"`
+	Name          string   `json:"name"`
+	DocumentImage string   `json:"document_images"`
+	Services      []string `json:"services"`
+}
+
+type Verification struct {
+	ID   int
+	Name string
+}
