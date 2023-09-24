@@ -12,4 +12,5 @@ type ServiceUsecase interface {
 	GetServicesInACategory(context.Context, int) ([]domain.Profession, error)
 	DeleteService(context.Context, int) error
 	ReActivateService(ctx context.Context, id int) error
+	ListCommittedWorks(context.Context) ([]models.WorkDetails, error)
 }

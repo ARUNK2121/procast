@@ -13,4 +13,6 @@ type UserManagementRepository interface {
 	GetUsers(context.Context) ([]models.UserDetails, error)
 	BlockUser(ctx context.Context, id int) error
 	UnBlockUser(ctx context.Context, id int) error
+	FindUserFromId(id int) (string, error)
+	FindProviderFromId(id int) (string, error)
 }

@@ -117,3 +117,20 @@ func (s *ServiceHandler) ReActivateService(c *gin.Context) {
 	successRes := response.Response{Data: "successfully Activated service", Error: nil}
 	c.JSON(http.StatusOK, successRes)
 }
+
+func (s *ServiceHandler) ListCommittedWorks(c *gin.Context) {
+
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	defer cancel()
+	//call usecase get array
+	works, err := s.usecase.ListCommittedWorks(ctx)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	//give array
+	successRes := response.Response{Data: works, Error: nil}
+	c.JSON(http.StatusOK, successRes)
+}
