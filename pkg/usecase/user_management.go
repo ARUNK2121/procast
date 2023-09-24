@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 
-	"github.com/ARUNK2121/procast/pkg/domain"
 	"github.com/ARUNK2121/procast/pkg/repository/interfaces"
 	services "github.com/ARUNK2121/procast/pkg/usecase/interfaces"
 	"github.com/ARUNK2121/procast/pkg/utils/models"
@@ -20,15 +19,15 @@ func NewUserManagementUsecase(repo interfaces.UserManagementRepository) services
 	}
 }
 
-func (u *userManagementUsecase) GetProviders(ctx context.Context) ([]domain.Provider, error) {
+func (u *userManagementUsecase) GetProviders(ctx context.Context) ([]models.ProviderDetails, error) {
 
 	users, err := u.repository.GetProviders(ctx)
 	if err != nil {
-		return []domain.Provider{}, err
+		return []models.ProviderDetails{}, err
 	}
 	err = ctx.Err()
 	if err != nil {
-		return []domain.Provider{}, errors.New("request timeout")
+		return []models.ProviderDetails{}, errors.New("request timeout")
 	}
 
 	return users, nil

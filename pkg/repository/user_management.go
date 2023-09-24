@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 
-	"github.com/ARUNK2121/procast/pkg/domain"
 	"github.com/ARUNK2121/procast/pkg/repository/interfaces"
 	"github.com/ARUNK2121/procast/pkg/utils/models"
 	"gorm.io/gorm"
@@ -20,14 +19,14 @@ func NewUserManagementRepository(db *gorm.DB) interfaces.UserManagementRepositor
 	}
 }
 
-func (r *userManagementRepository) GetProviders(ctx context.Context) ([]domain.Provider, error) {
+func (r *userManagementRepository) GetProviders(ctx context.Context) ([]models.ProviderDetails, error) {
 	if ctx.Err() != nil {
-		return []domain.Provider{}, errors.New("timeout")
+		return []models.ProviderDetails{}, errors.New("timeout")
 	}
-	var providers []domain.Provider
+	var providers []models.ProviderDetails
 	err := r.DB.Raw("SELECT * FROM providers").Scan(&providers).Error
 	if err != nil {
-		return []domain.Provider{}, err
+		return []models.ProviderDetails{}, err
 	}
 
 	return providers, nil
