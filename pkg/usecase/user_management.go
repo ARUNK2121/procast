@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 
-	"github.com/ARUNK2121/procast/pkg/domain"
 	"github.com/ARUNK2121/procast/pkg/repository/interfaces"
 	services "github.com/ARUNK2121/procast/pkg/usecase/interfaces"
+	"github.com/ARUNK2121/procast/pkg/utils/models"
 )
 
 type userManagementUsecase struct {
@@ -19,18 +19,18 @@ func NewUserManagementUsecase(repo interfaces.UserManagementRepository) services
 	}
 }
 
-func (u *userManagementUsecase) GetProviders(ctx context.Context) ([]domain.Provider, error) {
+func (u *userManagementUsecase) GetProviders(ctx context.Context) ([]models.ProviderDetails, error) {
 
-	states, err := u.repository.GetProviders(ctx)
+	users, err := u.repository.GetProviders(ctx)
 	if err != nil {
-		return []domain.Provider{}, err
+		return []models.ProviderDetails{}, err
 	}
 	err = ctx.Err()
 	if err != nil {
-		return []domain.Provider{}, errors.New("request timeout")
+		return []models.ProviderDetails{}, errors.New("request timeout")
 	}
 
-	return states, nil
+	return users, nil
 }
 
 func (a *userManagementUsecase) MakeProviderVerified(ctx context.Context, id int) error {
@@ -50,6 +50,48 @@ func (a *userManagementUsecase) MakeProviderVerified(ctx context.Context, id int
 func (a *userManagementUsecase) RevokeVerification(ctx context.Context, id int) error {
 
 	err := a.repository.RevokeVerification(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
+}
+
+func (u *userManagementUsecase) GetUsers(ctx context.Context) ([]models.UserDetails, error) {
+
+	users, err := u.repository.GetUsers(ctx)
+	if err != nil {
+		return []models.UserDetails{}, err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return []models.UserDetails{}, errors.New("request timeout")
+	}
+
+	return users, nil
+}
+
+func (a *userManagementUsecase) BlockUser(ctx context.Context, id int) error {
+
+	err := a.repository.BlockUser(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
+}
+
+func (a *userManagementUsecase) UnBlockUser(ctx context.Context, id int) error {
+
+	err := a.repository.UnBlockUser(ctx, id)
 	if err != nil {
 		return err
 	}
