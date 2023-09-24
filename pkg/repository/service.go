@@ -97,3 +97,26 @@ func (s *serviceRepository) ReActivateService(ctx context.Context, id int) error
 	tx.Commit()
 	return nil
 }
+
+func (s *serviceRepository) GetCommittedWorks(ctx context.Context) ([]domain.Work, error) {
+	var result []domain.Work
+	err := s.DB.Raw("SELECT * FROM works").Scan(&result).Error
+	if err != nil {
+		return []domain.Work{}, err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return []domain.Work{}, errors.New("timeout")
+	}
+	return result, nil
+}
+
+func (s *serviceRepository) FindServiceFromId(id int) (string, error) {
+	var profession string
+	err := s.DB.Raw("SELECT profession FROM professions WHERE id = $1", id).Scan(&profession).Error
+	if err != nil {
+		return "", err
+	}
+
+	return profession, nil
+}

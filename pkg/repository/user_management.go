@@ -108,3 +108,23 @@ func (u *userManagementRepository) UnBlockUser(ctx context.Context, id int) erro
 	tx.Commit()
 	return nil
 }
+
+func (s *userManagementRepository) FindUserFromId(id int) (string, error) {
+	var name string
+	err := s.DB.Raw("SELECT name FROM users WHERE id = $1", id).Scan(&name).Error
+	if err != nil {
+		return "", err
+	}
+
+	return name, nil
+}
+
+func (s *userManagementRepository) FindProviderFromId(id int) (string, error) {
+	var name string
+	err := s.DB.Raw("SELECT name FROM providers WHERE id = $1", id).Scan(&name).Error
+	if err != nil {
+		return "", err
+	}
+
+	return name, nil
+}

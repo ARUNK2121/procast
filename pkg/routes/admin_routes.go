@@ -71,10 +71,11 @@ func AdminRoutes(
 		users.PATCH("", userManagementHandler.UnBlockUser)
 	}
 
-	// works := engine.Group("/works")
-	// {
-	// 	works.GET("", adminHandler.ListScheduledworks)
-	// }
+	works := engine.Group("/works")
+	{
+		works.GET("/committed", servicehandler.ListCommittedWorks)
+		// works.GET("/completed", servicehandler.ListCompletedWorks)
+	}
 
 	// verification := engine.Group("/verify")
 	// {
@@ -84,6 +85,7 @@ func AdminRoutes(
 	// 	{
 	// 		request.GET("", adminHandler.ViewVerificationRequest)
 	// 	}
+
 	// }
 
 }

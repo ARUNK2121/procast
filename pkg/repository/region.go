@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/ARUNK2121/procast/pkg/domain"
 	"github.com/ARUNK2121/procast/pkg/repository/interfaces"
@@ -174,4 +175,26 @@ func (r *regionrepository) ReActivateDistrict(ctx context.Context, id int) error
 	}
 	tx.Commit()
 	return nil
+}
+
+func (r *regionrepository) FindDistrictFromId(id int) (string, error) {
+
+	fmt.Println("reached")
+	var district string
+	err := r.DB.Raw("SELECT district FROM districts WHERE id = $1", id).Scan(&district).Error
+	if err != nil {
+		return "", err
+	}
+
+	return district, nil
+}
+
+func (r *regionrepository) FindStateFromId(id int) (string, error) {
+	var state string
+	err := r.DB.Raw("SELECT state FROM states WHERE id = $1", id).Scan(&state).Error
+	if err != nil {
+		return "", err
+	}
+
+	return state, nil
 }

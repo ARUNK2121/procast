@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/ARUNK2121/procast/pkg/domain"
 	"github.com/ARUNK2121/procast/pkg/repository/interfaces"
@@ -11,12 +12,16 @@ import (
 )
 
 type serviceUsecase struct {
-	repository interfaces.ServiceRepository
+	repository               interfaces.ServiceRepository
+	UserManagementRepository interfaces.UserManagementRepository
+	RegionRepository         interfaces.RegionRepository
 }
 
-func NewServiceUsecase(repo interfaces.ServiceRepository) services.ServiceUsecase {
+func NewServiceUsecase(repo interfaces.ServiceRepository, umr interfaces.UserManagementRepository, rr interfaces.RegionRepository) services.ServiceUsecase {
 	return &serviceUsecase{
-		repository: repo,
+		repository:               repo,
+		UserManagementRepository: umr,
+		RegionRepository:         rr,
 	}
 }
 
@@ -82,4 +87,62 @@ func (a *serviceUsecase) ReActivateService(ctx context.Context, id int) error {
 	}
 
 	return nil
+}
+
+func (s *serviceUsecase) ListCommittedWorks(ctx context.Context) ([]models.WorkDetails, error) {
+	var result []models.WorkDetails
+	works, err := s.repository.GetCommittedWorks(ctx)
+	if err != nil {
+		return []models.WorkDetails{}, err
+	}
+
+	for _, v := range works {
+		fmt.Println(v.ID)
+		//find district
+		fmt.Println("district", v.DistrictID)
+		DistrictName, err := s.RegionRepository.FindDistrictFromId(v.DistrictID)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+		//find state
+		fmt.Println("state", v.StateID)
+		StateName, err := s.RegionRepository.FindStateFromId(v.StateID)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+		//find service
+		fmt.Println("TargetProfession", v.TargetProfessionID)
+		Service, err := s.repository.FindServiceFromId(v.TargetProfessionID)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+		//find user
+		fmt.Println("user", v.UserID)
+		user, err := s.UserManagementRepository.FindUserFromId(v.UserID)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+		//find provider
+		fmt.Println("provider", v.ProID)
+		provider, err := s.UserManagementRepository.FindProviderFromId(v.ProID)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+
+		//get images
+
+		result = append(result, models.WorkDetails{
+			ID:         v.ID,
+			Street:     v.Street,
+			District:   DistrictName,
+			State:      StateName,
+			Profession: Service,
+			User:       user,
+			Provider:   provider,
+			Images:     []string{},
+			WorkStatus: v.WorkStatus,
+		})
+	}
+
+	return result, nil
 }

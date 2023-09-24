@@ -18,4 +18,6 @@ type RegionRepository interface {
 	GetDistrictsFromState(context.Context, int) ([]domain.District, error)
 	DeleteDistrictFromState(context.Context, int) error
 	ReActivateDistrict(ctx context.Context, id int) error
+	FindDistrictFromId(int) (string, error)
+	FindStateFromId(int) (string, error)
 }

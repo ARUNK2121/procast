@@ -13,4 +13,6 @@ type ServiceRepository interface {
 	GetServicesInACategory(context.Context, int) ([]domain.Profession, error)
 	DeleteService(context.Context, int) error
 	ReActivateService(ctx context.Context, id int) error
+	GetCommittedWorks(context.Context) ([]domain.Work, error)
+	FindServiceFromId(id int) (string, error)
 }
