@@ -11,4 +11,6 @@ type UserManagementUsecase interface {
 	MakeProviderVerified(ctx context.Context, id int) error
 	RevokeVerification(ctx context.Context, id int) error
 	GetUsers(context.Context) ([]models.UserDetails, error)
+	BlockUser(ctx context.Context, id int) error
+	UnBlockUser(ctx context.Context, id int) error
 }

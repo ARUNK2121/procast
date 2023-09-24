@@ -74,3 +74,31 @@ func (u *userManagementUsecase) GetUsers(ctx context.Context) ([]models.UserDeta
 
 	return users, nil
 }
+
+func (a *userManagementUsecase) BlockUser(ctx context.Context, id int) error {
+
+	err := a.repository.BlockUser(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
+}
+
+func (a *userManagementUsecase) UnBlockUser(ctx context.Context, id int) error {
+
+	err := a.repository.UnBlockUser(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return errors.New("request timeout")
+	}
+
+	return nil
+}

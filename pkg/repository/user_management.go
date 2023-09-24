@@ -76,3 +76,35 @@ func (r *userManagementRepository) GetUsers(ctx context.Context) ([]models.UserD
 
 	return user, nil
 }
+
+func (u *userManagementRepository) BlockUser(ctx context.Context, id int) error {
+	tx := u.DB.Begin()
+	err := tx.Exec("UPDATE users SET is_blocked = true WHERE id = $1", id).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		tx.Rollback()
+		return errors.New("timeout")
+	}
+	tx.Commit()
+	return nil
+}
+
+func (u *userManagementRepository) UnBlockUser(ctx context.Context, id int) error {
+	tx := u.DB.Begin()
+	err := tx.Exec("UPDATE users SET is_blocked = false WHERE id = $1", id).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	err = ctx.Err()
+	if err != nil {
+		tx.Rollback()
+		return errors.New("timeout")
+	}
+	tx.Commit()
+	return nil
+}

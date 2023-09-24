@@ -67,8 +67,8 @@ func AdminRoutes(
 	users := engine.Group("/user")
 	{
 		users.GET("", userManagementHandler.GetUsers)
-		// users.DELETE("", adminHandler.BlockUser)
-		// users.PUT("", adminHandler.UnBlockUser)
+		users.DELETE("", userManagementHandler.BlockUser)
+		users.PATCH("", userManagementHandler.UnBlockUser)
 	}
 
 	// works := engine.Group("/works")
