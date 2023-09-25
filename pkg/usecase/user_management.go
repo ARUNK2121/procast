@@ -10,12 +10,14 @@ import (
 )
 
 type userManagementUsecase struct {
-	repository interfaces.UserManagementRepository
+	repository        interfaces.UserManagementRepository
+	serviceRepository interfaces.ServiceRepository
 }
 
-func NewUserManagementUsecase(repo interfaces.UserManagementRepository) services.UserManagementUsecase {
+func NewUserManagementUsecase(repo interfaces.UserManagementRepository, serviceRepo interfaces.ServiceRepository) services.UserManagementUsecase {
 	return &userManagementUsecase{
-		repository: repo,
+		repository:        repo,
+		serviceRepository: serviceRepo,
 	}
 }
 
@@ -101,4 +103,59 @@ func (a *userManagementUsecase) UnBlockUser(ctx context.Context, id int) error {
 	}
 
 	return nil
+}
+
+func (u *userManagementUsecase) GetAllPendingVerifications(ctx context.Context) ([]models.Verification, error) {
+
+	verification, err := u.repository.GetAllPendingVerifications(ctx)
+	if err != nil {
+		return []models.Verification{}, err
+	}
+	err = ctx.Err()
+	if err != nil {
+		return []models.Verification{}, errors.New("request timeout")
+	}
+
+	return verification, nil
+}
+
+func (u *userManagementUsecase) ViewVerificationRequest(ctx context.Context, id int) (models.VerificationDetails, error) {
+
+	var verification models.VerificationDetails
+	//id
+	verification.ID = id
+	//name
+	name, err := u.repository.FindProviderFromId(id)
+	if err != nil {
+		return models.VerificationDetails{}, err
+	}
+
+	verification.Name = name
+	//document image
+	image, err := u.repository.FindDocumentsOfProviderFromID(id)
+	if err != nil {
+		return models.VerificationDetails{}, err
+	}
+
+	verification.DocumentImage = image
+	//all services as an array
+	services, err := u.serviceRepository.FindIdOfServicesOfAProvider(id)
+	if err != nil {
+		return models.VerificationDetails{}, err
+	}
+
+	var serviceNames []string
+
+	for _, v := range services {
+		s, err := u.serviceRepository.FindServiceFromId(v)
+		if err != nil {
+			return models.VerificationDetails{}, err
+		}
+
+		serviceNames = append(serviceNames, s)
+	}
+
+	verification.Services = serviceNames
+
+	return verification, nil
 }

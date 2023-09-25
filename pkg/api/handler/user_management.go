@@ -153,3 +153,45 @@ func (u *UserManagementHandler) UnBlockUser(c *gin.Context) {
 	successRes := response.Response{Data: "unblocked user", Error: nil}
 	c.JSON(http.StatusOK, successRes)
 }
+
+func (u *UserManagementHandler) GetAllPendingVerifications(c *gin.Context) {
+
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	defer cancel()
+	//call usecase get array
+	verifications, err := u.usecase.GetAllPendingVerifications(ctx)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	//give array
+	successRes := response.Response{Data: verifications, Error: nil}
+	c.JSON(http.StatusOK, successRes)
+}
+
+func (u *UserManagementHandler) ViewVerificationRequest(c *gin.Context) {
+
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	defer cancel()
+
+	id, err := strconv.Atoi(c.Query("pro_id"))
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	//call usecase get array
+	request, err := u.usecase.ViewVerificationRequest(ctx, id)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	//give array
+	successRes := response.Response{Data: request, Error: nil}
+	c.JSON(http.StatusOK, successRes)
+}

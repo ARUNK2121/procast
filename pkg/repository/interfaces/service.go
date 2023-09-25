@@ -16,4 +16,5 @@ type ServiceRepository interface {
 	GetCommittedWorks(context.Context) ([]domain.Work, error)
 	FindServiceFromId(id int) (string, error)
 	GetCompletedWorks(context.Context) ([]domain.Work, error)
+	FindIdOfServicesOfAProvider(int) ([]int, error)
 }
