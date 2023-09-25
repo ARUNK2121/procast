@@ -13,4 +13,6 @@ type UserManagementUsecase interface {
 	GetUsers(context.Context) ([]models.UserDetails, error)
 	BlockUser(ctx context.Context, id int) error
 	UnBlockUser(ctx context.Context, id int) error
+	GetAllPendingVerifications(context.Context) ([]models.Verification, error)
+	ViewVerificationRequest(context.Context, int) (models.VerificationDetails, error)
 }

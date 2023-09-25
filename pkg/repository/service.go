@@ -133,3 +133,13 @@ func (s *serviceRepository) FindServiceFromId(id int) (string, error) {
 
 	return profession, nil
 }
+
+func (s *serviceRepository) FindIdOfServicesOfAProvider(id int) ([]int, error) {
+	var profession []int
+	err := s.DB.Raw("SELECT profession_id FROM probooks WHERE pro_id = $1", id).Scan(&profession).Error
+	if err != nil {
+		return []int{}, err
+	}
+
+	return profession, nil
+}

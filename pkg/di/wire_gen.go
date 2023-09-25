@@ -37,7 +37,7 @@ func InitializeAPI(cfg config.Config) (*httpserver.ServerHTTP, error) {
 	serviceHandler := handler.NewServiceHandler(serviceUsecase)
 	regionUsecase := usecase.NewRegionUsecase(regionRepository)
 	regionHandler := handler.NewRegionHandler(regionUsecase)
-	userManagementUsecase := usecase.NewUserManagementUsecase(userManagementRepository)
+	userManagementUsecase := usecase.NewUserManagementUsecase(userManagementRepository, serviceRepository)
 	userManagementHandler := handler.NewUserManagementHandler(userManagementUsecase)
 	serverHTTP := httpserver.NewServerHTTP(adminHandler, categoryHandler, serviceHandler, regionHandler, userManagementHandler)
 	return serverHTTP, nil

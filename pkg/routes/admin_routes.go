@@ -81,10 +81,10 @@ func AdminRoutes(
 	{
 		verification.GET("", userManagementHandler.GetAllPendingVerifications)
 
-		// request := verification.Group("request")
-		// {
-		// 	request.GET("", adminHandler.ViewVerificationRequest)
-		// }
+		request := verification.Group("request")
+		{
+			request.GET("", userManagementHandler.ViewVerificationRequest)
+		}
 
 	}
 

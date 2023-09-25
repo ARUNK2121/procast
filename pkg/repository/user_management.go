@@ -128,3 +128,27 @@ func (s *userManagementRepository) FindProviderFromId(id int) (string, error) {
 
 	return name, nil
 }
+
+func (r *userManagementRepository) GetAllPendingVerifications(ctx context.Context) ([]models.Verification, error) {
+	if ctx.Err() != nil {
+		return []models.Verification{}, errors.New("timeout")
+	}
+	var verifications []models.Verification
+	err := r.DB.Raw("SELECT id,name FROM providers WHERE verified = false").Scan(&verifications).Error
+	if err != nil {
+		return []models.Verification{}, err
+	}
+
+	return verifications, nil
+}
+
+func (r *userManagementRepository) FindDocumentsOfProviderFromID(id int) (string, error) {
+
+	var document string
+	err := r.DB.Raw("SELECT id_proof FROM id_proofs WHERE pro_id = $1", id).Scan(&document).Error
+	if err != nil {
+		return "", err
+	}
+
+	return document, nil
+}

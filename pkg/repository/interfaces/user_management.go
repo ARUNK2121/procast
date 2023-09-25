@@ -15,4 +15,6 @@ type UserManagementRepository interface {
 	UnBlockUser(ctx context.Context, id int) error
 	FindUserFromId(id int) (string, error)
 	FindProviderFromId(id int) (string, error)
+	GetAllPendingVerifications(context.Context) ([]models.Verification, error)
+	FindDocumentsOfProviderFromID(int) (string, error)
 }
