@@ -159,3 +159,7 @@ func (u *userManagementUsecase) ViewVerificationRequest(ctx context.Context, id 
 
 	return verification, nil
 }
+
+func Conflict() {
+
+}
