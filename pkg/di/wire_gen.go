@@ -8,12 +8,12 @@ package di
 
 import (
 	"github.com/ARUNK2121/procast/pkg/api"
-	"github.com/ARUNK2121/procast/pkg/api/handler"
+	"github.com/ARUNK2121/procast/pkg/api/handler/admin"
 	"github.com/ARUNK2121/procast/pkg/config"
 	"github.com/ARUNK2121/procast/pkg/db"
 	"github.com/ARUNK2121/procast/pkg/helper"
-	"github.com/ARUNK2121/procast/pkg/repository"
-	"github.com/ARUNK2121/procast/pkg/usecase"
+	"github.com/ARUNK2121/procast/pkg/repository/admin"
+	"github.com/ARUNK2121/procast/pkg/usecase/admin"
 )
 
 // Injectors from wire.go:
@@ -23,22 +23,22 @@ func InitializeAPI(cfg config.Config) (*httpserver.ServerHTTP, error) {
 	if err != nil {
 		return nil, err
 	}
-	adminRepository := repository.NewAdminRepository(gormDB)
+	adminRepository := adminrepository.NewAdminRepository(gormDB)
 	interfacesHelper := helper.NewHelper(cfg)
-	adminUsecase := usecase.NewAdminUsecase(adminRepository, interfacesHelper)
-	adminHandler := handler.NewAdminHandler(adminUsecase)
-	categoryRepository := repository.NewCategoryRepository(gormDB)
-	categoryUsecase := usecase.NewCategoryUsecase(categoryRepository)
-	categoryHandler := handler.NewCategoryHandler(categoryUsecase)
-	serviceRepository := repository.NewServiceRepository(gormDB)
-	userManagementRepository := repository.NewUserManagementRepository(gormDB)
-	regionRepository := repository.NewRegionRepository(gormDB)
-	serviceUsecase := usecase.NewServiceUsecase(serviceRepository, userManagementRepository, regionRepository)
-	serviceHandler := handler.NewServiceHandler(serviceUsecase)
-	regionUsecase := usecase.NewRegionUsecase(regionRepository)
-	regionHandler := handler.NewRegionHandler(regionUsecase)
-	userManagementUsecase := usecase.NewUserManagementUsecase(userManagementRepository, serviceRepository)
-	userManagementHandler := handler.NewUserManagementHandler(userManagementUsecase)
+	adminUsecase := adminusecase.NewAdminUsecase(adminRepository, interfacesHelper)
+	adminHandler := adminhandler.NewAdminHandler(adminUsecase)
+	categoryRepository := adminrepository.NewCategoryRepository(gormDB)
+	categoryUsecase := adminusecase.NewCategoryUsecase(categoryRepository)
+	categoryHandler := adminhandler.NewCategoryHandler(categoryUsecase)
+	serviceRepository := adminrepository.NewServiceRepository(gormDB)
+	userManagementRepository := adminrepository.NewUserManagementRepository(gormDB)
+	regionRepository := adminrepository.NewRegionRepository(gormDB)
+	serviceUsecase := adminusecase.NewServiceUsecase(serviceRepository, userManagementRepository, regionRepository)
+	serviceHandler := adminhandler.NewServiceHandler(serviceUsecase)
+	regionUsecase := adminusecase.NewRegionUsecase(regionRepository)
+	regionHandler := adminhandler.NewRegionHandler(regionUsecase)
+	userManagementUsecase := adminusecase.NewUserManagementUsecase(userManagementRepository, serviceRepository)
+	userManagementHandler := adminhandler.NewUserManagementHandler(userManagementUsecase)
 	serverHTTP := httpserver.NewServerHTTP(adminHandler, categoryHandler, serviceHandler, regionHandler, userManagementHandler)
 	return serverHTTP, nil
 }

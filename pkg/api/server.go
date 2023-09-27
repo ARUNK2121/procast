@@ -1,7 +1,7 @@
 package httpserver
 
 import (
-	"github.com/ARUNK2121/procast/pkg/api/handler"
+	adminhandler "github.com/ARUNK2121/procast/pkg/api/handler/admin"
 	"github.com/ARUNK2121/procast/pkg/routes"
 	"github.com/gin-gonic/gin"
 )
@@ -10,11 +10,11 @@ type ServerHTTP struct {
 	engine *gin.Engine
 }
 
-func NewServerHTTP(adminHandler *handler.AdminHandler,
-	categoryhandler *handler.CategoryHandler,
-	serviceHandler *handler.ServiceHandler,
-	regionHandler *handler.RegionHandler,
-	userManagementHandler *handler.UserManagementHandler) *ServerHTTP {
+func NewServerHTTP(adminHandler *adminhandler.AdminHandler,
+	categoryhandler *adminhandler.CategoryHandler,
+	serviceHandler *adminhandler.ServiceHandler,
+	regionHandler *adminhandler.RegionHandler,
+	userManagementHandler *adminhandler.UserManagementHandler) *ServerHTTP {
 	engine := gin.New()
 
 	engine.Use(gin.Logger())

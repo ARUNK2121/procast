@@ -1,11 +1,11 @@
-package repository
+package adminrepository
 
 import (
 	"context"
 	"errors"
 
 	"github.com/ARUNK2121/procast/pkg/domain"
-	"github.com/ARUNK2121/procast/pkg/repository/interfaces"
+	"github.com/ARUNK2121/procast/pkg/repository/admin/interfaces"
 	"gorm.io/gorm"
 )
 
