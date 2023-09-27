@@ -5,35 +5,36 @@ package di
 
 import (
 	httpserver "github.com/ARUNK2121/procast/pkg/api"
-	handler "github.com/ARUNK2121/procast/pkg/api/handler"
+	adminhandler "github.com/ARUNK2121/procast/pkg/api/handler/admin"
 	"github.com/ARUNK2121/procast/pkg/config"
 	"github.com/ARUNK2121/procast/pkg/db"
 	"github.com/ARUNK2121/procast/pkg/helper"
-	"github.com/ARUNK2121/procast/pkg/repository"
-	"github.com/ARUNK2121/procast/pkg/usecase"
+	adminrepository "github.com/ARUNK2121/procast/pkg/repository/admin"
+	adminusecase "github.com/ARUNK2121/procast/pkg/usecase/admin"
+
 	"github.com/google/wire"
 )
 
 func InitializeAPI(cfg config.Config) (*httpserver.ServerHTTP, error) {
 	wire.Build(
 		db.ConnectDatabase,
-		repository.NewAdminRepository,
-		usecase.NewAdminUsecase,
-		handler.NewAdminHandler,
+		adminrepository.NewAdminRepository,
+		adminusecase.NewAdminUsecase,
+		adminhandler.NewAdminHandler,
 		httpserver.NewServerHTTP,
 		helper.NewHelper,
-		handler.NewCategoryHandler,
-		usecase.NewCategoryUsecase,
-		repository.NewCategoryRepository,
-		repository.NewServiceRepository,
-		usecase.NewServiceUsecase,
-		handler.NewServiceHandler,
-		repository.NewRegionRepository,
-		usecase.NewRegionUsecase,
-		handler.NewRegionHandler,
-		repository.NewUserManagementRepository,
-		usecase.NewUserManagementUsecase,
-		handler.NewUserManagementHandler,
+		adminhandler.NewCategoryHandler,
+		adminusecase.NewCategoryUsecase,
+		adminrepository.NewCategoryRepository,
+		adminrepository.NewServiceRepository,
+		adminusecase.NewServiceUsecase,
+		adminhandler.NewServiceHandler,
+		adminrepository.NewRegionRepository,
+		adminusecase.NewRegionUsecase,
+		adminhandler.NewRegionHandler,
+		adminrepository.NewUserManagementRepository,
+		adminusecase.NewUserManagementUsecase,
+		adminhandler.NewUserManagementHandler,
 	)
 
 	return &httpserver.ServerHTTP{}, nil

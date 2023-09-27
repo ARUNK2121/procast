@@ -1,17 +1,17 @@
 package routes
 
 import (
-	"github.com/ARUNK2121/procast/pkg/api/handler"
+	adminhandler "github.com/ARUNK2121/procast/pkg/api/handler/admin"
 	"github.com/gin-gonic/gin"
 )
 
 func AdminRoutes(
 	engine *gin.RouterGroup,
-	adminHandler *handler.AdminHandler,
-	categoryHandler *handler.CategoryHandler,
-	servicehandler *handler.ServiceHandler,
-	regionHandler *handler.RegionHandler,
-	userManagementHandler *handler.UserManagementHandler) {
+	adminHandler *adminhandler.AdminHandler,
+	categoryHandler *adminhandler.CategoryHandler,
+	servicehandler *adminhandler.ServiceHandler,
+	regionHandler *adminhandler.RegionHandler,
+	userManagementHandler *adminhandler.UserManagementHandler) {
 
 	engine.GET("/login", adminHandler.AdminLogin)
 	// engine.DELETE("/logout", adminHandler.AdminLogout)

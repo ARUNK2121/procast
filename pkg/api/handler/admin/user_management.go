@@ -1,4 +1,4 @@
-package handler
+package adminhandler
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/ARUNK2121/procast/pkg/usecase/interfaces"
+	"github.com/ARUNK2121/procast/pkg/usecase/admin/interfaces"
 	"github.com/ARUNK2121/procast/pkg/utils/response"
 	"github.com/gin-gonic/gin"
 )

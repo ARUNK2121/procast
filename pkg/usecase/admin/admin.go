@@ -1,4 +1,4 @@
-package usecase
+package adminusecase
 
 import (
 	"context"
@@ -6,8 +6,8 @@ import (
 
 	"github.com/ARUNK2121/procast/pkg/domain"
 	helper "github.com/ARUNK2121/procast/pkg/helper/interfaces"
-	"github.com/ARUNK2121/procast/pkg/repository/interfaces"
-	services "github.com/ARUNK2121/procast/pkg/usecase/interfaces"
+	"github.com/ARUNK2121/procast/pkg/repository/admin/interfaces"
+	services "github.com/ARUNK2121/procast/pkg/usecase/admin/interfaces"
 	"github.com/ARUNK2121/procast/pkg/utils/models"
 )
 
