@@ -1,3 +1,8 @@
 package interfaces
 
-type AuthenticationUsecase interface{}
+import "github.com/ARUNK2121/procast/pkg/utils/models"
+
+type AuthenticationUsecase interface {
+	Register(models.ProviderRegister) error
+	Login(models.ProLogin) (string, error)
+}

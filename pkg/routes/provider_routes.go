@@ -8,36 +8,39 @@ import (
 func ProviderRoutes(
 	engine *gin.RouterGroup, proHandler *providerhandler.AuthenticationHandler) {
 
-	// engine.GET("/register", proHandler.Register)
-	// engine.DELETE("/logout", adminHandler.AdminLogout)
-
-	//provider sign up
-	//provider login
-
-	//selecting preferred working locations
-	//provider profile editing
-	//provider view leads
-	//provider place bids with commit request
-	//check bids of other providers
-	//view currently active bids
-	//view notifications
-	//Promotion from users
+	engine.POST("/register", proHandler.Register)
+	engine.GET("/login", proHandler.Login)
 
 	engine.Group("/profile")
 	{
 		//update profile picture
 		//update details
 		//post images and tag works
-		//
+		//change preferences
+		//location
 	}
+
 	engine.Group("/works")
 	{
-
+		//view leads
+		//view currently participating bids
+		//bid on a work
+		//edit and re submit bid
+		//view work details
+		//check bids of other providers
 	}
 
 	engine.Group("/probook")
 	{
 		//Register to probook
+		//add more services
+		//remove a service
+	}
+
+	engine.Group("notification")
+	{
+		//first page list
+		//open notification
 	}
 
 }

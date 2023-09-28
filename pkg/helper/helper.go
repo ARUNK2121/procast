@@ -1,22 +1,29 @@
 package helper
 
 import (
+	"context"
 	"errors"
+	"fmt"
+	"mime/multipart"
 	"time"
 
-	"github.com/ARUNK2121/procast/pkg/config"
+	cfg "github.com/ARUNK2121/procast/pkg/config"
 	"github.com/ARUNK2121/procast/pkg/helper/interfaces"
 	"github.com/ARUNK2121/procast/pkg/utils/models"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/golang-jwt/jwt"
 	"github.com/jinzhu/copier"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type helper struct {
-	config config.Config
+	config cfg.Config
 }
 
-func NewHelper(cfg config.Config) interfaces.Helper {
+func NewHelper(cfg cfg.Config) interfaces.Helper {
 	return &helper{
 		config: cfg,
 	}
@@ -83,4 +90,38 @@ func (h *helper) CreateHashPassword(password string) (string, error) {
 
 	hash := string(hashedPassword)
 	return hash, nil
+}
+
+func (h *helper) UploadToS3(file *multipart.FileHeader) (string, error) {
+
+	cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("ap-south-1"))
+	if err != nil {
+		fmt.Println("configuration error:", err)
+		return "", err
+	}
+
+	client := s3.NewFromConfig(cfg)
+
+	uploader := manager.NewUploader(client)
+
+	f, openErr := file.Open()
+	if openErr != nil {
+		fmt.Println("opening error:", openErr)
+		return "", openErr
+	}
+	defer f.Close()
+
+	result, uploadErr := uploader.Upload(context.TODO(), &s3.PutObjectInput{
+		Bucket: aws.String("procasto"),
+		Key:    aws.String(file.Filename),
+		Body:   f,
+		ACL:    "public-read",
+	})
+
+	if uploadErr != nil {
+		fmt.Println("uploading error:", uploadErr)
+		return "", uploadErr
+	}
+
+	return result.Location, nil
 }
