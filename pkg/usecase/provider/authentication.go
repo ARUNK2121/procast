@@ -37,49 +37,70 @@ func (a *authenticationUsecase) Register(model models.ProviderRegister) error {
 		return errors.New("password mismatch")
 	}
 
-	fmt.Println("1")
-
 	hashed, err := a.helper.CreateHashPassword(model.Password)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println("2")
-
 	model.Password = hashed
 
-	fmt.Println("3")
 	// pass to repository
 	id, err := a.repository.Register(model)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println("4")
-
 	filename, err := a.helper.UploadToS3(model.Document)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println("5")
-
 	if err := a.repository.UploadDocument(id, filename); err != nil {
 		return err
 	}
 
-	fmt.Println("6")
-
 	return nil
 }
 
-func (a *authenticationUsecase) Login(models.ProLogin) (string, error) {
-	//check if username matches email
-	//if not then check phone
-	//retrieve user details
-	//compare details
+func (a *authenticationUsecase) Login(model models.ProLogin) (string, error) {
+
+	exists, err := a.repository.CheckIfProviderExistsByUsername(model.Username)
+	if err != nil {
+		return "", err
+	}
+
+	fmt.Println("1")
+
+	if !exists {
+		return "", errors.New("check username again")
+	}
+
+	details, err := a.repository.GetProviderDetailsByUsername(model.Username)
+	if err != nil {
+		return "", err
+	}
+
+	fmt.Println("2")
+
+	err = a.helper.CompareHashAndPassword(details.Password, model.Password)
+	if err != nil {
+		return "", errors.New("pasword mismatch")
+	}
+	fmt.Println("3")
+
+	if !details.IsVerified {
+		return "", errors.New("your request is under validation")
+	}
+
+	token, err := a.helper.GenerateTokenProvider(details)
+	if err != nil {
+		return token, err
+	}
+
+	fmt.Println("4")
+
 	//if matches create token
 
-	return "token", nil
+	return token, nil
 
 }

@@ -16,7 +16,7 @@ type ProLogin struct {
 	Password string `json:"password"`
 }
 
-type Tokens struct {
+type DoubleTokens struct {
 	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
 }

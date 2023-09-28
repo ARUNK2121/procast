@@ -8,6 +8,7 @@ import (
 	"time"
 
 	cfg "github.com/ARUNK2121/procast/pkg/config"
+	"github.com/ARUNK2121/procast/pkg/domain"
 	"github.com/ARUNK2121/procast/pkg/helper/interfaces"
 	"github.com/ARUNK2121/procast/pkg/utils/models"
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -124,4 +125,24 @@ func (h *helper) UploadToS3(file *multipart.FileHeader) (string, error) {
 	}
 
 	return result.Location, nil
+}
+
+func (helper *helper) GenerateTokenProvider(details domain.Provider) (string, error) {
+	accessTokenClaims := &models.AuthCustomClaims{
+		Id:        details.ID,
+		Email:     details.Email,
+		Previlege: "Pro",
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Hour * 24 * 90).Unix(),
+			IssuedAt:  time.Now().Unix(),
+		},
+	}
+
+	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessTokenClaims)
+	accessTokenString, err := accessToken.SignedString([]byte("accesssecret"))
+	if err != nil {
+		return "", err
+	}
+
+	return accessTokenString, nil
 }
