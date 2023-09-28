@@ -1,9 +1,18 @@
 package models
 
-import "github.com/golang-jwt/jwt"
+import (
+	"mime/multipart"
+
+	"github.com/golang-jwt/jwt"
+)
 
 type AdminLogin struct {
 	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type ProLogin struct {
+	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
@@ -36,4 +45,13 @@ type VerificationDetails struct {
 type Verification struct {
 	ID   int
 	Name string
+}
+
+type ProviderRegister struct {
+	Name       string                `json:"name"`
+	Email      string                `json:"email"`
+	Password   string                `json:"password"`
+	RePassword string                `json:"re-password"`
+	Phone      string                `json:"phone+6+"`
+	Document   *multipart.FileHeader `json:"document"`
 }

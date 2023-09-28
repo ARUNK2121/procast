@@ -34,7 +34,7 @@ func (r *userManagementRepository) GetProviders(ctx context.Context) ([]models.P
 
 func (u *userManagementRepository) MakeProviderVerified(ctx context.Context, id int) error {
 	tx := u.DB.Begin()
-	err := tx.Exec("UPDATE providers SET verified = true WHERE id = $1", id).Error
+	err := tx.Exec("UPDATE providers SET is_verified = true WHERE id = $1", id).Error
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -50,7 +50,7 @@ func (u *userManagementRepository) MakeProviderVerified(ctx context.Context, id 
 
 func (u *userManagementRepository) RevokeVerification(ctx context.Context, id int) error {
 	tx := u.DB.Begin()
-	err := tx.Exec("UPDATE providers SET verified = false WHERE id = $1", id).Error
+	err := tx.Exec("UPDATE providers SET is_verified = false WHERE id = $1", id).Error
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -134,7 +134,7 @@ func (r *userManagementRepository) GetAllPendingVerifications(ctx context.Contex
 		return []models.Verification{}, errors.New("timeout")
 	}
 	var verifications []models.Verification
-	err := r.DB.Raw("SELECT id,name FROM providers WHERE verified = false").Scan(&verifications).Error
+	err := r.DB.Raw("SELECT id,name FROM providers WHERE is_verified = false").Scan(&verifications).Error
 	if err != nil {
 		return []models.Verification{}, err
 	}

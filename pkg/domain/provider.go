@@ -1,12 +1,20 @@
 package domain
 
 type Provider struct {
-	ID       int    `json:"id" gorm:"primaryKey;autoIncrement"`
-	Name     string `json:"name" gorm:"not null"`
-	Email    string `json:"email" gorm:"not null"`
-	Password string `json:"password" gorm:"not null"`
-	Phone    string `json:"phone" gorm:"not null"`
-	Verified bool   `json:"verified" gorm:"default:false"`
+	ID         int    `json:"id" gorm:"primaryKey;autoIncrement"`
+	Name       string `json:"name" gorm:"not null"`
+	Email      string `json:"email" gorm:"not null"`
+	Password   string `json:"password" gorm:"not null"`
+	Phone      string `json:"phone" gorm:"not null"`
+	IsVerified bool   `json:"verified" gorm:"default:false"`
+	IsRejected bool   `json:"is_rejected" gorm:"default:false"`
+}
+
+type ProfileImages struct {
+	ID       int      `json:"id" gorm:"primaryKey;autoIncrement"`
+	ProID    int      `json:"pro_id"`
+	Provider Provider `json:"-" gorm:"foreignkey:ProID;constraint:OnDelete:CASCADE"`
+	Image    string   `json:"image"`
 }
 
 type Probook struct {

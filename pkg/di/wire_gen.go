@@ -9,11 +9,14 @@ package di
 import (
 	"github.com/ARUNK2121/procast/pkg/api"
 	"github.com/ARUNK2121/procast/pkg/api/handler/admin"
+	"github.com/ARUNK2121/procast/pkg/api/handler/provider"
 	"github.com/ARUNK2121/procast/pkg/config"
 	"github.com/ARUNK2121/procast/pkg/db"
 	"github.com/ARUNK2121/procast/pkg/helper"
 	"github.com/ARUNK2121/procast/pkg/repository/admin"
+	"github.com/ARUNK2121/procast/pkg/repository/provider"
 	"github.com/ARUNK2121/procast/pkg/usecase/admin"
+	"github.com/ARUNK2121/procast/pkg/usecase/provider"
 )
 
 // Injectors from wire.go:
@@ -39,6 +42,9 @@ func InitializeAPI(cfg config.Config) (*httpserver.ServerHTTP, error) {
 	regionHandler := adminhandler.NewRegionHandler(regionUsecase)
 	userManagementUsecase := adminusecase.NewUserManagementUsecase(userManagementRepository, serviceRepository)
 	userManagementHandler := adminhandler.NewUserManagementHandler(userManagementUsecase)
-	serverHTTP := httpserver.NewServerHTTP(adminHandler, categoryHandler, serviceHandler, regionHandler, userManagementHandler)
+	authenticationRepository := providerRepository.NewAuthenticationRepository(gormDB)
+	authenticationUsecase := providerusecase.NewAuthenticationUsecase(authenticationRepository, interfacesHelper)
+	authenticationHandler := providerhandler.NewAuthenticationHandler(authenticationUsecase)
+	serverHTTP := httpserver.NewServerHTTP(adminHandler, categoryHandler, serviceHandler, regionHandler, userManagementHandler, authenticationHandler)
 	return serverHTTP, nil
 }
