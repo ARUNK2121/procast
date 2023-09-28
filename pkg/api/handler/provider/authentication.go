@@ -72,7 +72,7 @@ func (a *AuthenticationHandler) Login(c *gin.Context) {
 	}
 
 	//return result
-	res := response.Response{Data: token, Error: err.Error()}
+	res := response.Response{Data: token, Error: nil}
 	c.JSON(http.StatusOK, res)
 
 }

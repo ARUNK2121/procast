@@ -1,6 +1,7 @@
 package providerRepository
 
 import (
+	"github.com/ARUNK2121/procast/pkg/domain"
 	interfaces "github.com/ARUNK2121/procast/pkg/repository/provider/interface"
 	"github.com/ARUNK2121/procast/pkg/utils/models"
 	"gorm.io/gorm"
@@ -47,4 +48,24 @@ func (a *authenticationRepository) UploadDocument(id int, file string) error {
 	}
 
 	return nil
+}
+
+func (a *authenticationRepository) CheckIfProviderExistsByUsername(username string) (bool, error) {
+	var count int64
+	if err := a.DB.Raw("SELECT COUNT(*) FROM providers WHERE phone = $1 or email = $2", username, username).Scan(&count).Error; err != nil {
+		return true, err
+	}
+
+	return count > 0, nil
+
+}
+
+func (a *authenticationRepository) GetProviderDetailsByUsername(username string) (domain.Provider, error) {
+	var model domain.Provider
+	if err := a.DB.Raw("SELECT * FROM providers WHERE phone = $1 or email = $2", username, username).Scan(&model).Error; err != nil {
+		return domain.Provider{}, err
+	}
+
+	return model, nil
+
 }
