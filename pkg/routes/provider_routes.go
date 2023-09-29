@@ -6,41 +6,61 @@ import (
 )
 
 func ProviderRoutes(
-	engine *gin.RouterGroup, proHandler *providerhandler.AuthenticationHandler) {
+	engine *gin.RouterGroup, proHandler *providerhandler.AuthenticationHandler, profileHandler *providerhandler.ProfileHandler) {
 
-	engine.POST("/register", proHandler.Register)
-	engine.GET("/login", proHandler.Login)
+	engine.POST("/register", proHandler.Register) //completed
+	engine.GET("/login", proHandler.Login)        //completed
 
-	engine.Group("/profile")
+	profile := engine.Group("/profile")
 	{
-		//update profile picture
-		//update details
-		//post images and tag works
-		//change preferences
-		//location
+
+		service := profile.Group("/service")
+		{
+			//list my services
+			service.GET("", profileHandler.GetSelectedServices) //completed
+			service.POST("", profileHandler.AddService)         //completed
+			service.DELETE("", profileHandler.DeleteService)    //completed
+		}
+
+		location := profile.Group("location")
+		{
+			location.GET("", profileHandler.GetAllPreferredLocations)
+			location.POST("", profileHandler.AddPreferredWorkingLocation) //completed
+			location.DELETE("", profileHandler.RemovePreferredLocation)   //completed
+		}
+
 	}
 
-	engine.Group("/works")
-	{
-		//view leads
-		//view currently participating bids
-		//bid on a work
-		//edit and re submit bid
-		//view work details
-		//check bids of other providers
-	}
+	// work := engine.Group("/works")
+	// {
 
-	engine.Group("/probook")
-	{
-		//Register to probook
-		//add more services
-		//remove a service
-	}
+	// 	leads := work.Group("leads")
+	// 	{
+	// 		leads.GET("", workHandler.GetAllLeads)
+	// 		// leads.GET("/:id", workHandler.ViewLeads)
+	// 		// leads.GET("/:id/compare", workHandler.GetAllOtherBidsOnTheLeads)
+	// 		// leads.POST("/:id/place-bid", workHandler.PlaceBidOnTheLead)
+	// 		// leads.POST("/:id/edit-bid", workHandler.EditBid)
+	// 	}
 
-	engine.Group("notification")
-	{
-		//first page list
-		//open notification
-	}
+	// 	// my_works:=work.Group("my-works")
+	// 	// {
+	// 	// 	my_works.GET("",workHandler.GetMyWorks)
+	// 	// 	my_works.GET("/completed",workHanlder.GetAllCompletedWorks)
+	// 	// 	my_works.GET("/on-going",workHandler.GetAllOnGoingWorks)
+	// 	// }
+
+	// 	// my_bids:=work.Group("my-bids")
+	// 	// {
+	// 	// 	my_bids:=work.Group("",workHandler.GetCurrentlyParticipatingBids)
+	// 	// }
+
+	// }
+
+	// notification := engine.Group("notification")
+	// {
+	// 	notification.GET("", notificationHandler.GetAllNotifications)
+	// 	notification.GET("/:id", notificationHandler.ViewNotification)
+	// }
 
 }

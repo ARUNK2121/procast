@@ -27,3 +27,15 @@ type WorkDetails struct {
 	Images     []string `json:"images" `
 	WorkStatus string   `json:"work_status" `
 }
+
+type GetServices struct {
+	ID          int    `json:"id"`
+	ServiceName string `json:"service"`
+	Category_id int    `json:"category_id"`
+}
+
+type GetLocations struct {
+	ID       int    `json:"id"`
+	District string `json:"district"`
+	State    string `json:"state"`
+}
