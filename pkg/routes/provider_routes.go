@@ -24,7 +24,7 @@ func ProviderRoutes(
 
 		location := profile.Group("location")
 		{
-			location.GET("", profileHandler.GetAllPreferredLocations)
+			location.GET("", profileHandler.GetAllPreferredLocations)     //completed
 			location.POST("", profileHandler.AddPreferredWorkingLocation) //completed
 			location.DELETE("", profileHandler.RemovePreferredLocation)   //completed
 		}
