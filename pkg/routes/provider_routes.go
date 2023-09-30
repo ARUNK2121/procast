@@ -6,7 +6,10 @@ import (
 )
 
 func ProviderRoutes(
-	engine *gin.RouterGroup, proHandler *providerhandler.AuthenticationHandler, profileHandler *providerhandler.ProfileHandler) {
+	engine *gin.RouterGroup,
+	proHandler *providerhandler.AuthenticationHandler,
+	profileHandler *providerhandler.ProfileHandler,
+	workHandler *providerhandler.WorkHandler) {
 
 	engine.POST("/register", proHandler.Register) //completed
 	engine.GET("/login", proHandler.Login)        //completed
@@ -31,31 +34,31 @@ func ProviderRoutes(
 
 	}
 
-	// work := engine.Group("/works")
-	// {
+	work := engine.Group("/works")
+	{
 
-	// 	leads := work.Group("leads")
-	// 	{
-	// 		leads.GET("", workHandler.GetAllLeads)
-	// 		// leads.GET("/:id", workHandler.ViewLeads)
-	// 		// leads.GET("/:id/compare", workHandler.GetAllOtherBidsOnTheLeads)
-	// 		// leads.POST("/:id/place-bid", workHandler.PlaceBidOnTheLead)
-	// 		// leads.POST("/:id/edit-bid", workHandler.EditBid)
-	// 	}
+		leads := work.Group("leads")
+		{
+			leads.GET("", workHandler.GetAllLeads) //not tested
+			leads.GET("/:id", workHandler.ViewLeads)
+			// leads.POST("/:id/place-bid", workHandler.PlaceBidOnTheLead)
+			// leads.POST("/:id/edit-bid", workHandler.EditBid)
+			// leads.GET("/:id/compare", workHandler.GetAllOtherBidsOnTheLeads)
+		}
 
-	// 	// my_works:=work.Group("my-works")
-	// 	// {
-	// 	// 	my_works.GET("",workHandler.GetMyWorks)
-	// 	// 	my_works.GET("/completed",workHanlder.GetAllCompletedWorks)
-	// 	// 	my_works.GET("/on-going",workHandler.GetAllOnGoingWorks)
-	// 	// }
+		// my_works:=work.Group("my-works")
+		// {
+		// 	my_works.GET("",workHandler.GetMyWorks)
+		// 	my_works.GET("/completed",workHanlder.GetAllCompletedWorks)
+		// 	my_works.GET("/on-going",workHandler.GetAllOnGoingWorks)
+		// }
 
-	// 	// my_bids:=work.Group("my-bids")
-	// 	// {
-	// 	// 	my_bids:=work.Group("",workHandler.GetCurrentlyParticipatingBids)
-	// 	// }
+		// my_bids:=work.Group("my-bids")
+		// {
+		// 	my_bids:=work.Group("",workHandler.GetCurrentlyParticipatingBids)
+		// }
 
-	// }
+	}
 
 	// notification := engine.Group("notification")
 	// {

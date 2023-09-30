@@ -28,6 +28,16 @@ type WorkDetails struct {
 	WorkStatus string   `json:"work_status" `
 }
 
+type MinWorkDetails struct {
+	ID         int    `json:"id"`
+	Street     string `json:"street"`
+	District   string `json:"district" `
+	State      string `json:"state" `
+	Profession string `json:"profession"`
+	User       string `json:"user_name"`
+	WorkStatus string `json:"work_status" `
+}
+
 type GetServices struct {
 	ID          int    `json:"id"`
 	ServiceName string `json:"service"`

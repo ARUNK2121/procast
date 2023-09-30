@@ -1,0 +1,50 @@
+package providerRepository
+
+import (
+	interfaces "github.com/ARUNK2121/procast/pkg/repository/provider/interface"
+	"github.com/ARUNK2121/procast/pkg/utils/models"
+	"gorm.io/gorm"
+)
+
+type workRepository struct {
+	DB *gorm.DB
+}
+
+func NewWorkRepository(db *gorm.DB) interfaces.WorkRepository {
+	return &workRepository{
+		DB: db,
+	}
+}
+
+func (p *workRepository) GetLeadByServiceAndLocation(service, location int) (int, error) {
+	var id int64
+	if err := p.DB.Raw("SELECT id FROM works WHERE target_profession_id = $1 AND district = $2 AND work_status = $3", service, location, "listed").Scan(&id).Error; err != nil {
+		return 0, err
+	}
+
+	return int(id), nil
+}
+
+func (p *workRepository) GetDetailsOfAWork(id int) (models.MinWorkDetails, error) {
+	var model models.MinWorkDetails
+	if err := p.DB.Raw(`select works.id,works.street,districts.district,states.state,professions.profession,users.name as user,works.work_status 
+	from works 
+	join districts on districts.id=works.district_id 
+	join states on states.id=works.state_id 
+	join professions on professions.id=works.target_profession_id 
+	join users on users.id=works.user_id 
+	where works.id=$1`, id).Scan(&model).Error; err != nil {
+		return models.MinWorkDetails{}, err
+	}
+
+	return model, nil
+}
+
+func (p *workRepository) GetImagesOfAWork(id int) ([]string, error) {
+	var images []string
+	if err := p.DB.Raw("select image from workspace_images where work_id = $1", id).Scan(&images).Error; err != nil {
+		return []string{}, err
+	}
+
+	return images, nil
+}
