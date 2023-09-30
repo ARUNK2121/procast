@@ -114,3 +114,12 @@ func (w *workUseCase) ReplaceBidWithNewBid(model models.PlaceBid) error {
 
 	return nil
 }
+
+func (w *workUseCase) GetAllOtherBidsOnTheLeads(work_id int) ([]models.BidDetails, error) {
+	bids, err := w.repository.GetAllOtherBidsOnTheLeads(work_id)
+	if err != nil {
+		return []models.BidDetails{}, err
+	}
+
+	return bids, nil
+}

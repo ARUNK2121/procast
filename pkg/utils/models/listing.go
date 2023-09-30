@@ -49,3 +49,10 @@ type GetLocations struct {
 	District string `json:"district"`
 	State    string `json:"state"`
 }
+
+type BidDetails struct {
+	ID          int     `json:"id"`
+	Provider    string  `json:"provider"`
+	Estimate    float64 `json:"estimate"`
+	Description string  `json:"description"`
+}

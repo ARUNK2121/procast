@@ -8,4 +8,5 @@ type WorkRepository interface {
 	GetImagesOfAWork(int) ([]string, error)
 	PlaceBid(model models.PlaceBid) error
 	ReplaceBidWithNewBid(model models.PlaceBid) error
+	GetAllOtherBidsOnTheLeads(work_id int) ([]models.BidDetails, error)
 }

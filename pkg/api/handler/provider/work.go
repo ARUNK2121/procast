@@ -137,3 +137,24 @@ func (w *WorkHandler) ReplaceBidWithNewBid(c *gin.Context) {
 	res := response.Response{Data: "old bid has been Replaced successfully with new bid", Error: nil}
 	c.JSON(http.StatusOK, res)
 }
+
+func (w *WorkHandler) GetAllOtherBidsOnTheLeads(c *gin.Context) {
+
+	work_id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	lead, err := w.usecase.GetAllOtherBidsOnTheLeads(work_id)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	res := response.Response{Data: lead, Error: nil}
+	c.JSON(http.StatusOK, res)
+
+}

@@ -39,12 +39,11 @@ func ProviderRoutes(
 
 		leads := work.Group("leads")
 		{
-			leads.GET("", workHandler.GetAllLeads)             //not tested
-			leads.GET("/:id", workHandler.ViewLeads)           //not tested
-			leads.POST("/:id/place-bid", workHandler.PlaceBid) //not tested
-			leads.POST("/:id/edit-bid", workHandler.ReplaceBidWithNewBid)
-
-			// leads.GET("/:id/compare", workHandler.GetAllOtherBidsOnTheLeads)
+			leads.GET("", workHandler.GetAllLeads)                           //not tested
+			leads.GET("/:id", workHandler.ViewLeads)                         //not tested
+			leads.POST("/:id/place-bid", workHandler.PlaceBid)               //not tested
+			leads.POST("/:id/edit-bid", workHandler.ReplaceBidWithNewBid)    //not tested
+			leads.GET("/:id/compare", workHandler.GetAllOtherBidsOnTheLeads) //not tested
 		}
 
 		// my_works:=work.Group("my-works")
