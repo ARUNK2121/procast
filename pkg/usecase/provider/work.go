@@ -105,3 +105,12 @@ func (w *workUseCase) PlaceBid(model models.PlaceBid) error {
 
 	return nil
 }
+
+func (w *workUseCase) ReplaceBidWithNewBid(model models.PlaceBid) error {
+	err := w.repository.ReplaceBidWithNewBid(model)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

@@ -6,4 +6,5 @@ type WorkUseCase interface {
 	GetAllLeads(int, int) ([]models.WorkDetails, error)
 	ViewLeads(int) (models.WorkDetails, error)
 	PlaceBid(models.PlaceBid) error
+	ReplaceBidWithNewBid(models.PlaceBid) error
 }

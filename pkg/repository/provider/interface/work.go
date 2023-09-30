@@ -7,4 +7,5 @@ type WorkRepository interface {
 	GetDetailsOfAWork(int) (models.MinWorkDetails, error)
 	GetImagesOfAWork(int) ([]string, error)
 	PlaceBid(model models.PlaceBid) error
+	ReplaceBidWithNewBid(model models.PlaceBid) error
 }
