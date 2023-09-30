@@ -48,3 +48,11 @@ func (p *workRepository) GetImagesOfAWork(id int) ([]string, error) {
 
 	return images, nil
 }
+
+func (p *workRepository) PlaceBid(model models.PlaceBid) error {
+	if err := p.DB.Exec(`INSERT INTO bids(work_id,pro_id,estimate,description) VALUES($1,$2,$3,$4)`, model.WorkID, model.ProID, model.Estimate, model.Description).Error; err != nil {
+		return err
+	}
+
+	return nil
+}

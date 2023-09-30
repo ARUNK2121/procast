@@ -6,4 +6,5 @@ type WorkRepository interface {
 	GetLeadByServiceAndLocation(service, location int) (int, error)
 	GetDetailsOfAWork(int) (models.MinWorkDetails, error)
 	GetImagesOfAWork(int) ([]string, error)
+	PlaceBid(model models.PlaceBid) error
 }

@@ -96,3 +96,12 @@ func (w *workUseCase) ViewLeads(work_id int) (models.WorkDetails, error) {
 
 	return result, nil
 }
+
+func (w *workUseCase) PlaceBid(model models.PlaceBid) error {
+	err := w.repository.PlaceBid(model)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
