@@ -1,6 +1,8 @@
 package providerusecase
 
 import (
+	"fmt"
+
 	interfaces "github.com/ARUNK2121/procast/pkg/repository/provider/interface"
 	services "github.com/ARUNK2121/procast/pkg/usecase/provider/interface"
 	"github.com/ARUNK2121/procast/pkg/utils/models"
@@ -26,11 +28,15 @@ func (w *workUseCase) GetAllLeads(pro_id int, page int) ([]models.WorkDetails, e
 		return []models.WorkDetails{}, err
 	}
 
+	fmt.Println("services", services)
+
 	//get providers preffered locations
 	locations, err := w.profileRepository.GetAllPreferredLocations(pro_id)
 	if err != nil {
 		return []models.WorkDetails{}, err
 	}
+
+	fmt.Println("locations", locations)
 
 	//get work ids by these preferences
 	var works []int
@@ -40,7 +46,9 @@ func (w *workUseCase) GetAllLeads(pro_id int, page int) ([]models.WorkDetails, e
 			if err != nil {
 				return []models.WorkDetails{}, err
 			}
-			works = append(works, lead)
+			fmt.Println("lead", lead)
+			works = append(works, lead...)
+
 		}
 	}
 
@@ -51,6 +59,7 @@ func (w *workUseCase) GetAllLeads(pro_id int, page int) ([]models.WorkDetails, e
 		if err != nil {
 			return []models.WorkDetails{}, err
 		}
+		fmt.Println("details:", details)
 		//find images
 		images, err := w.repository.GetImagesOfAWork(v)
 		if err != nil {
@@ -77,6 +86,7 @@ func (w *workUseCase) GetAllLeads(pro_id int, page int) ([]models.WorkDetails, e
 	}
 	//pack into model and return the model
 
+	fmt.Println("model", model)
 	return model, nil
 }
 
@@ -129,4 +139,42 @@ func (w *workUseCase) GetAllOtherBidsOnTheLeads(work_id int) ([]models.BidDetail
 	}
 
 	return bids, nil
+}
+
+func (w *workUseCase) GetMyWorks(pro_id int) ([]models.WorkDetails, error) {
+
+	works, err := w.repository.GetAllWorksOfAProvider(pro_id)
+	if err != nil {
+		return []models.WorkDetails{}, err
+	}
+
+	var model []models.WorkDetails
+
+	for _, v := range works {
+		details, err := w.repository.GetDetailsOfAWork(v)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+		//find images
+		images, err := w.repository.GetImagesOfAWork(v)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+		//append
+		var result models.WorkDetails
+		result.ID = v
+		result.Street = details.Street
+		result.District = details.District
+		result.State = details.State
+		result.Profession = details.Profession
+		result.User = details.User
+		result.Provider = details.Provider
+		result.Images = images
+		result.WorkStatus = details.WorkStatus
+
+		model = append(model, result)
+
+	}
+
+	return model, nil
 }

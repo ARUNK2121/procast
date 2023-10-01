@@ -18,13 +18,16 @@ func NewWorkRepository(db *gorm.DB) interfaces.WorkRepository {
 	}
 }
 
-func (p *workRepository) GetLeadByServiceAndLocation(service, location int) (int, error) {
-	var id int64
+func (p *workRepository) GetLeadByServiceAndLocation(service, location int) ([]int, error) {
+	var id []int64
 	if err := p.DB.Raw("SELECT id FROM works WHERE target_profession_id = $1 AND district_id = $2 AND work_status = $3", service, location, "listed").Scan(&id).Error; err != nil {
-		return 0, err
+		return []int{}, err
 	}
-
-	return int(id), nil
+	var result []int
+	for _, v := range id {
+		result = append(result, int(v))
+	}
+	return result, nil
 }
 
 func (p *workRepository) GetDetailsOfAWork(id int) (models.MinWorkDetails, error) {
@@ -85,4 +88,13 @@ func (p *workRepository) CheckIfAlreadyBidded(work_id, pro_id int) (bool, error)
 	}
 
 	return count > 0, nil
+}
+
+func (p *workRepository) GetAllWorksOfAProvider(pro_id int) ([]int, error) {
+	var works []int
+	if err := p.DB.Raw(`SELECT id FROM works WHERE pro_id = $1`, pro_id).Scan(&works).Error; err != nil {
+		return []int{}, err
+	}
+
+	return works, nil
 }

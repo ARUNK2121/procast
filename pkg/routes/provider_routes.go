@@ -45,12 +45,12 @@ func ProviderRoutes(
 			leads.GET("/:id/compare", workHandler.GetAllOtherBidsOnTheLeads) //completed
 		}
 
-		// my_works := work.Group("my-works")
-		// {
-		// 	my_works.GET("", workHandler.GetMyWorks)
-		// 	my_works.GET("/completed", workHanlder.GetAllCompletedWorks)
-		// 	my_works.GET("/on-going", workHandler.GetAllOnGoingWorks)
-		// }
+		my_works := work.Group("my-works")
+		{
+			my_works.GET("", workHandler.GetMyWorks)
+			// my_works.GET("/completed", workHanlder.GetAllCompletedWorks)
+			// my_works.GET("/on-going", workHandler.GetAllOnGoingWorks)
+		}
 	}
 
 	// notification := engine.Group("notification")

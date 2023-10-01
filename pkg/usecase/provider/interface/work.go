@@ -8,4 +8,5 @@ type WorkUseCase interface {
 	PlaceBid(models.PlaceBid) error
 	ReplaceBidWithNewBid(models.PlaceBid) error
 	GetAllOtherBidsOnTheLeads(work_id int) ([]models.BidDetails, error)
+	GetMyWorks(int) ([]models.WorkDetails, error)
 }

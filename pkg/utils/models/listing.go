@@ -36,6 +36,7 @@ type MinWorkDetails struct {
 	State      string `json:"state" `
 	Profession string `json:"profession"`
 	User       string `json:"user_name"`
+	Provider   string `json:"provider"`
 	WorkStatus string `json:"work_status" `
 }
 
