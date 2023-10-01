@@ -98,3 +98,12 @@ func (p *workRepository) GetAllWorksOfAProvider(pro_id int) ([]int, error) {
 
 	return works, nil
 }
+
+func (p *workRepository) FindProviderName(pro_id int) (string, error) {
+	var name string
+	if err := p.DB.Raw(`SELECT name FROM providers WHERE id = $1`, pro_id).Scan(&name).Error; err != nil {
+		return "", err
+	}
+
+	return name, nil
+}
