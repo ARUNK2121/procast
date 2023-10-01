@@ -16,7 +16,6 @@ func ProviderRoutes(
 
 	profile := engine.Group("/profile")
 	{
-
 		service := profile.Group("/service")
 		{
 			//list my services
@@ -31,7 +30,6 @@ func ProviderRoutes(
 			location.POST("", profileHandler.AddPreferredWorkingLocation) //completed
 			location.DELETE("", profileHandler.RemovePreferredLocation)   //completed
 		}
-
 	}
 
 	work := engine.Group("/works")
@@ -47,16 +45,17 @@ func ProviderRoutes(
 
 		my_works := work.Group("my-works")
 		{
-			my_works.GET("", workHandler.GetMyWorks)
-			// my_works.GET("/completed", workHanlder.GetAllCompletedWorks)
-			// my_works.GET("/on-going", workHandler.GetAllOnGoingWorks)
+			my_works.GET("", workHandler.GetMyWorks)                  //completed
+			my_works.GET("/on-going", workHandler.GetAllOnGoingWorks) //completed
+			my_works.GET("/completed", workHandler.GetCompletedWorks) //completed
 		}
-	}
 
-	// notification := engine.Group("notification")
-	// {
-	// 	notification.GET("", notificationHandler.GetAllNotifications)
-	// 	notification.GET("/:id", notificationHandler.ViewNotification)
-	// }
+		// notification := engine.Group("notification")
+		// {
+		// 	notification.GET("", notificationHandler.GetAllNotifications)
+		// 	notification.GET("/:id", notificationHandler.ViewNotification)
+		// }
+
+	}
 
 }

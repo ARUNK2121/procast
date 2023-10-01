@@ -183,3 +183,89 @@ func (w *workUseCase) GetMyWorks(pro_id int) ([]models.WorkDetails, error) {
 
 	return model, nil
 }
+
+func (w *workUseCase) GetAllOnGoingWorks(pro_id int) ([]models.WorkDetails, error) {
+
+	provider, err := w.repository.FindProviderName(pro_id)
+	if err != nil {
+		return []models.WorkDetails{}, err
+	}
+
+	works, err := w.repository.GetCommittedWorksOfAProvider(pro_id)
+	if err != nil {
+		return []models.WorkDetails{}, err
+	}
+
+	var model []models.WorkDetails
+
+	for _, v := range works {
+		details, err := w.repository.GetDetailsOfAWork(v)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+		//find images
+		images, err := w.repository.GetImagesOfAWork(v)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+		//append
+		var result models.WorkDetails
+		result.ID = v
+		result.Street = details.Street
+		result.District = details.District
+		result.State = details.State
+		result.Profession = details.Profession
+		result.User = details.User
+		result.Provider = provider
+		result.Images = images
+		result.WorkStatus = details.WorkStatus
+
+		model = append(model, result)
+
+	}
+
+	return model, nil
+}
+
+func (w *workUseCase) GetCompletedWorks(pro_id int) ([]models.WorkDetails, error) {
+
+	provider, err := w.repository.FindProviderName(pro_id)
+	if err != nil {
+		return []models.WorkDetails{}, err
+	}
+
+	works, err := w.repository.GetCompletedWorksOfAProvider(pro_id)
+	if err != nil {
+		return []models.WorkDetails{}, err
+	}
+
+	var model []models.WorkDetails
+
+	for _, v := range works {
+		details, err := w.repository.GetDetailsOfAWork(v)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+		//find images
+		images, err := w.repository.GetImagesOfAWork(v)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+		//append
+		var result models.WorkDetails
+		result.ID = v
+		result.Street = details.Street
+		result.District = details.District
+		result.State = details.State
+		result.Profession = details.Profession
+		result.User = details.User
+		result.Provider = provider
+		result.Images = images
+		result.WorkStatus = details.WorkStatus
+
+		model = append(model, result)
+
+	}
+
+	return model, nil
+}

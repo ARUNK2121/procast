@@ -107,3 +107,21 @@ func (p *workRepository) FindProviderName(pro_id int) (string, error) {
 
 	return name, nil
 }
+
+func (p *workRepository) GetCommittedWorksOfAProvider(pro_id int) ([]int, error) {
+	var works []int
+	if err := p.DB.Raw(`SELECT id FROM works WHERE pro_id = $1 AND work_status = $2`, pro_id, "committed").Scan(&works).Error; err != nil {
+		return []int{}, err
+	}
+
+	return works, nil
+}
+
+func (p *workRepository) GetCompletedWorksOfAProvider(pro_id int) ([]int, error) {
+	var works []int
+	if err := p.DB.Raw(`SELECT id FROM works WHERE pro_id = $1 AND work_status = $2`, pro_id, "completed").Scan(&works).Error; err != nil {
+		return []int{}, err
+	}
+
+	return works, nil
+}

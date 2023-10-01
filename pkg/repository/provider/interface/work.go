@@ -12,4 +12,6 @@ type WorkRepository interface {
 	CheckIfAlreadyBidded(work_id, pro_id int) (bool, error)
 	GetAllWorksOfAProvider(pro_id int) ([]int, error)
 	FindProviderName(pro_id int) (string, error)
+	GetCommittedWorksOfAProvider(pro_id int) ([]int, error)
+	GetCompletedWorksOfAProvider(pro_id int) ([]int, error)
 }
