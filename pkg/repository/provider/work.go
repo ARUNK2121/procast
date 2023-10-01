@@ -1,6 +1,8 @@
 package providerRepository
 
 import (
+	"fmt"
+
 	interfaces "github.com/ARUNK2121/procast/pkg/repository/provider/interface"
 	"github.com/ARUNK2121/procast/pkg/utils/models"
 	"gorm.io/gorm"
@@ -18,7 +20,7 @@ func NewWorkRepository(db *gorm.DB) interfaces.WorkRepository {
 
 func (p *workRepository) GetLeadByServiceAndLocation(service, location int) (int, error) {
 	var id int64
-	if err := p.DB.Raw("SELECT id FROM works WHERE target_profession_id = $1 AND district = $2 AND work_status = $3", service, location, "listed").Scan(&id).Error; err != nil {
+	if err := p.DB.Raw("SELECT id FROM works WHERE target_profession_id = $1 AND district_id = $2 AND work_status = $3", service, location, "listed").Scan(&id).Error; err != nil {
 		return 0, err
 	}
 
@@ -27,7 +29,7 @@ func (p *workRepository) GetLeadByServiceAndLocation(service, location int) (int
 
 func (p *workRepository) GetDetailsOfAWork(id int) (models.MinWorkDetails, error) {
 	var model models.MinWorkDetails
-	if err := p.DB.Raw(`SELECT works.id,works.street,districts.district,states.state,professions.profession,users.name AS user,works.work_status 
+	if err := p.DB.Raw(`SELECT works.id,works.street,districts.district as district,states.state as state,professions.profession as profession,users.name AS user,works.work_status 
 	FROM works 
 	JOIN districts ON districts.id=works.district_id 
 	JOIN states ON states.id=works.state_id 
@@ -36,6 +38,8 @@ func (p *workRepository) GetDetailsOfAWork(id int) (models.MinWorkDetails, error
 	WHERE works.id=$1`, id).Scan(&model).Error; err != nil {
 		return models.MinWorkDetails{}, err
 	}
+
+	fmt.Println("model", model)
 
 	return model, nil
 }
@@ -67,9 +71,18 @@ func (p *workRepository) ReplaceBidWithNewBid(model models.PlaceBid) error {
 
 func (p *workRepository) GetAllOtherBidsOnTheLeads(work_id int) ([]models.BidDetails, error) {
 	var model []models.BidDetails
-	if err := p.DB.Raw(`SELECT id,providers.provider,estimate,description FROM bids JOIN providers ON bids.pro_id = providers.id WHERE bids.work_id = $1`, work_id).Scan(&model).Error; err != nil {
+	if err := p.DB.Raw(`SELECT bids.id,providers.name,estimate,description FROM bids JOIN providers ON bids.pro_id = providers.id WHERE bids.work_id = $1`, work_id).Scan(&model).Error; err != nil {
 		return []models.BidDetails{}, err
 	}
 
 	return model, nil
+}
+
+func (p *workRepository) CheckIfAlreadyBidded(work_id, pro_id int) (bool, error) {
+	var count int64
+	if err := p.DB.Raw(`SELECT COUNT(*) FROM bids WHERE pro_id = $1 AND work_id = $2`, pro_id, work_id).Scan(&count).Error; err != nil {
+		return false, err
+	}
+
+	return count > 0, nil
 }

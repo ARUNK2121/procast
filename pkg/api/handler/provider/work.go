@@ -1,6 +1,7 @@
 package providerhandler
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -65,12 +66,14 @@ func (w *WorkHandler) ViewLeads(c *gin.Context) {
 }
 
 func (w *WorkHandler) PlaceBid(c *gin.Context) {
+	fmt.Println("reaches")
 	work_id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		res := response.Response{Data: nil, Error: err.Error()}
 		c.JSON(http.StatusBadRequest, res)
 		return
 	}
+	fmt.Println("workid", work_id)
 
 	Pro_id, err := strconv.Atoi(c.Query("pro_id"))
 	if err != nil {
@@ -78,6 +81,8 @@ func (w *WorkHandler) PlaceBid(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, res)
 		return
 	}
+
+	fmt.Println("pro_id")
 
 	var model models.PlaceBid
 
@@ -147,14 +152,14 @@ func (w *WorkHandler) GetAllOtherBidsOnTheLeads(c *gin.Context) {
 		return
 	}
 
-	lead, err := w.usecase.GetAllOtherBidsOnTheLeads(work_id)
+	bids, err := w.usecase.GetAllOtherBidsOnTheLeads(work_id)
 	if err != nil {
 		res := response.Response{Data: nil, Error: err.Error()}
 		c.JSON(http.StatusInternalServerError, res)
 		return
 	}
 
-	res := response.Response{Data: lead, Error: nil}
+	res := response.Response{Data: bids, Error: nil}
 	c.JSON(http.StatusOK, res)
 
 }

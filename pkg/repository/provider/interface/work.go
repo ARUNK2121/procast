@@ -9,4 +9,5 @@ type WorkRepository interface {
 	PlaceBid(model models.PlaceBid) error
 	ReplaceBidWithNewBid(model models.PlaceBid) error
 	GetAllOtherBidsOnTheLeads(work_id int) ([]models.BidDetails, error)
+	CheckIfAlreadyBidded(work_id, pro_id int) (bool, error)
 }

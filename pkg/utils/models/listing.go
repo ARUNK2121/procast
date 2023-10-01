@@ -9,23 +9,24 @@ type UserDetails struct {
 }
 
 type ProviderDetails struct {
-	ID       int    `json:"id"`
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Phone    string `json:"phone"`
-	Verified bool   `json:"verified"`
+	ID         int    `json:"id"`
+	Name       string `json:"name"`
+	Email      string `json:"email"`
+	Phone      string `json:"phone"`
+	IsVerified bool   `json:"is_verified"`
 }
 
 type WorkDetails struct {
-	ID         int      `json:"id"`
-	Street     string   `json:"street"`
-	District   string   `json:"district" `
-	State      string   `json:"state" `
-	Profession string   `json:"profession"`
-	User       string   `json:"user_name"`
-	Provider   string   `json:"provider"`
-	Images     []string `json:"images" `
-	WorkStatus string   `json:"work_status" `
+	ID            int      `json:"id"`
+	Street        string   `json:"street"`
+	District      string   `json:"district" `
+	State         string   `json:"state" `
+	Profession    string   `json:"profession"`
+	User          string   `json:"user_name"`
+	Provider      string   `json:"provider"`
+	Images        []string `json:"images" `
+	Participation bool     `json:"participation"`
+	WorkStatus    string   `json:"work_status" `
 }
 
 type MinWorkDetails struct {

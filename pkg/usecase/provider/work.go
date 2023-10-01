@@ -56,6 +56,12 @@ func (w *workUseCase) GetAllLeads(pro_id int, page int) ([]models.WorkDetails, e
 		if err != nil {
 			return []models.WorkDetails{}, err
 		}
+
+		exists, err := w.repository.CheckIfAlreadyBidded(v, pro_id)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+
 		//append
 		var result models.WorkDetails
 		result.ID = v
@@ -65,6 +71,7 @@ func (w *workUseCase) GetAllLeads(pro_id int, page int) ([]models.WorkDetails, e
 		result.Profession = details.Profession
 		result.User = details.User
 		result.Images = images
+		result.Participation = exists
 		result.WorkStatus = details.WorkStatus
 		model = append(model, result)
 	}

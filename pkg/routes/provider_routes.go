@@ -36,28 +36,21 @@ func ProviderRoutes(
 
 	work := engine.Group("/works")
 	{
-
 		leads := work.Group("leads")
 		{
-			leads.GET("", workHandler.GetAllLeads)                           //not tested
-			leads.GET("/:id", workHandler.ViewLeads)                         //not tested
-			leads.POST("/:id/place-bid", workHandler.PlaceBid)               //not tested
-			leads.POST("/:id/edit-bid", workHandler.ReplaceBidWithNewBid)    //not tested
-			leads.GET("/:id/compare", workHandler.GetAllOtherBidsOnTheLeads) //not tested
+			leads.GET("", workHandler.GetAllLeads)                           //completed
+			leads.GET("/:id", workHandler.ViewLeads)                         //completed
+			leads.POST("/:id/place-bid", workHandler.PlaceBid)               //completed
+			leads.PUT("/:id/edit-bid", workHandler.ReplaceBidWithNewBid)     //completed
+			leads.GET("/:id/compare", workHandler.GetAllOtherBidsOnTheLeads) //completed
 		}
 
-		// my_works:=work.Group("my-works")
+		// my_works := work.Group("my-works")
 		// {
-		// 	my_works.GET("",workHandler.GetMyWorks)
-		// 	my_works.GET("/completed",workHanlder.GetAllCompletedWorks)
-		// 	my_works.GET("/on-going",workHandler.GetAllOnGoingWorks)
+		// 	my_works.GET("", workHandler.GetMyWorks)
+		// 	my_works.GET("/completed", workHanlder.GetAllCompletedWorks)
+		// 	my_works.GET("/on-going", workHandler.GetAllOnGoingWorks)
 		// }
-
-		// my_bids:=work.Group("my-bids")
-		// {
-		// 	my_bids:=work.Group("",workHandler.GetCurrentlyParticipatingBids)
-		// }
-
 	}
 
 	// notification := engine.Group("notification")
