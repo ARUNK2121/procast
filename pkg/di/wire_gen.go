@@ -51,6 +51,9 @@ func InitializeAPI(cfg config.Config) (*httpserver.ServerHTTP, error) {
 	workRepository := providerRepository.NewWorkRepository(gormDB)
 	workUseCase := providerusecase.NewWorkUseCase(workRepository, profileRepository)
 	workHandler := providerhandler.NewWorkHandler(workUseCase)
-	serverHTTP := httpserver.NewServerHTTP(adminHandler, categoryHandler, serviceHandler, regionHandler, userManagementHandler, authenticationHandler, profileHandler, workHandler)
+	notificationRepository := providerRepository.NewNotificationRepository(gormDB)
+	notificationUsecase := providerusecase.NewNotificationUsecase(notificationRepository)
+	notificationHandler := providerhandler.NewNotificationHandler(notificationUsecase)
+	serverHTTP := httpserver.NewServerHTTP(adminHandler, categoryHandler, serviceHandler, regionHandler, userManagementHandler, authenticationHandler, profileHandler, workHandler, notificationHandler)
 	return serverHTTP, nil
 }

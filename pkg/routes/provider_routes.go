@@ -9,7 +9,8 @@ func ProviderRoutes(
 	engine *gin.RouterGroup,
 	proHandler *providerhandler.AuthenticationHandler,
 	profileHandler *providerhandler.ProfileHandler,
-	workHandler *providerhandler.WorkHandler) {
+	workHandler *providerhandler.WorkHandler,
+	notificationHandler *providerhandler.NotificationHandler) {
 
 	engine.POST("/register", proHandler.Register) //completed
 	engine.GET("/login", proHandler.Login)        //completed
@@ -50,11 +51,11 @@ func ProviderRoutes(
 			my_works.GET("/completed", workHandler.GetCompletedWorks) //completed
 		}
 
-		// notification := engine.Group("notification")
-		// {
-		// 	notification.GET("", notificationHandler.GetAllNotifications)
-		// 	notification.GET("/:id", notificationHandler.ViewNotification)
-		// }
+		notification := engine.Group("notification")
+		{
+			notification.GET("", notificationHandler.GetAllNotifications)
+			// notification.GET("/:id", notificationHandler.ViewNotification)
+		}
 
 	}
 
