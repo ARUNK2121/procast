@@ -48,6 +48,9 @@ func InitializeAPI(cfg config.Config) (*httpserver.ServerHTTP, error) {
 	profileRepository := providerRepository.NewProfileRepository(gormDB)
 	profileUsecase := providerusecase.NewProfileUsecase(profileRepository)
 	profileHandler := providerhandler.NewProfileHandler(profileUsecase)
-	serverHTTP := httpserver.NewServerHTTP(adminHandler, categoryHandler, serviceHandler, regionHandler, userManagementHandler, authenticationHandler, profileHandler)
+	workRepository := providerRepository.NewWorkRepository(gormDB)
+	workUseCase := providerusecase.NewWorkUseCase(workRepository, profileRepository)
+	workHandler := providerhandler.NewWorkHandler(workUseCase)
+	serverHTTP := httpserver.NewServerHTTP(adminHandler, categoryHandler, serviceHandler, regionHandler, userManagementHandler, authenticationHandler, profileHandler, workHandler)
 	return serverHTTP, nil
 }

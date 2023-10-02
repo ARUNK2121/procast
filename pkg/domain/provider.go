@@ -39,6 +39,7 @@ type ProviderNotification struct {
 	Provider    Provider `json:"-" gorm:"foreignkey:ProID;constraint:OnDelete:CASCADE"`
 	Description string   `json:"description"`
 	TargetURL   string   `json:"target_url"`
+	IsRead      bool     `json:"is_read" gorm:"default:false"`
 }
 
 type Post struct {

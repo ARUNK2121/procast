@@ -44,6 +44,9 @@ func InitializeAPI(cfg config.Config) (*httpserver.ServerHTTP, error) {
 		providerhandler.NewProfileHandler,
 		providerusecase.NewProfileUsecase,
 		providerRepository.NewProfileRepository,
+		providerhandler.NewWorkHandler,
+		providerusecase.NewWorkUseCase,
+		providerRepository.NewWorkRepository,
 	)
 
 	return &httpserver.ServerHTTP{}, nil

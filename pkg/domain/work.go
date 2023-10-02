@@ -13,7 +13,7 @@ type Work struct {
 	User               User       `json:"-" gorm:"foreignkey:UserID;constraint:OnDelete:CASCADE"`
 	ProID              int        `json:"pro_id"`
 	Provider           Provider   `json:"-" gorm:"foreignkey:ProID;constraint:OnDelete:CASCADE"`
-	WorkStatus         string     `json:"work_status" gorm:"column:work_status;default:'committed';check:work_status IN ('committed','completed')"`
+	WorkStatus         string     `json:"work_status" gorm:"column:work_status;default:'listed';check:work_status IN ('listed','committed','completed')"`
 }
 
 type WorkspaceImages struct {

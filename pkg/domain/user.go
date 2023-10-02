@@ -15,4 +15,5 @@ type UserNotification struct {
 	User        User   `json:"-" gorm:"foreignkey:UserID;constraint:OnDelete:CASCADE"`
 	Description string `json:"description"`
 	TargetURL   string `json:"target_url"`
+	IsRead      bool   `json:"is_read" gorm:"default:false"`
 }
