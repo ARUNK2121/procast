@@ -18,13 +18,14 @@ func NewServerHTTP(adminHandler *adminhandler.AdminHandler,
 	userManagementHandler *adminhandler.UserManagementHandler,
 	ProviderAuthenticationHandler *providerhandler.AuthenticationHandler,
 	profileHandler *providerhandler.ProfileHandler,
-	workHandler *providerhandler.WorkHandler) *ServerHTTP {
+	workHandler *providerhandler.WorkHandler,
+	notificationhandler *providerhandler.NotificationHandler) *ServerHTTP {
 	engine := gin.New()
 
 	engine.Use(gin.Logger())
 
 	routes.AdminRoutes(engine.Group("/admin"), adminHandler, categoryhandler, serviceHandler, regionHandler, userManagementHandler)
-	routes.ProviderRoutes(engine.Group("/provider"), ProviderAuthenticationHandler, profileHandler, workHandler)
+	routes.ProviderRoutes(engine.Group("/provider"), ProviderAuthenticationHandler, profileHandler, workHandler, notificationhandler)
 
 	return &ServerHTTP{engine: engine}
 }

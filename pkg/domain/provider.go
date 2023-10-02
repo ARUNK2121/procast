@@ -1,5 +1,7 @@
 package domain
 
+import "time"
+
 type Provider struct {
 	ID         int    `json:"id" gorm:"primaryKey;autoIncrement"`
 	Name       string `json:"name" gorm:"not null"`
@@ -34,12 +36,13 @@ type PreferredLocation struct {
 }
 
 type ProviderNotification struct {
-	ID          int      `json:"id" gorm:"primaryKey;autoIncrement"`
-	ProID       int      `json:"pro_id"`
-	Provider    Provider `json:"-" gorm:"foreignkey:ProID;constraint:OnDelete:CASCADE"`
-	Description string   `json:"description"`
-	TargetURL   string   `json:"target_url"`
-	IsRead      bool     `json:"is_read" gorm:"default:false"`
+	ID          int       `json:"id" gorm:"primaryKey;autoIncrement"`
+	ProID       int       `json:"pro_id"`
+	Provider    Provider  `json:"-" gorm:"foreignkey:ProID;constraint:OnDelete:CASCADE"`
+	Time        time.Time `json:"time"`
+	Description string    `json:"description"`
+	TargetURL   string    `json:"target_url"`
+	IsRead      bool      `json:"is_read" gorm:"default:false"`
 }
 
 type Post struct {
