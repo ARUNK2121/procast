@@ -25,3 +25,18 @@ func (u *notificationUsecase) GetAllNotifications(provider_id int) ([]domain.Pro
 
 	return notifications, nil
 }
+
+func (u *notificationUsecase) ViewNotification(notification_id int) (domain.ProviderNotification, error) {
+
+	err := u.repository.MakeNotificationAsRead(notification_id)
+	if err != nil {
+		return domain.ProviderNotification{}, err
+	}
+
+	notification, err := u.repository.ViewNotification(notification_id)
+	if err != nil {
+		return domain.ProviderNotification{}, err
+	}
+
+	return notification, nil
+}

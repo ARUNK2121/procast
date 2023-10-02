@@ -37,3 +37,22 @@ func (n *NotificationHandler) GetAllNotifications(c *gin.Context) {
 	res := response.Response{Data: notifications, Error: nil}
 	c.JSON(http.StatusOK, res)
 }
+
+func (n *NotificationHandler) ViewNotification(c *gin.Context) {
+	notification_id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	notification, err := n.usecase.ViewNotification(notification_id)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	res := response.Response{Data: notification, Error: nil}
+	c.JSON(http.StatusOK, res)
+}

@@ -24,3 +24,20 @@ func (n *notificationRepository) GetAllNotifications(pro_id int) ([]domain.Provi
 
 	return notification, nil
 }
+
+func (n *notificationRepository) MakeNotificationAsRead(notification_id int) error {
+	if err := n.DB.Exec(`UPDATE provider_notifications SET is_read = true WHERE id = $1`, notification_id).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (n *notificationRepository) ViewNotification(notification_id int) (domain.ProviderNotification, error) {
+	var notification domain.ProviderNotification
+	if err := n.DB.Raw(`SELECT * FROM provider_notifications WHERE pro_id = $1 ORDER BY time DESC`, notification_id).Scan(&notification).Error; err != nil {
+		return domain.ProviderNotification{}, err
+	}
+
+	return notification, nil
+}
