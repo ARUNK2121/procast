@@ -14,4 +14,5 @@ type Helper interface {
 	CreateHashPassword(string) (string, error)
 	UploadToS3(file *multipart.FileHeader) (string, error)
 	GenerateTokenProvider(details domain.Provider) (string, error)
+	GenerateTokenUser(details domain.User) (string, error)
 }

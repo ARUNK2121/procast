@@ -7,13 +7,16 @@ import (
 	httpserver "github.com/ARUNK2121/procast/pkg/api"
 	adminhandler "github.com/ARUNK2121/procast/pkg/api/handler/admin"
 	providerhandler "github.com/ARUNK2121/procast/pkg/api/handler/provider"
+	userhandler "github.com/ARUNK2121/procast/pkg/api/handler/user"
 	"github.com/ARUNK2121/procast/pkg/config"
 	"github.com/ARUNK2121/procast/pkg/db"
 	"github.com/ARUNK2121/procast/pkg/helper"
 	adminrepository "github.com/ARUNK2121/procast/pkg/repository/admin"
 	providerRepository "github.com/ARUNK2121/procast/pkg/repository/provider"
+	user_repository "github.com/ARUNK2121/procast/pkg/repository/user"
 	adminusecase "github.com/ARUNK2121/procast/pkg/usecase/admin"
 	providerusecase "github.com/ARUNK2121/procast/pkg/usecase/provider"
+	userusecase "github.com/ARUNK2121/procast/pkg/usecase/user"
 
 	"github.com/google/wire"
 )
@@ -50,6 +53,9 @@ func InitializeAPI(cfg config.Config) (*httpserver.ServerHTTP, error) {
 		providerhandler.NewNotificationHandler,
 		providerusecase.NewNotificationUsecase,
 		providerRepository.NewNotificationRepository,
+		userhandler.NewAuthenticationHandler,
+		userusecase.NewAuthenticationUsecase,
+		user_repository.NewAuthenticationRepository,
 	)
 
 	return &httpserver.ServerHTTP{}, nil

@@ -1,12 +1,11 @@
-package providerusecase
+package userusecase
 
 import (
 	"errors"
-	"fmt"
 
 	helper "github.com/ARUNK2121/procast/pkg/helper/interfaces"
-	interfaces "github.com/ARUNK2121/procast/pkg/repository/provider/interface"
-	services "github.com/ARUNK2121/procast/pkg/usecase/provider/interface"
+	interfaces "github.com/ARUNK2121/procast/pkg/repository/user/interface"
+	services "github.com/ARUNK2121/procast/pkg/usecase/user/interface"
 	"github.com/ARUNK2121/procast/pkg/utils/models"
 )
 
@@ -22,7 +21,7 @@ func NewAuthenticationUsecase(repo interfaces.AuthenticationRepository, help hel
 	}
 }
 
-func (a *authenticationUsecase) Register(model models.ProviderRegister) error {
+func (a *authenticationUsecase) UserSignup(model models.UserSignup) error {
 	// check if phone number already exists
 	exists, err := a.repository.CheckIfPhoneNumberAlreadyExists(model.Phone)
 	if err != nil {
@@ -30,11 +29,6 @@ func (a *authenticationUsecase) Register(model models.ProviderRegister) error {
 	}
 	if exists {
 		return errors.New("phone number already exists")
-	}
-
-	//check if password matches
-	if model.Password != model.RePassword {
-		return errors.New("password mismatch")
 	}
 
 	hashed, err := a.helper.CreateHashPassword(model.Password)
@@ -45,17 +39,7 @@ func (a *authenticationUsecase) Register(model models.ProviderRegister) error {
 	model.Password = hashed
 
 	// pass to repository
-	id, err := a.repository.Register(model)
-	if err != nil {
-		return err
-	}
-
-	filename, err := a.helper.UploadToS3(model.Document)
-	if err != nil {
-		return err
-	}
-
-	if err := a.repository.UploadDocument(id, filename); err != nil {
+	if err := a.repository.UserSignup(model); err != nil {
 		return err
 	}
 
@@ -64,43 +48,35 @@ func (a *authenticationUsecase) Register(model models.ProviderRegister) error {
 
 func (a *authenticationUsecase) Login(model models.Login) (string, error) {
 
-	exists, err := a.repository.CheckIfProviderExistsByUsername(model.Username)
+	exists, err := a.repository.CheckIfUserExistsByUsername(model.Username)
 	if err != nil {
 		return "", err
 	}
-
-	fmt.Println("1")
 
 	if !exists {
 		return "", errors.New("check username again")
 	}
 
-	details, err := a.repository.GetProviderDetailsByUsername(model.Username)
+	details, err := a.repository.GetUserDetailsByUsername(model.Username)
 	if err != nil {
 		return "", err
 	}
-
-	fmt.Println("2")
 
 	err = a.helper.CompareHashAndPassword(details.Password, model.Password)
 	if err != nil {
 		return "", errors.New("pasword mismatch")
 	}
-	fmt.Println("3")
 
-	if !details.IsVerified {
-		return "", errors.New("your request is under validation")
+	if details.IsBlocked {
+		return "", errors.New("you are currently blocked by the admin")
 	}
 
-	token, err := a.helper.GenerateTokenProvider(details)
+	token, err := a.helper.GenerateTokenUser(details)
 	if err != nil {
 		return token, err
 	}
 
-	fmt.Println("4")
-
 	//if matches create token
 
 	return token, nil
-
 }

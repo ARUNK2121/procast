@@ -10,13 +10,16 @@ import (
 	"github.com/ARUNK2121/procast/pkg/api"
 	"github.com/ARUNK2121/procast/pkg/api/handler/admin"
 	"github.com/ARUNK2121/procast/pkg/api/handler/provider"
+	"github.com/ARUNK2121/procast/pkg/api/handler/user"
 	"github.com/ARUNK2121/procast/pkg/config"
 	"github.com/ARUNK2121/procast/pkg/db"
 	"github.com/ARUNK2121/procast/pkg/helper"
 	"github.com/ARUNK2121/procast/pkg/repository/admin"
 	"github.com/ARUNK2121/procast/pkg/repository/provider"
+	"github.com/ARUNK2121/procast/pkg/repository/user"
 	"github.com/ARUNK2121/procast/pkg/usecase/admin"
 	"github.com/ARUNK2121/procast/pkg/usecase/provider"
+	"github.com/ARUNK2121/procast/pkg/usecase/user"
 )
 
 // Injectors from wire.go:
@@ -54,6 +57,9 @@ func InitializeAPI(cfg config.Config) (*httpserver.ServerHTTP, error) {
 	notificationRepository := providerRepository.NewNotificationRepository(gormDB)
 	notificationUsecase := providerusecase.NewNotificationUsecase(notificationRepository)
 	notificationHandler := providerhandler.NewNotificationHandler(notificationUsecase)
-	serverHTTP := httpserver.NewServerHTTP(adminHandler, categoryHandler, serviceHandler, regionHandler, userManagementHandler, authenticationHandler, profileHandler, workHandler, notificationHandler)
+	interfacesAuthenticationRepository := user_repository.NewAuthenticationRepository(gormDB)
+	interfacesAuthenticationUsecase := userusecase.NewAuthenticationUsecase(interfacesAuthenticationRepository, interfacesHelper)
+	userhandlerAuthenticationHandler := userhandler.NewAuthenticationHandler(interfacesAuthenticationUsecase)
+	serverHTTP := httpserver.NewServerHTTP(adminHandler, categoryHandler, serviceHandler, regionHandler, userManagementHandler, authenticationHandler, profileHandler, workHandler, notificationHandler, userhandlerAuthenticationHandler)
 	return serverHTTP, nil
 }
