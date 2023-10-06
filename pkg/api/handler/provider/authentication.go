@@ -56,7 +56,7 @@ func (a *AuthenticationHandler) Register(c *gin.Context) {
 
 func (a *AuthenticationHandler) Login(c *gin.Context) {
 	//take input into model
-	var model models.ProLogin
+	var model models.Login
 	if err := c.BindJSON(&model); err != nil {
 		res := response.Response{Data: nil, Error: err.Error()}
 		c.JSON(http.StatusInternalServerError, res)

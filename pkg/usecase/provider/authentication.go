@@ -62,7 +62,7 @@ func (a *authenticationUsecase) Register(model models.ProviderRegister) error {
 	return nil
 }
 
-func (a *authenticationUsecase) Login(model models.ProLogin) (string, error) {
+func (a *authenticationUsecase) Login(model models.Login) (string, error) {
 
 	exists, err := a.repository.CheckIfProviderExistsByUsername(model.Username)
 	if err != nil {

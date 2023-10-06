@@ -2,6 +2,7 @@ package userusecase
 
 import (
 	"errors"
+	"fmt"
 
 	helper "github.com/ARUNK2121/procast/pkg/helper/interfaces"
 	interfaces "github.com/ARUNK2121/procast/pkg/repository/user/interface"
@@ -31,11 +32,6 @@ func (a *authenticationUsecase) UserSignup(model models.UserSignup) error {
 		return errors.New("phone number already exists")
 	}
 
-	//check if password matches
-	if model.Password != model.ConfirmPassword {
-		return errors.New("password mismatch")
-	}
-
 	hashed, err := a.helper.CreateHashPassword(model.Password)
 	if err != nil {
 		return err
@@ -49,4 +45,46 @@ func (a *authenticationUsecase) UserSignup(model models.UserSignup) error {
 	}
 
 	return nil
+}
+
+func (a *authenticationUsecase) Login(model models.Login) (string, error) {
+
+	exists, err := a.repository.CheckIfUserExistsByUsername(model.Username)
+	if err != nil {
+		return "", err
+	}
+
+	fmt.Println("1")
+
+	if !exists {
+		return "", errors.New("check username again")
+	}
+
+	details, err := a.repository.GetUserDetailsByUsername(model.Username)
+	if err != nil {
+		return "", err
+	}
+
+	fmt.Println("2")
+
+	err = a.helper.CompareHashAndPassword(details.Password, model.Password)
+	if err != nil {
+		return "", errors.New("pasword mismatch")
+	}
+	fmt.Println("3")
+
+	if !details.IsBlocked {
+		return "", errors.New("you are currently blocked by the admin")
+	}
+
+	token, err := a.helper.GenerateTokenUser(details)
+	if err != nil {
+		return token, err
+	}
+
+	fmt.Println("4")
+
+	//if matches create token
+
+	return token, nil
 }

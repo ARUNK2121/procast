@@ -10,7 +10,7 @@ func UserRoutes(
 	authenticationHandler *userhandler.AuthenticationHandler) {
 
 	engine.POST("signup", authenticationHandler.UserSignup)
-	// engine.GET("login",authenticationHandler.Login)
+	engine.GET("login", authenticationHandler.Login)
 
 	// profile:=engine.Group("/profile")
 	// {

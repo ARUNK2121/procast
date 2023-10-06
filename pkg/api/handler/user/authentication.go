@@ -38,3 +38,24 @@ func (a *AuthenticationHandler) UserSignup(c *gin.Context) {
 	res := response.Response{Data: "signup completed successfully", Error: nil}
 	c.JSON(http.StatusCreated, res)
 }
+
+func (a *AuthenticationHandler) Login(c *gin.Context) {
+
+	var model models.Login
+	if err := c.BindJSON(&model); err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	token, err := a.Usecase.Login(model)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	//return result
+	res := response.Response{Data: token, Error: nil}
+	c.JSON(http.StatusCreated, res)
+}

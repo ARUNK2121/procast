@@ -11,7 +11,7 @@ type AdminLogin struct {
 	Password string `json:"password"`
 }
 
-type ProLogin struct {
+type Login struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
