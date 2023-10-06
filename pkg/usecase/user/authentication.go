@@ -2,7 +2,6 @@ package userusecase
 
 import (
 	"errors"
-	"fmt"
 
 	helper "github.com/ARUNK2121/procast/pkg/helper/interfaces"
 	interfaces "github.com/ARUNK2121/procast/pkg/repository/user/interface"
@@ -54,8 +53,6 @@ func (a *authenticationUsecase) Login(model models.Login) (string, error) {
 		return "", err
 	}
 
-	fmt.Println("1")
-
 	if !exists {
 		return "", errors.New("check username again")
 	}
@@ -65,15 +62,12 @@ func (a *authenticationUsecase) Login(model models.Login) (string, error) {
 		return "", err
 	}
 
-	fmt.Println("2")
-
 	err = a.helper.CompareHashAndPassword(details.Password, model.Password)
 	if err != nil {
 		return "", errors.New("pasword mismatch")
 	}
-	fmt.Println("3")
 
-	if !details.IsBlocked {
+	if details.IsBlocked {
 		return "", errors.New("you are currently blocked by the admin")
 	}
 
@@ -81,8 +75,6 @@ func (a *authenticationUsecase) Login(model models.Login) (string, error) {
 	if err != nil {
 		return token, err
 	}
-
-	fmt.Println("4")
 
 	//if matches create token
 
