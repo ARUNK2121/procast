@@ -146,3 +146,23 @@ func (helper *helper) GenerateTokenProvider(details domain.Provider) (string, er
 
 	return accessTokenString, nil
 }
+
+func (helper *helper) GenerateTokenUser(details domain.User) (string, error) {
+	accessTokenClaims := &models.AuthCustomClaims{
+		Id:        details.ID,
+		Email:     details.Email,
+		Previlege: "user",
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Hour * 24 * 90).Unix(),
+			IssuedAt:  time.Now().Unix(),
+		},
+	}
+
+	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessTokenClaims)
+	accessTokenString, err := accessToken.SignedString([]byte("accesssecret"))
+	if err != nil {
+		return "", err
+	}
+
+	return accessTokenString, nil
+}
