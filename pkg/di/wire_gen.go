@@ -60,6 +60,9 @@ func InitializeAPI(cfg config.Config) (*httpserver.ServerHTTP, error) {
 	interfacesAuthenticationRepository := user_repository.NewAuthenticationRepository(gormDB)
 	interfacesAuthenticationUsecase := userusecase.NewAuthenticationUsecase(interfacesAuthenticationRepository, interfacesHelper)
 	userhandlerAuthenticationHandler := userhandler.NewAuthenticationHandler(interfacesAuthenticationUsecase)
-	serverHTTP := httpserver.NewServerHTTP(adminHandler, categoryHandler, serviceHandler, regionHandler, userManagementHandler, authenticationHandler, profileHandler, workHandler, notificationHandler, userhandlerAuthenticationHandler)
+	interfacesWorkRepository := user_repository.NewWorkRepository(gormDB)
+	workUsecase := userusecase.NewWorkUseCase(interfacesWorkRepository)
+	userhandlerWorkHandler := userhandler.NewWorkHandler(workUsecase)
+	serverHTTP := httpserver.NewServerHTTP(adminHandler, categoryHandler, serviceHandler, regionHandler, userManagementHandler, authenticationHandler, profileHandler, workHandler, notificationHandler, userhandlerAuthenticationHandler, userhandlerWorkHandler)
 	return serverHTTP, nil
 }

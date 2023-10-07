@@ -7,7 +7,8 @@ import (
 
 func UserRoutes(
 	engine *gin.RouterGroup,
-	authenticationHandler *userhandler.AuthenticationHandler) {
+	authenticationHandler *userhandler.AuthenticationHandler,
+	workHandler *userhandler.WorkHandler) {
 
 	engine.POST("signup", authenticationHandler.UserSignup) //completed
 	engine.GET("login", authenticationHandler.Login)        //completed
