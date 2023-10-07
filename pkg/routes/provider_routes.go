@@ -53,8 +53,8 @@ func ProviderRoutes(
 
 		notification := engine.Group("notification")
 		{
-			notification.GET("", notificationHandler.GetAllNotifications)
-			notification.GET("/:id", notificationHandler.ViewNotification)
+			notification.GET("", notificationHandler.GetAllNotifications)  //completed
+			notification.GET("/:id", notificationHandler.ViewNotification) //completed
 		}
 
 	}
