@@ -4,6 +4,7 @@ import (
 	"github.com/ARUNK2121/procast/pkg/domain"
 	interfaces "github.com/ARUNK2121/procast/pkg/repository/user/interface"
 	services "github.com/ARUNK2121/procast/pkg/usecase/user/interface"
+	"github.com/ARUNK2121/procast/pkg/utils/models"
 )
 
 type workUsecase struct {
@@ -25,4 +26,59 @@ func (w *workUsecase) ListNewOpening(model domain.Work) error {
 	}
 
 	return nil
+}
+
+func (w *workUsecase) GetAllListedWorks(id int) ([]models.WorkDetails, error) {
+
+	works, err := w.repository.GetAllWorksOfAUser(id)
+	if err != nil {
+		return []models.WorkDetails{}, err
+	}
+
+	var model []models.WorkDetails
+
+	for _, v := range works {
+		details, err := w.repository.GetDetailsOfAWork(v)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+		//find images
+		images, err := w.repository.GetImagesOfAWork(v)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+
+		var provider string
+
+		pro_id, err := w.repository.FindProviderIdFromWork(v)
+		if err != nil {
+			return []models.WorkDetails{}, err
+		}
+
+		if pro_id == 0 {
+			provider = "not assigned"
+		} else {
+			provider, err = w.repository.FindProviderName(pro_id)
+			if err != nil {
+				return []models.WorkDetails{}, err
+			}
+		}
+
+		//append
+		var result models.WorkDetails
+		result.ID = v
+		result.Street = details.Street
+		result.District = details.District
+		result.State = details.State
+		result.Profession = details.Profession
+		result.User = details.User
+		result.Provider = provider
+		result.Images = images
+		result.WorkStatus = details.WorkStatus
+
+		model = append(model, result)
+
+	}
+
+	return model, nil
 }

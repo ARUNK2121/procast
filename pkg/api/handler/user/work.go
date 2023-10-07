@@ -1,7 +1,9 @@
 package userhandler
 
 import (
+	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/ARUNK2121/procast/pkg/domain"
 	interfaces "github.com/ARUNK2121/procast/pkg/usecase/user/interface"
@@ -27,6 +29,8 @@ func (p *WorkHandler) ListNewOpening(c *gin.Context) {
 		return
 	}
 
+	fmt.Println("model", model)
+
 	err := p.usecase.ListNewOpening(model)
 	if err != nil {
 		res := response.Response{Data: nil, Error: err.Error()}
@@ -36,6 +40,28 @@ func (p *WorkHandler) ListNewOpening(c *gin.Context) {
 
 	//return result
 	res := response.Response{Data: "successfully listed opening", Error: nil}
+	c.JSON(http.StatusCreated, res)
+
+}
+
+func (p *WorkHandler) GetAllListedWorks(c *gin.Context) {
+
+	id, err := strconv.Atoi(c.Query("id"))
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	works, err := p.usecase.GetAllListedWorks(id)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	//return result
+	res := response.Response{Data: works, Error: nil}
 	c.JSON(http.StatusCreated, res)
 
 }

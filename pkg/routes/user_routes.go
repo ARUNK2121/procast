@@ -19,10 +19,12 @@ func UserRoutes(
 	// 	profile.PUT("", profileHandler.EditProfilePicture)
 	// }
 
-	works := engine.Group("/woks")
+	works := engine.Group("/works")
 	{
 		works.POST("", workHandler.ListNewOpening)
-		// works.GET("", workHandler.GetMyWorks)
+		works.GET("", workHandler.GetAllListedWorks)
+		// works.GET("/completed",workHandler.ListAllCompletedWorks)
+		// works.GET("/ongoing",workHandler.ListAllOngoingWorks)
 
 		// workManagement := works.Group("/:id")
 		// {
@@ -33,6 +35,12 @@ func UserRoutes(
 		// }
 
 	}
+
+	// provider := engine.Group("/provider")
+	// {
+	// 	provider.GET("/:pro-id", workHandler.GetDetailsOfProviders)
+	// }
+
 	// notification := engine.Group("notification")
 	// {
 	// 	notification.GET("", notificationHandler.GetAllNotifications)  //completed
