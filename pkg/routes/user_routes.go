@@ -13,17 +13,12 @@ func UserRoutes(
 	engine.POST("signup", authenticationHandler.UserSignup) //completed
 	engine.GET("login", authenticationHandler.Login)        //completed
 
-	// profile := engine.Group("/profile")
-	// {
-	// 	profile.GET("", profileHandler.GetProfileDetails)
-	// 	profile.PUT("", profileHandler.EditProfilePicture)
-	// }
-
 	works := engine.Group("/works")
 	{
-		works.POST("", workHandler.ListNewOpening)
-		works.GET("", workHandler.GetAllListedWorks)
-		// works.GET("/completed",workHandler.ListAllCompletedWorks)
+		works.POST("", workHandler.ListNewOpening)   //completed
+		works.GET("", workHandler.GetAllListedWorks) //completed
+
+		works.GET("/completed", workHandler.ListAllCompletedWorks)
 		// works.GET("/ongoing",workHandler.ListAllOngoingWorks)
 
 		// workManagement := works.Group("/:id")
@@ -35,6 +30,12 @@ func UserRoutes(
 		// }
 
 	}
+
+	// profile := engine.Group("/profile")
+	// {
+	// 	profile.GET("", profileHandler.GetProfileDetails)
+	// 	profile.PUT("", profileHandler.EditProfilePicture)
+	// }
 
 	// provider := engine.Group("/provider")
 	// {

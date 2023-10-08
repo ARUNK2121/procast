@@ -9,6 +9,7 @@ type WorkRepository interface {
 	ListNewOpening(domain.Work) error
 	FindUsername(id int) (string, error)
 	GetAllWorksOfAUser(id int) ([]int, error)
+	GetAllCompletedWorksOfAUser(id int) ([]int, error)
 	GetDetailsOfAWork(int) (models.MinWorkDetails, error)
 	GetImagesOfAWork(int) ([]string, error)
 	FindProviderIdFromWork(int) (int, error)
