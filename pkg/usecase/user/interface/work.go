@@ -9,4 +9,5 @@ type WorkUsecase interface {
 	ListNewOpening(domain.Work) error
 	GetAllListedWorks(id int) ([]models.WorkDetails, error)
 	ListAllCompletedWorks(id int) ([]models.WorkDetails, error)
+	ListAllOngoingWorks(id int) ([]models.WorkDetails, error)
 }

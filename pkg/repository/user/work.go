@@ -47,6 +47,15 @@ func (p *workRepository) GetAllCompletedWorksOfAUser(id int) ([]int, error) {
 	return works, nil
 }
 
+func (p *workRepository) GetAllOngoingWorksOfAUser(id int) ([]int, error) {
+	var works []int
+	if err := p.DB.Raw(`SELECT id FROM works WHERE user_id = $1 AND work_status = 'committed' `, id).Scan(&works).Error; err != nil {
+		return []int{}, err
+	}
+
+	return works, nil
+}
+
 func (p *workRepository) FindUsername(id int) (string, error) {
 	var name string
 	if err := p.DB.Raw(`SELECT name FROM users WHERE id = $1`, id).Scan(&name).Error; err != nil {

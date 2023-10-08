@@ -18,8 +18,8 @@ func UserRoutes(
 		works.POST("", workHandler.ListNewOpening)   //completed
 		works.GET("", workHandler.GetAllListedWorks) //completed
 
-		works.GET("/completed", workHandler.ListAllCompletedWorks)
-		// works.GET("/ongoing",workHandler.ListAllOngoingWorks)
+		works.GET("/completed", workHandler.ListAllCompletedWorks) //pending testing
+		works.GET("/ongoing", workHandler.ListAllOngoingWorks)
 
 		// workManagement := works.Group("/:id")
 		// {
