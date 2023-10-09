@@ -246,3 +246,14 @@ func (w *workUsecase) AssignWorkToProvider(work_id, pro_id int) error {
 
 	return nil
 }
+
+func (w *workUsecase) MakeWorkAsCompleted(id int) error {
+
+	//pass to repository
+	err := w.repository.MakeWorkAsCompleted(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

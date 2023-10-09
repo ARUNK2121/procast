@@ -118,3 +118,13 @@ func (w *workRepository) AssignWorkToProvider(work_id, pro_id int) error {
 
 	return nil
 }
+
+func (w *workRepository) MakeWorkAsCompleted(id int) error {
+
+	err := w.DB.Exec("UPDATE  works SET work_status = 'completed' WHERE id = $1", id).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

@@ -16,4 +16,5 @@ type WorkRepository interface {
 	FindProviderIdFromWork(int) (int, error)
 	FindProviderName(pro_id int) (string, error)
 	AssignWorkToProvider(work_id, pro_id int) error
+	MakeWorkAsCompleted(id int) error
 }

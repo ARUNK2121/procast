@@ -156,3 +156,25 @@ func (p *WorkHandler) AssignWorkToProvider(c *gin.Context) {
 	c.JSON(http.StatusCreated, res)
 
 }
+
+func (p *WorkHandler) MakeWorkAsCompleted(c *gin.Context) {
+
+	work_id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	err = p.usecase.MakeWorkAsCompleted(work_id)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	//return result
+	res := response.Response{Data: "successfully completed work", Error: nil}
+	c.JSON(http.StatusCreated, res)
+
+}
