@@ -1,6 +1,7 @@
 package routes
 
 import (
+	providerhandler "github.com/ARUNK2121/procast/pkg/api/handler/provider"
 	userhandler "github.com/ARUNK2121/procast/pkg/api/handler/user"
 	"github.com/gin-gonic/gin"
 )
@@ -8,10 +9,29 @@ import (
 func UserRoutes(
 	engine *gin.RouterGroup,
 	authenticationHandler *userhandler.AuthenticationHandler,
-	workHandler *userhandler.WorkHandler) {
+	workHandler *userhandler.WorkHandler,
+	providerworkhandler *providerhandler.WorkHandler) {
 
 	engine.POST("signup", authenticationHandler.UserSignup) //completed
 	engine.GET("login", authenticationHandler.Login)        //completed
+
+	works := engine.Group("/works")
+	{
+		works.POST("", workHandler.ListNewOpening)   //completed
+		works.GET("", workHandler.GetAllListedWorks) //completed
+
+		works.GET("/ongoing", workHandler.ListAllOngoingWorks)     //completed
+		works.GET("/completed", workHandler.ListAllCompletedWorks) //completed
+
+		workManagement := works.Group("/:id")
+		{
+			workManagement.GET("", workHandler.WorkDetails)                            //completed
+			workManagement.GET("/bids", providerworkhandler.GetAllOtherBidsOnTheLeads) //completed
+			workManagement.PUT("/assign", workHandler.AssignWorkToProvider)            //completed
+			workManagement.PUT("/complete", workHandler.MakeWorkAsCompleted)           //completed
+		}
+
+	}
 
 	// profile := engine.Group("/profile")
 	// {
@@ -19,26 +39,10 @@ func UserRoutes(
 	// 	profile.PUT("", profileHandler.EditProfilePicture)
 	// }
 
-	works := engine.Group("/works")
-	{
-		works.POST("", workHandler.ListNewOpening)
-		works.GET("", workHandler.GetAllListedWorks)
-		// works.GET("/completed",workHandler.ListAllCompletedWorks)
-		// works.GET("/ongoing",workHandler.ListAllOngoingWorks)
-
-		// workManagement := works.Group("/:id")
-		// {
-		// 	workManagement.GET("", workHandler.WorkDetails)
-		// 	workManagement.GET("/bids", workHandler.CompareBids)
-		// 	workManagement.PUT("/assign", workHandler.AssignWorkToProvider)
-		// 	workManagement.PUT("/complete", workHandler.MakeWorkAsCompleted)
-		// }
-
-	}
-
 	// provider := engine.Group("/provider")
 	// {
 	// 	provider.GET("/:pro-id", workHandler.GetDetailsOfProviders)
+	//  provider.GET("/:pro_id/works",workHandler.GetWorksOfAProvider)
 	// }
 
 	// notification := engine.Group("notification")

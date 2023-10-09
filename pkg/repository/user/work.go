@@ -38,6 +38,24 @@ func (p *workRepository) GetAllWorksOfAUser(id int) ([]int, error) {
 	return works, nil
 }
 
+func (p *workRepository) GetAllCompletedWorksOfAUser(id int) ([]int, error) {
+	var works []int
+	if err := p.DB.Raw(`SELECT id FROM works WHERE user_id = $1 AND work_status = 'completed' `, id).Scan(&works).Error; err != nil {
+		return []int{}, err
+	}
+
+	return works, nil
+}
+
+func (p *workRepository) GetAllOngoingWorksOfAUser(id int) ([]int, error) {
+	var works []int
+	if err := p.DB.Raw(`SELECT id FROM works WHERE user_id = $1 AND work_status = 'committed' `, id).Scan(&works).Error; err != nil {
+		return []int{}, err
+	}
+
+	return works, nil
+}
+
 func (p *workRepository) FindUsername(id int) (string, error) {
 	var name string
 	if err := p.DB.Raw(`SELECT name FROM users WHERE id = $1`, id).Scan(&name).Error; err != nil {
@@ -89,4 +107,24 @@ func (p *workRepository) FindProviderName(pro_id int) (string, error) {
 	}
 
 	return name, nil
+}
+
+func (w *workRepository) AssignWorkToProvider(work_id, pro_id int) error {
+
+	err := w.DB.Exec("UPDATE  works SET pro_id = $1,work_status = 'committed' WHERE id = $2", pro_id, work_id).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (w *workRepository) MakeWorkAsCompleted(id int) error {
+
+	err := w.DB.Exec("UPDATE  works SET work_status = 'completed' WHERE id = $1", id).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
