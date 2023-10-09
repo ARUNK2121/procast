@@ -114,3 +114,24 @@ func (p *profileRepository) GetLocationDetails(id int) (models.GetLocations, err
 
 	return service, nil
 }
+
+func (p *profileRepository) FindProviderDetails(id int) (domain.Provider, error) {
+
+	var pro domain.Provider
+	if err := p.DB.Raw("SELECT * FROM providers WHERE id = $1", id).Scan(&pro).Error; err != nil {
+		return domain.Provider{}, err
+	}
+
+	return pro, nil
+}
+
+func (p *profileRepository) GetRatingsOfAllRecordsOfAProvider(id int) ([]int, error) {
+
+	var ratings []int
+
+	if err := p.DB.Raw(`SELECT ratings.rating FROM works JOIN ratings ON works.id = ratings.work_id JOIN providers ON providers.id = works.pro_id WHERE providers.id = $1`, id).Scan(&ratings).Error; err != nil {
+		return []int{}, err
+	}
+
+	return ratings, nil
+}

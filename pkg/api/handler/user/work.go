@@ -7,6 +7,7 @@ import (
 
 	"github.com/ARUNK2121/procast/pkg/domain"
 	interfaces "github.com/ARUNK2121/procast/pkg/usecase/user/interface"
+	"github.com/ARUNK2121/procast/pkg/utils/models"
 	"github.com/ARUNK2121/procast/pkg/utils/response"
 	"github.com/gin-gonic/gin"
 )
@@ -185,6 +186,37 @@ func (p *WorkHandler) MakeWorkAsCompleted(c *gin.Context) {
 
 	//return result
 	res := response.Response{Data: "successfully completed work", Error: nil}
+	c.JSON(http.StatusCreated, res)
+
+}
+
+func (p *WorkHandler) RateWork(c *gin.Context) {
+
+	workID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	var model models.RatingModel
+
+	err = c.BindJSON(&model)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	err = p.usecase.RateWork(model, workID)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	//return result
+	res := response.Response{Data: "rated successfully", Error: nil}
 	c.JSON(http.StatusCreated, res)
 
 }

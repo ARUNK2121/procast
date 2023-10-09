@@ -126,3 +126,35 @@ func (p *profileUsecase) GetAllPreferredLocations(id int) ([]models.GetLocations
 	//find service name
 	return model, nil
 }
+
+func (p *profileUsecase) GetDetailsOfProviders(id int) (models.ProviderDetailsForUser, error) {
+
+	var model models.ProviderDetailsForUser
+	//find details of providers
+	details, err := p.repository.FindProviderDetails(id)
+	if err != nil {
+		return models.ProviderDetailsForUser{}, err
+	}
+
+	model.ID = id
+	model.Name = details.Name
+	model.Email = details.Email
+	model.Phone = details.Phone
+
+	ratings, err := p.repository.GetRatingsOfAllRecordsOfAProvider(id)
+	if err != nil {
+		return models.ProviderDetailsForUser{}, err
+	}
+
+	var sum int
+	//find average rating of provider
+	for _, v := range ratings {
+		sum = sum + v
+	}
+
+	average := sum / len(ratings)
+
+	model.AverageRating = average
+
+	return model, nil
+}

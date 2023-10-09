@@ -17,4 +17,5 @@ type WorkRepository interface {
 	FindProviderName(pro_id int) (string, error)
 	AssignWorkToProvider(work_id, pro_id int) error
 	MakeWorkAsCompleted(id int) error
+	RateWork(models.RatingModel, int) error
 }

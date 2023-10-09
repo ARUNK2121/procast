@@ -191,7 +191,7 @@ func (w *WorkHandler) GetAllOnGoingWorks(c *gin.Context) {
 		return
 	}
 
-	works, err := w.usecase.GetMyWorks(provider_id)
+	works, err := w.usecase.GetAllOnGoingWorks(provider_id)
 	if err != nil {
 		res := response.Response{Data: nil, Error: err.Error()}
 		c.JSON(http.StatusInternalServerError, res)

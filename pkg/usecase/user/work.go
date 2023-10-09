@@ -7,6 +7,8 @@ import (
 	"github.com/ARUNK2121/procast/pkg/utils/models"
 )
 
+const NotAssigned = "not assigned"
+
 type workUsecase struct {
 	repository interfaces.WorkRepository
 }
@@ -56,7 +58,7 @@ func (w *workUsecase) GetAllListedWorks(id int) ([]models.WorkDetails, error) {
 		}
 
 		if pro_id == 0 {
-			provider = "not assigned"
+			provider = NotAssigned
 		} else {
 			provider, err = w.repository.FindProviderName(pro_id)
 			if err != nil {
@@ -111,7 +113,7 @@ func (w *workUsecase) ListAllCompletedWorks(id int) ([]models.WorkDetails, error
 		}
 
 		if pro_id == 0 {
-			provider = "not assigned"
+			provider = NotAssigned
 		} else {
 			provider, err = w.repository.FindProviderName(pro_id)
 			if err != nil {
@@ -166,7 +168,7 @@ func (w *workUsecase) ListAllOngoingWorks(id int) ([]models.WorkDetails, error) 
 		}
 
 		if pro_id == 0 {
-			provider = "not assigned"
+			provider = NotAssigned
 		} else {
 			provider, err = w.repository.FindProviderName(pro_id)
 			if err != nil {
@@ -213,7 +215,7 @@ func (w *workUsecase) WorkDetails(id int) (models.WorkDetails, error) {
 	}
 
 	if pro_id == 0 {
-		provider = "not assigned"
+		provider = NotAssigned
 	} else {
 		provider, err = w.repository.FindProviderName(pro_id)
 		if err != nil {
@@ -251,6 +253,17 @@ func (w *workUsecase) MakeWorkAsCompleted(id int) error {
 
 	//pass to repository
 	err := w.repository.MakeWorkAsCompleted(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (w *workUsecase) RateWork(model models.RatingModel, id int) error {
+
+	//pass to repository
+	err := w.repository.RateWork(model, id)
 	if err != nil {
 		return err
 	}
