@@ -147,3 +147,16 @@ type UserSignup struct {
 	Password        string `json:"password"`
 	ConfirmPassword string `json:"confirmpassword"`
 }
+
+type ProviderDetailsForUser struct {
+	ID            int    `json:"id"`
+	Name          string `json:"name"`
+	Email         string `json:"email"`
+	Phone         string `json:"phone"`
+	AverageRating int    `json:"rating"`
+}
+
+type RatingModel struct {
+	Rating   int    `json:"rating"`
+	Feedback string `json:"feedback"`
+}

@@ -13,4 +13,5 @@ type WorkUsecase interface {
 	WorkDetails(id int) (models.WorkDetails, error)
 	AssignWorkToProvider(work_id, pro_id int) error
 	MakeWorkAsCompleted(id int) error
+	RateWork(models.RatingModel, int) error
 }

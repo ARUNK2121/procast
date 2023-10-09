@@ -28,22 +28,21 @@ func UserRoutes(
 			workManagement.GET("", workHandler.WorkDetails)                            //completed
 			workManagement.GET("/bids", providerworkhandler.GetAllOtherBidsOnTheLeads) //completed
 			workManagement.PUT("/assign", workHandler.AssignWorkToProvider)            //completed
-			workManagement.PUT("/complete", workHandler.MakeWorkAsCompleted)           //completed
+
+			workManagement.POST("/rate", workHandler.RateWork)               //pending
+			workManagement.PUT("/complete", workHandler.MakeWorkAsCompleted) //completed
 		}
 
 	}
 
-	// profile := engine.Group("/profile")
-	// {
-	// 	profile.GET("", profileHandler.GetProfileDetails)
-	// 	profile.PUT("", profileHandler.EditProfilePicture)
-	// }
-
 	// provider := engine.Group("/provider")
-	// {
-	// 	provider.GET("/:pro-id", workHandler.GetDetailsOfProviders)
-	//  provider.GET("/:pro_id/works",workHandler.GetWorksOfAProvider)
-	// }
+	{
+		// provider.GET("/:pro-id", workHandler.GetDetailsOfProviders)
+		// provider.GET("/:pro_id/works", workHandler.GetWorksOfAProvider)
+		// provider.GET("/:pro_id/current-work", workHandler.GetCurrentWorksOfAProvider)
+	}
+
+	//user profile editing should be completed in future
 
 	// notification := engine.Group("notification")
 	// {

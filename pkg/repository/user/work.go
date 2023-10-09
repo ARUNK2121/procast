@@ -128,3 +128,13 @@ func (w *workRepository) MakeWorkAsCompleted(id int) error {
 
 	return nil
 }
+
+func (w *workRepository) RateWork(model models.RatingModel, id int) error {
+
+	err := w.DB.Exec("INSERT INTO ratings(rating,feedback,work_id) VALUES ($1,$2,$3)", model.Rating, model.Feedback, id).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

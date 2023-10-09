@@ -257,3 +257,14 @@ func (w *workUsecase) MakeWorkAsCompleted(id int) error {
 
 	return nil
 }
+
+func (w *workUsecase) RateWork(model models.RatingModel, id int) error {
+
+	//pass to repository
+	err := w.repository.RateWork(model, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
