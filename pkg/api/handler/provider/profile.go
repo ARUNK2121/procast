@@ -164,3 +164,22 @@ func (p *ProfileHandler) GetAllPreferredLocations(c *gin.Context) {
 	res := response.Response{Data: locations, Error: nil}
 	c.JSON(http.StatusOK, res)
 }
+
+func (p *ProfileHandler) GetDetailsOfProviders(c *gin.Context) {
+	pro_id, err := strconv.Atoi(c.Param("pro-id"))
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	details, err := p.usecase.GetDetailsOfProviders(pro_id)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	res := response.Response{Data: details, Error: nil}
+	c.JSON(http.StatusOK, res)
+}

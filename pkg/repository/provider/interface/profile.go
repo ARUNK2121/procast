@@ -16,4 +16,6 @@ type ProfileRepository interface {
 	FindServiceDetailsFromID(int) (domain.Profession, error)
 	GetAllPreferredLocations(int) ([]int, error)
 	GetLocationDetails(int) (models.GetLocations, error)
+	FindProviderDetails(id int) (domain.Provider, error)
+	GetRatingsOfAllRecordsOfAProvider(id int) ([]int, error)
 }

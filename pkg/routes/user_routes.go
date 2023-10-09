@@ -10,7 +10,8 @@ func UserRoutes(
 	engine *gin.RouterGroup,
 	authenticationHandler *userhandler.AuthenticationHandler,
 	workHandler *userhandler.WorkHandler,
-	providerworkhandler *providerhandler.WorkHandler) {
+	providerworkhandler *providerhandler.WorkHandler,
+	providerDetailshandler *providerhandler.ProfileHandler) {
 
 	engine.POST("signup", authenticationHandler.UserSignup) //completed
 	engine.GET("login", authenticationHandler.Login)        //completed
@@ -35,9 +36,9 @@ func UserRoutes(
 
 	}
 
-	// provider := engine.Group("/provider")
+	provider := engine.Group("/provider")
 	{
-		// provider.GET("/:pro-id", workHandler.GetDetailsOfProviders)
+		provider.GET("/:pro-id", providerDetailshandler.GetDetailsOfProviders)
 		// provider.GET("/:pro_id/works", workHandler.GetWorksOfAProvider)
 		// provider.GET("/:pro_id/current-work", workHandler.GetCurrentWorksOfAProvider)
 	}

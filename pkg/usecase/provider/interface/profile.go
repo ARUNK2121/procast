@@ -9,4 +9,5 @@ type ProfileUsecase interface {
 	RemovePreferredLocation(id, district int) error
 	GetMyServices(int) ([]models.GetServices, error)
 	GetAllPreferredLocations(int) ([]models.GetLocations, error)
+	GetDetailsOfProviders(id int) (models.ProviderDetailsForUser, error)
 }
