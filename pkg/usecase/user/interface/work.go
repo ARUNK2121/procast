@@ -10,4 +10,6 @@ type WorkUsecase interface {
 	GetAllListedWorks(id int) ([]models.WorkDetails, error)
 	ListAllCompletedWorks(id int) ([]models.WorkDetails, error)
 	ListAllOngoingWorks(id int) ([]models.WorkDetails, error)
+	WorkDetails(id int) (models.WorkDetails, error)
+	AssignWorkToProvider(work_id, pro_id int) error
 }

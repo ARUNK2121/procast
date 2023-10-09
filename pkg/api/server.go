@@ -29,7 +29,7 @@ func NewServerHTTP(adminHandler *adminhandler.AdminHandler,
 
 	routes.AdminRoutes(engine.Group("/admin"), adminHandler, categoryhandler, serviceHandler, regionHandler, userManagementHandler)
 	routes.ProviderRoutes(engine.Group("/provider"), ProviderAuthenticationHandler, profileHandler, workHandler, notificationhandler)
-	routes.UserRoutes(engine.Group("/user"), userAutheticationHandler, userWorkHandler)
+	routes.UserRoutes(engine.Group("/user"), userAutheticationHandler, userWorkHandler, workHandler)
 
 	return &ServerHTTP{engine: engine}
 }

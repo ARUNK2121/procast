@@ -108,3 +108,13 @@ func (p *workRepository) FindProviderName(pro_id int) (string, error) {
 
 	return name, nil
 }
+
+func (w *workRepository) AssignWorkToProvider(work_id, pro_id int) error {
+
+	err := w.DB.Exec("UPDATE  works SET pro_id = $1,work_status = 'committed' WHERE id = $2", pro_id, work_id).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

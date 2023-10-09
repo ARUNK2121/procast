@@ -192,3 +192,57 @@ func (w *workUsecase) ListAllOngoingWorks(id int) ([]models.WorkDetails, error) 
 
 	return model, nil
 }
+
+func (w *workUsecase) WorkDetails(id int) (models.WorkDetails, error) {
+
+	details, err := w.repository.GetDetailsOfAWork(id)
+	if err != nil {
+		return models.WorkDetails{}, err
+	}
+	//find images
+	images, err := w.repository.GetImagesOfAWork(id)
+	if err != nil {
+		return models.WorkDetails{}, err
+	}
+
+	var provider string
+
+	pro_id, err := w.repository.FindProviderIdFromWork(id)
+	if err != nil {
+		return models.WorkDetails{}, err
+	}
+
+	if pro_id == 0 {
+		provider = "not assigned"
+	} else {
+		provider, err = w.repository.FindProviderName(pro_id)
+		if err != nil {
+			return models.WorkDetails{}, err
+		}
+	}
+
+	//append
+	var result models.WorkDetails
+	result.ID = id
+	result.Street = details.Street
+	result.District = details.District
+	result.State = details.State
+	result.Profession = details.Profession
+	result.User = details.User
+	result.Provider = provider
+	result.Images = images
+	result.WorkStatus = details.WorkStatus
+
+	return result, nil
+}
+
+func (w *workUsecase) AssignWorkToProvider(work_id, pro_id int) error {
+
+	//pass to repository
+	err := w.repository.AssignWorkToProvider(work_id, pro_id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

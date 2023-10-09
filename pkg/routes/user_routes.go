@@ -1,6 +1,7 @@
 package routes
 
 import (
+	providerhandler "github.com/ARUNK2121/procast/pkg/api/handler/provider"
 	userhandler "github.com/ARUNK2121/procast/pkg/api/handler/user"
 	"github.com/gin-gonic/gin"
 )
@@ -8,7 +9,8 @@ import (
 func UserRoutes(
 	engine *gin.RouterGroup,
 	authenticationHandler *userhandler.AuthenticationHandler,
-	workHandler *userhandler.WorkHandler) {
+	workHandler *userhandler.WorkHandler,
+	providerworkhandler *providerhandler.WorkHandler) {
 
 	engine.POST("signup", authenticationHandler.UserSignup) //completed
 	engine.GET("login", authenticationHandler.Login)        //completed
@@ -19,15 +21,15 @@ func UserRoutes(
 		works.GET("", workHandler.GetAllListedWorks) //completed
 
 		works.GET("/completed", workHandler.ListAllCompletedWorks) //pending testing
-		works.GET("/ongoing", workHandler.ListAllOngoingWorks)
+		works.GET("/ongoing", workHandler.ListAllOngoingWorks)     //pending testing
 
-		// workManagement := works.Group("/:id")
-		// {
-		// 	workManagement.GET("", workHandler.WorkDetails)
-		// 	workManagement.GET("/bids", workHandler.CompareBids)
-		// 	workManagement.PUT("/assign", workHandler.AssignWorkToProvider)
-		// 	workManagement.PUT("/complete", workHandler.MakeWorkAsCompleted)
-		// }
+		workManagement := works.Group("/:id")
+		{
+			workManagement.GET("", workHandler.WorkDetails)                            //pending testing
+			workManagement.GET("/bids", providerworkhandler.GetAllOtherBidsOnTheLeads) //pending testing
+			workManagement.PUT("/assign", workHandler.AssignWorkToProvider)            //pending testing
+			workManagement.PUT("/complete", workHandler.MakeWorkAsCompleted)           //pending testing
+		}
 
 	}
 
@@ -40,6 +42,7 @@ func UserRoutes(
 	// provider := engine.Group("/provider")
 	// {
 	// 	provider.GET("/:pro-id", workHandler.GetDetailsOfProviders)
+	//  provider.GET("/:pro_id/works",workHandler.GetWorksOfAProvider)
 	// }
 
 	// notification := engine.Group("notification")

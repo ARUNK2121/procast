@@ -109,3 +109,50 @@ func (p *WorkHandler) ListAllOngoingWorks(c *gin.Context) {
 	c.JSON(http.StatusCreated, res)
 
 }
+
+func (p *WorkHandler) WorkDetails(c *gin.Context) {
+
+	work_id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	Details, err := p.usecase.WorkDetails(work_id)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	//return result
+	res := response.Response{Data: Details, Error: nil}
+	c.JSON(http.StatusCreated, res)
+
+}
+
+func (p *WorkHandler) AssignWorkToProvider(c *gin.Context) {
+
+	work_id := c.GetInt("work_id")
+
+	pro_id := c.GetInt("pro_id")
+
+	if work_id == 0 || pro_id == 0 {
+		res := response.Response{Data: nil, Error: "invalid request parameters"}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	err := p.usecase.AssignWorkToProvider(work_id, pro_id)
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	//return result
+	res := response.Response{Data: "successfully assigned the work to provider", Error: nil}
+	c.JSON(http.StatusCreated, res)
+
+}
