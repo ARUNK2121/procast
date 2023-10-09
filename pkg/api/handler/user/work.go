@@ -134,9 +134,19 @@ func (p *WorkHandler) WorkDetails(c *gin.Context) {
 
 func (p *WorkHandler) AssignWorkToProvider(c *gin.Context) {
 
-	work_id := c.GetInt("work_id")
+	work_id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
 
-	pro_id := c.GetInt("pro_id")
+	pro_id, err := strconv.Atoi(c.Query("pro_id"))
+	if err != nil {
+		res := response.Response{Data: nil, Error: err.Error()}
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
 
 	if work_id == 0 || pro_id == 0 {
 		res := response.Response{Data: nil, Error: "invalid request parameters"}
@@ -144,7 +154,7 @@ func (p *WorkHandler) AssignWorkToProvider(c *gin.Context) {
 		return
 	}
 
-	err := p.usecase.AssignWorkToProvider(work_id, pro_id)
+	err = p.usecase.AssignWorkToProvider(work_id, pro_id)
 	if err != nil {
 		res := response.Response{Data: nil, Error: err.Error()}
 		c.JSON(http.StatusInternalServerError, res)

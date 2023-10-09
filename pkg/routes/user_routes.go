@@ -20,15 +20,15 @@ func UserRoutes(
 		works.POST("", workHandler.ListNewOpening)   //completed
 		works.GET("", workHandler.GetAllListedWorks) //completed
 
-		works.GET("/completed", workHandler.ListAllCompletedWorks) //pending testing
-		works.GET("/ongoing", workHandler.ListAllOngoingWorks)     //pending testing
+		works.GET("/ongoing", workHandler.ListAllOngoingWorks)     //completed
+		works.GET("/completed", workHandler.ListAllCompletedWorks) //completed
 
 		workManagement := works.Group("/:id")
 		{
-			workManagement.GET("", workHandler.WorkDetails)                            //pending testing
-			workManagement.GET("/bids", providerworkhandler.GetAllOtherBidsOnTheLeads) //pending testing
-			workManagement.PUT("/assign", workHandler.AssignWorkToProvider)            //pending testing
-			workManagement.PUT("/complete", workHandler.MakeWorkAsCompleted)           //pending testing
+			workManagement.GET("", workHandler.WorkDetails)                            //completed
+			workManagement.GET("/bids", providerworkhandler.GetAllOtherBidsOnTheLeads) //completed
+			workManagement.PUT("/assign", workHandler.AssignWorkToProvider)            //completed
+			workManagement.PUT("/complete", workHandler.MakeWorkAsCompleted)           //completed
 		}
 
 	}

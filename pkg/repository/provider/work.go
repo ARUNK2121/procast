@@ -74,7 +74,7 @@ func (p *workRepository) ReplaceBidWithNewBid(model models.PlaceBid) error {
 
 func (p *workRepository) GetAllOtherBidsOnTheLeads(work_id int) ([]models.BidDetails, error) {
 	var model []models.BidDetails
-	if err := p.DB.Raw(`SELECT bids.id,providers.name,estimate,description FROM bids JOIN providers ON bids.pro_id = providers.id WHERE bids.work_id = $1`, work_id).Scan(&model).Error; err != nil {
+	if err := p.DB.Raw(`SELECT bids.id,providers.name AS provider,estimate,description FROM bids JOIN providers ON bids.pro_id = providers.id WHERE bids.work_id = $1`, work_id).Scan(&model).Error; err != nil {
 		return []models.BidDetails{}, err
 	}
 
