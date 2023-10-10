@@ -23,8 +23,16 @@ func NewAdminHandler(usecase interfaces.AdminUsecase) *AdminHandler {
 	}
 }
 
-// try timeout by time.sleep
-func (ad *AdminHandler) AdminLogin(c *gin.Context) { // login handler for the admin
+// @Summary		Admin Login
+// @Description	This is the Login handler for procast admins
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Param			admin	body		models.AdminLogin	true	"Admin login details"
+// @Success		200		{object}	response.Response{}
+// @Failure		500		{object}	response.Response{}
+// @Router			/admin/login [post]
+func (ad *AdminHandler) AdminLogin(c *gin.Context) {
 
 	var adminDetails models.AdminLogin
 	if err := c.BindJSON(&adminDetails); err != nil {
@@ -51,6 +59,15 @@ func (ad *AdminHandler) AdminLogin(c *gin.Context) { // login handler for the ad
 
 }
 
+// @Summary		Create New Admin
+// @Description	Using this end point the super admin can create new admins
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Param			admin	body		domain.Admin	true	"Admin Details"
+// @Success		200		{object}	response.Response{}
+// @Failure		500		{object}	response.Response{}
+// @Router			/admin/panel [post]
 func (ad *AdminHandler) CreateNewAdmin(c *gin.Context) {
 
 	var adminDetails domain.Admin
@@ -75,7 +92,16 @@ func (ad *AdminHandler) CreateNewAdmin(c *gin.Context) {
 	c.JSON(http.StatusCreated, successRes)
 }
 
-// delete admins
+// @Summary		Delete Admin
+// @Description	using this handler super admins can delete other admins
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Security		Bearer
+// @Param			id	query		string	true	"admin-id"
+// @Success		200	{object}	response.Response{}
+// @Failure		500	{object}	response.Response{}
+// @Router			/admin/panel [delete]
 func (ad *AdminHandler) DeleteAdmin(c *gin.Context) {
 
 	id, err := strconv.Atoi(c.Query("id"))
@@ -97,19 +123,3 @@ func (ad *AdminHandler) DeleteAdmin(c *gin.Context) {
 	successRes := response.Response{Data: "successfully deleted admin", Error: nil}
 	c.JSON(http.StatusOK, successRes)
 }
-
-// admin add category
-//admin delete category
-//admin add profession
-//admin add state
-//admin add district
-
-//admin verify provider
-//admin notifications
-//take charge of verifications
-//pending verifications
-//admin block provider(making verified false)
-//admin change profile image
-//list providers by category
-//sort providers by criteria
-//list scheduled works

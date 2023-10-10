@@ -22,6 +22,15 @@ func NewCategoryHandler(use interfaces.CategoryUsecase) *CategoryHandler {
 	}
 }
 
+// @Summary		Create Category
+// @Description	This handler creates a new category of works and severals services will be there under each categories
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Param			admin	body		models.CreateCategory	true	"Create Category"
+// @Success		200		{object}	response.Response{}
+// @Failure		500		{object}	response.Response{}
+// @Router			/admin/category [post]
 func (ad *CategoryHandler) CreateCategory(c *gin.Context) {
 
 	var category models.CreateCategory
@@ -45,6 +54,14 @@ func (ad *CategoryHandler) CreateCategory(c *gin.Context) {
 	c.JSON(http.StatusCreated, successRes)
 }
 
+// @Summary		List Categories
+// @Description	A call to this path will list all the catrgories that has been already added by admins before
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Success		200		{object}	response.Response{}
+// @Failure		500		{object}	response.Response{}
+// @Router			/admin/category [get]
 func (ad *CategoryHandler) ListCategories(c *gin.Context) {
 
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
@@ -62,6 +79,16 @@ func (ad *CategoryHandler) ListCategories(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 }
 
+// @Summary		Delete Category
+// @Description	A call to this path along with the category id as parameter will result in the deletion of that category
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Security		Bearer
+// @Param			id	query		string	true	"category-id"
+// @Success		200	{object}	response.Response{}
+// @Failure		500	{object}	response.Response{}
+// @Router			/admin/category [delete]
 func (ad *CategoryHandler) DeleteCategory(c *gin.Context) {
 
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
@@ -86,6 +113,16 @@ func (ad *CategoryHandler) DeleteCategory(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 }
 
+// @Summary		Reactivate Category
+// @Description	A call to this path along with the category id as parameter will result in the re activation  of that category
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Security		Bearer
+// @Param			id	query		string	true	"category-id"
+// @Success		200	{object}	response.Response{}
+// @Failure		500	{object}	response.Response{}
+// @Router			/admin/category [patch]
 func (ad *CategoryHandler) ReActivateCategory(c *gin.Context) {
 
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
