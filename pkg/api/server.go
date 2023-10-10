@@ -6,6 +6,9 @@ import (
 	userhandler "github.com/ARUNK2121/procast/pkg/api/handler/user"
 	"github.com/ARUNK2121/procast/pkg/routes"
 	"github.com/gin-gonic/gin"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type ServerHTTP struct {
@@ -26,6 +29,8 @@ func NewServerHTTP(adminHandler *adminhandler.AdminHandler,
 	engine := gin.New()
 
 	engine.Use(gin.Logger())
+
+	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	routes.AdminRoutes(engine.Group("/admin"), adminHandler, categoryhandler, serviceHandler, regionHandler, userManagementHandler)
 	routes.ProviderRoutes(engine.Group("/provider"), ProviderAuthenticationHandler, profileHandler, workHandler, notificationhandler)

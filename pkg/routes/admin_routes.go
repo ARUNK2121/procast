@@ -13,7 +13,7 @@ func AdminRoutes(
 	regionHandler *adminhandler.RegionHandler,
 	userManagementHandler *adminhandler.UserManagementHandler) {
 
-	engine.GET("/login", adminHandler.AdminLogin)
+	engine.POST("/login", adminHandler.AdminLogin)
 	// engine.DELETE("/logout", adminHandler.AdminLogout)
 
 	panel := engine.Group("/panel")
@@ -48,7 +48,7 @@ func AdminRoutes(
 			state.PATCH("", regionHandler.ReActivateState)
 		}
 
-		district := region.Group("district")
+		district := region.Group("/district")
 		{
 			district.POST("", regionHandler.AddNewDistrict)
 			district.GET("", regionHandler.GetDistrictsFromState)

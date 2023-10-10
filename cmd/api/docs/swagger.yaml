@@ -1,0 +1,592 @@
+definitions:
+  domain.Admin:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      previlege:
+        type: string
+    type: object
+  models.AddNewDistrict:
+    properties:
+      district:
+        type: string
+      state_id:
+        type: integer
+    type: object
+  models.AddNewState:
+    properties:
+      state:
+        type: string
+    type: object
+  models.AddServicesToACategory:
+    properties:
+      category_id:
+        type: integer
+      service:
+        type: string
+    type: object
+  models.AdminLogin:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  models.CreateCategory:
+    properties:
+      category:
+        type: string
+    type: object
+  response.Response:
+    properties:
+      data: {}
+      error: {}
+    type: object
+info:
+  contact: {}
+paths:
+  /admin/category:
+    delete:
+      consumes:
+      - application/json
+      description: A call to this path along with the category id as parameter will
+        result in the deletion of that category
+      parameters:
+      - description: category-id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Delete Category
+      tags:
+      - Admin
+    get:
+      consumes:
+      - application/json
+      description: A call to this path will list all the catrgories that has been
+        already added by admins before
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: List Categories
+      tags:
+      - Admin
+    patch:
+      consumes:
+      - application/json
+      description: A call to this path along with the category id as parameter will
+        result in the re activation  of that category
+      parameters:
+      - description: category-id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Reactivate Category
+      tags:
+      - Admin
+    post:
+      consumes:
+      - application/json
+      description: This handler creates a new category of works and severals services
+        will be there under each categories
+      parameters:
+      - description: Create Category
+        in: body
+        name: admin
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Create Category
+      tags:
+      - Admin
+  /admin/login:
+    post:
+      consumes:
+      - application/json
+      description: This is the Login handler for procast admins
+      parameters:
+      - description: Admin login details
+        in: body
+        name: admin
+        required: true
+        schema:
+          $ref: '#/definitions/models.AdminLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admin Login
+      tags:
+      - Admin
+  /admin/panel:
+    delete:
+      consumes:
+      - application/json
+      description: using this handler super admins can delete other admins
+      parameters:
+      - description: admin-id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Delete Admin
+      tags:
+      - Admin
+    post:
+      consumes:
+      - application/json
+      description: Using this end point the super admin can create new admins
+      parameters:
+      - description: Admin Details
+        in: body
+        name: admin
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Admin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Create New Admin
+      tags:
+      - Admin
+  /admin/region/district:
+    delete:
+      consumes:
+      - application/json
+      description: A call to this path along with the district id as parameter will
+        result in the deletion of that district
+      parameters:
+      - description: district-id
+        in: query
+        name: district_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Delete district
+      tags:
+      - Admin
+    get:
+      consumes:
+      - application/json
+      description: A call to this path along with the state id as parameter will result
+        in the listing of all active districts under that state
+      parameters:
+      - description: state-id
+        in: query
+        name: state_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get Districts
+      tags:
+      - Admin
+    patch:
+      consumes:
+      - application/json
+      description: A call to this path along with the district id as parameter will
+        result in the re activation  of that district
+      parameters:
+      - description: district-id
+        in: query
+        name: district_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Reactivate district
+      tags:
+      - Admin
+    post:
+      consumes:
+      - application/json
+      description: Districts are the smallest unit in which procast works,This handler
+        creates a new district under a state which is already exists
+      parameters:
+      - description: Add District
+        in: body
+        name: admin
+        required: true
+        schema:
+          $ref: '#/definitions/models.AddNewDistrict'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Add New District
+      tags:
+      - Admin
+  /admin/region/state:
+    delete:
+      consumes:
+      - application/json
+      description: A call to this path along with the district id as parameter will
+        result in the deletion of that state
+      parameters:
+      - description: state-id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Delete State
+      tags:
+      - Admin
+    get:
+      consumes:
+      - application/json
+      description: A call to this path will list all the states that has been already
+        added by admins before or in other words this handler will displays the span
+        of the company in states
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: List States
+      tags:
+      - Admin
+    patch:
+      consumes:
+      - application/json
+      description: A call to this path along with the distroct id as parameter will
+        result in the re activation  of that state
+      parameters:
+      - description: state-id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Reactivate State
+      tags:
+      - Admin
+    post:
+      consumes:
+      - application/json
+      description: This handler creates a new state which means that the company is
+        now expanded its size to a new state
+      parameters:
+      - description: Create state
+        in: body
+        name: admin
+        required: true
+        schema:
+          $ref: '#/definitions/models.AddNewState'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Add New State
+      tags:
+      - Admin
+  /admin/services:
+    delete:
+      consumes:
+      - application/json
+      description: A call to this path along with the service id as parameter will
+        result in the deletion of that service
+      parameters:
+      - description: service-id
+        in: query
+        name: service_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Delete Services
+      tags:
+      - Admin
+    get:
+      consumes:
+      - application/json
+      description: A call to this path along with the category id as parameter will
+        result in the listing of all active services under that category
+      parameters:
+      - description: category-id
+        in: query
+        name: category_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get Services
+      tags:
+      - Admin
+    patch:
+      consumes:
+      - application/json
+      description: A call to this path along with the service id as parameter will
+        result in the re activation  of that service
+      parameters:
+      - description: service-id
+        in: query
+        name: service_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Reactivate service
+      tags:
+      - Admin
+    post:
+      consumes:
+      - application/json
+      description: This handler will create a new service under an existing category
+      parameters:
+      - description: Add service
+        in: body
+        name: admin
+        required: true
+        schema:
+          $ref: '#/definitions/models.AddServicesToACategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Add New Service
+      tags:
+      - Admin
+  /admin/work/committed:
+    get:
+      consumes:
+      - application/json
+      description: A call to this path  will result in the listing of all committed
+        works that havent been completed
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get Committed Works
+      tags:
+      - Admin
+  /admin/work/completed:
+    get:
+      consumes:
+      - application/json
+      description: A call to this path  will result in the listing of all completed
+        works
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get Completed Works
+      tags:
+      - Admin
+swagger: "2.0"

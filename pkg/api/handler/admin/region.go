@@ -22,6 +22,15 @@ func NewRegionHandler(use interfaces.RegionUsecase) *RegionHandler {
 	}
 }
 
+// @Summary		Add New State
+// @Description	This handler creates a new state which means that the company is now expanded its size to a new state
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Param			admin	body		models.AddNewState	true	"Create state"
+// @Success		200		{object}	response.Response{}
+// @Failure		500		{object}	response.Response{}
+// @Router			/admin/region/state [post]
 func (r *RegionHandler) AddNewState(c *gin.Context) {
 	var region models.AddNewState
 	err := c.BindJSON(&region)
@@ -44,6 +53,14 @@ func (r *RegionHandler) AddNewState(c *gin.Context) {
 	c.JSON(http.StatusCreated, successRes)
 }
 
+// @Summary		List States
+// @Description	A call to this path will list all the states that has been already added by admins before or in other words this handler will displays the span of the company in states
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Success		200		{object}	response.Response{}
+// @Failure		500		{object}	response.Response{}
+// @Router			/admin/region/state [get]
 func (r *RegionHandler) GetStates(c *gin.Context) {
 
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
@@ -61,6 +78,16 @@ func (r *RegionHandler) GetStates(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 }
 
+// @Summary		Delete State
+// @Description	A call to this path along with the district id as parameter will result in the deletion of that state
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Security		Bearer
+// @Param			id	query		string	true	"state-id"
+// @Success		200	{object}	response.Response{}
+// @Failure		500	{object}	response.Response{}
+// @Router			/admin/region/state [delete]
 func (r *RegionHandler) DeleteState(c *gin.Context) {
 
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
@@ -85,6 +112,16 @@ func (r *RegionHandler) DeleteState(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 }
 
+// @Summary		Reactivate State
+// @Description	A call to this path along with the distroct id as parameter will result in the re activation  of that state
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Security		Bearer
+// @Param			id	query		string	true	"state-id"
+// @Success		200	{object}	response.Response{}
+// @Failure		500	{object}	response.Response{}
+// @Router			/admin/region/state  [patch]
 func (r *RegionHandler) ReActivateState(c *gin.Context) {
 
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
@@ -109,6 +146,15 @@ func (r *RegionHandler) ReActivateState(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 }
 
+// @Summary		Add New District
+// @Description	Districts are the smallest unit in which procast works,This handler creates a new district under a state which is already exists
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Param			admin	body		models.AddNewDistrict	true	"Add District"
+// @Success		200		{object}	response.Response{}
+// @Failure		500		{object}	response.Response{}
+// @Router			/admin/region/district [post]
 func (r *RegionHandler) AddNewDistrict(c *gin.Context) {
 	var region models.AddNewDistrict
 	err := c.BindJSON(&region)
@@ -131,6 +177,16 @@ func (r *RegionHandler) AddNewDistrict(c *gin.Context) {
 	c.JSON(http.StatusCreated, successRes)
 }
 
+// @Summary		Get Districts
+// @Description	A call to this path along with the state id as parameter will result in the listing of all active districts under that state
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Security		Bearer
+// @Param			state_id	query		string	true	"state-id"
+// @Success		200	{object}	response.Response{}
+// @Failure		500	{object}	response.Response{}
+// @Router			/admin/region/district [get]
 func (r *RegionHandler) GetDistrictsFromState(c *gin.Context) {
 
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
@@ -156,6 +212,16 @@ func (r *RegionHandler) GetDistrictsFromState(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 }
 
+// @Summary		Delete district
+// @Description	A call to this path along with the district id as parameter will result in the deletion of that district
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Security		Bearer
+// @Param			district_id	query		string	true	"district-id"
+// @Success		200	{object}	response.Response{}
+// @Failure		500	{object}	response.Response{}
+// @Router			/admin/region/district [delete]
 func (r *RegionHandler) DeleteDistrictFromState(c *gin.Context) {
 
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
@@ -180,6 +246,16 @@ func (r *RegionHandler) DeleteDistrictFromState(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 }
 
+// @Summary		Reactivate district
+// @Description	A call to this path along with the district id as parameter will result in the re activation  of that district
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Security		Bearer
+// @Param			district_id	query		string	true	"district-id"
+// @Success		200	{object}	response.Response{}
+// @Failure		500	{object}	response.Response{}
+// @Router			/admin/region/district  [patch]
 func (r *RegionHandler) ReActivateDistrict(c *gin.Context) {
 
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
