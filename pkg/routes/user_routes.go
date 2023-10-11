@@ -38,6 +38,7 @@ func UserRoutes(
 	provider := engine.Group("/provider")
 	{
 		provider.GET("/:pro-id", providerDetailshandler.GetDetailsOfProviders) //completed
+
 		// provider.GET("/:pro_id/works", workHandler.GetWorksOfAProvider)
 		// provider.GET("/:pro_id/current-work", workHandler.GetCurrentWorksOfAProvider)
 	}
