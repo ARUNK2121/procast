@@ -1,6 +1,8 @@
 package httpserver
 
 import (
+	"log"
+
 	adminhandler "github.com/ARUNK2121/procast/pkg/api/handler/admin"
 	providerhandler "github.com/ARUNK2121/procast/pkg/api/handler/provider"
 	userhandler "github.com/ARUNK2121/procast/pkg/api/handler/user"
@@ -40,5 +42,8 @@ func NewServerHTTP(adminHandler *adminhandler.AdminHandler,
 }
 
 func (s *ServerHTTP) Start() {
-	s.engine.Run(":3000")
+	err := s.engine.Run(":3000")
+	if err != nil {
+		log.Fatal("gin refused to start")
+	}
 }

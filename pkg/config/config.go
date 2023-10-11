@@ -1,6 +1,8 @@
 package config
 
 import (
+	"log"
+
 	"github.com/go-playground/validator/v10"
 	"github.com/spf13/viper"
 )
@@ -42,7 +44,10 @@ func LoadConfig() (Config, error) {
 
 	viper.AddConfigPath("./")
 	viper.SetConfigFile(".env")
-	viper.ReadInConfig()
+	err := viper.ReadInConfig()
+	if err != nil {
+		log.Fatal("error loading viper")
+	}
 
 	for _, env := range envs {
 		if err := viper.BindEnv(env); err != nil {
