@@ -164,7 +164,7 @@ func (w *WorkHandler) GetAllOtherBidsOnTheLeads(c *gin.Context) {
 
 }
 
-func (w *WorkHandler) GetMyWorks(c *gin.Context) {
+func (w *WorkHandler) GetWorksOfAProvider(c *gin.Context) {
 	provider_id, err := strconv.Atoi(c.Query("pro_id"))
 	if err != nil {
 		res := response.Response{Data: nil, Error: err.Error()}
@@ -172,7 +172,7 @@ func (w *WorkHandler) GetMyWorks(c *gin.Context) {
 		return
 	}
 
-	works, err := w.usecase.GetMyWorks(provider_id)
+	works, err := w.usecase.GetWorksOfAProvider(provider_id)
 	if err != nil {
 		res := response.Response{Data: nil, Error: err.Error()}
 		c.JSON(http.StatusInternalServerError, res)

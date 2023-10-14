@@ -229,6 +229,82 @@ paths:
       summary: Create New Admin
       tags:
       - Admin
+  /admin/provider:
+    delete:
+      consumes:
+      - application/json
+      description: A call to this path along with the provider  id as parameter will
+        result in the revoking verification of the provider
+      parameters:
+      - description: provider-id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Revoke Verification From Provider
+      tags:
+      - Admin
+    get:
+      consumes:
+      - application/json
+      description: A call to this path  will result in the listing of all providers
+        that have registered in procast
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get Providers
+      tags:
+      - Admin
+    patch:
+      consumes:
+      - application/json
+      description: A call to this path along with the provider  id as parameter will
+        result in the verification of the provider
+      parameters:
+      - description: provider-id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Verify Provider
+      tags:
+      - Admin
   /admin/region/district:
     delete:
       consumes:
@@ -543,6 +619,132 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
       summary: Add New Service
+      tags:
+      - Admin
+  /admin/user:
+    delete:
+      consumes:
+      - application/json
+      description: A call to this path along with the user  id as parameter will result
+        in the blocking of the user
+      parameters:
+      - description: user-id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Block User
+      tags:
+      - Admin
+    get:
+      consumes:
+      - application/json
+      description: A call to this path  will result in the listing of all users of
+        application
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get Users
+      tags:
+      - Admin
+    patch:
+      consumes:
+      - application/json
+      description: A call to this path along with the user  id as parameter will result
+        in the unblocking of user
+      parameters:
+      - description: provider-id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: UnBlock User
+      tags:
+      - Admin
+  /admin/verify:
+    get:
+      consumes:
+      - application/json
+      description: A call to this path  will result in the listing of all providers
+        request for verification which has not been accepted yet
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get All Pending Verifications
+      tags:
+      - Admin
+  /admin/verify/request:
+    get:
+      consumes:
+      - application/json
+      description: A call to this path along with the provider id will result in the
+        displaying of the verification request of a provider
+      parameters:
+      - description: pro-id
+        in: query
+        name: pro_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get Verification Request
       tags:
       - Admin
   /admin/work/committed:

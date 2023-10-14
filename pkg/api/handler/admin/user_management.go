@@ -22,6 +22,15 @@ func NewUserManagementHandler(usecase interfaces.UserManagementUsecase) *UserMan
 	}
 }
 
+// @Summary		Get Providers
+// @Description	A call to this path  will result in the listing of all providers that have registered in procast
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Security		Bearer
+// @Success		200	{object}	response.Response{}
+// @Failure		500	{object}	response.Response{}
+// @Router			/admin/provider [get]
 func (u *UserManagementHandler) GetProviders(c *gin.Context) {
 
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
@@ -39,6 +48,16 @@ func (u *UserManagementHandler) GetProviders(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 }
 
+// @Summary		Verify Provider
+// @Description	A call to this path along with the provider  id as parameter will result in the verification of the provider
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Security		Bearer
+// @Param			id	query		string	true	"provider-id"
+// @Success		200	{object}	response.Response{}
+// @Failure		500	{object}	response.Response{}
+// @Router			/admin/provider [patch]
 func (u *UserManagementHandler) MakeProviderVerified(c *gin.Context) {
 
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
@@ -63,6 +82,16 @@ func (u *UserManagementHandler) MakeProviderVerified(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 }
 
+// @Summary		Revoke Verification From Provider
+// @Description	A call to this path along with the provider  id as parameter will result in the revoking verification of the provider
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Security		Bearer
+// @Param			id	query		string	true	"provider-id"
+// @Success		200	{object}	response.Response{}
+// @Failure		500	{object}	response.Response{}
+// @Router			/admin/provider [delete]
 func (u *UserManagementHandler) RevokeVerification(c *gin.Context) {
 
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
@@ -87,6 +116,15 @@ func (u *UserManagementHandler) RevokeVerification(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 }
 
+// @Summary		Get Users
+// @Description	A call to this path  will result in the listing of all users of application
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Security		Bearer
+// @Success		200	{object}	response.Response{}
+// @Failure		500	{object}	response.Response{}
+// @Router			/admin/user [get]
 func (u *UserManagementHandler) GetUsers(c *gin.Context) {
 
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
@@ -106,6 +144,16 @@ func (u *UserManagementHandler) GetUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 }
 
+// @Summary		Block User
+// @Description	A call to this path along with the user  id as parameter will result in the blocking of the user
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Security		Bearer
+// @Param			id	query		string	true	"user-id"
+// @Success		200	{object}	response.Response{}
+// @Failure		500	{object}	response.Response{}
+// @Router			/admin/user [delete]
 func (u *UserManagementHandler) BlockUser(c *gin.Context) {
 
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
@@ -130,6 +178,16 @@ func (u *UserManagementHandler) BlockUser(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 }
 
+// @Summary		UnBlock User
+// @Description	A call to this path along with the user  id as parameter will result in the unblocking of user
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Security		Bearer
+// @Param			id	query		string	true	"provider-id"
+// @Success		200	{object}	response.Response{}
+// @Failure		500	{object}	response.Response{}
+// @Router			/admin/user [patch]
 func (u *UserManagementHandler) UnBlockUser(c *gin.Context) {
 
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
@@ -154,6 +212,15 @@ func (u *UserManagementHandler) UnBlockUser(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 }
 
+// @Summary		Get All Pending Verifications
+// @Description	A call to this path  will result in the listing of all providers request for verification which has not been accepted yet
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Security		Bearer
+// @Success		200	{object}	response.Response{}
+// @Failure		500	{object}	response.Response{}
+// @Router			/admin/verify [get]
 func (u *UserManagementHandler) GetAllPendingVerifications(c *gin.Context) {
 
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
@@ -171,6 +238,16 @@ func (u *UserManagementHandler) GetAllPendingVerifications(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 }
 
+// @Summary		Get Verification Request
+// @Description	A call to this path along with the provider id will result in the displaying of the verification request of a provider
+// @Tags			Admin
+// @Accept			json
+// @Produce		json
+// @Security		Bearer
+// @Param			pro_id	query		string	true	"pro-id"
+// @Success		200	{object}	response.Response{}
+// @Failure		500	{object}	response.Response{}
+// @Router			/admin/verify/request [get]
 func (u *UserManagementHandler) ViewVerificationRequest(c *gin.Context) {
 
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)

@@ -46,7 +46,7 @@ func ProviderRoutes(
 
 		my_works := work.Group("my-works")
 		{
-			my_works.GET("", workHandler.GetMyWorks)                  //completed
+			my_works.GET("", workHandler.GetWorksOfAProvider)         //completed
 			my_works.GET("/on-going", workHandler.GetAllOnGoingWorks) //completed
 			my_works.GET("/completed", workHandler.GetCompletedWorks) //completed
 		}

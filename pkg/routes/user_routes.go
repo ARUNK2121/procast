@@ -37,10 +37,9 @@ func UserRoutes(
 
 	provider := engine.Group("/provider")
 	{
-		provider.GET("/:pro-id", providerDetailshandler.GetDetailsOfProviders) //completed
-
-		// provider.GET("/:pro_id/works", workHandler.GetWorksOfAProvider)
-		// provider.GET("/:pro_id/current-work", workHandler.GetCurrentWorksOfAProvider)
+		provider.GET("/:pro_id", providerDetailshandler.GetDetailsOfProviders) //completed
+		provider.GET("/:pro_id/works", providerworkhandler.GetWorksOfAProvider)
+		provider.GET("/:pro_id/current-work", providerworkhandler.GetAllOnGoingWorks)
 	}
 
 	// notification := engine.Group("notification")
