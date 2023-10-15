@@ -11,7 +11,7 @@ import (
 func ProviderAuthMiddleware(c *gin.Context) {
 	tokenString := c.GetHeader("Authorization")
 	if tokenString == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Missing authorization token"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": MissingAuthorizationToken})
 		c.Abort()
 		return
 	}
@@ -23,28 +23,28 @@ func ProviderAuthMiddleware(c *gin.Context) {
 	})
 
 	if err != nil || !token.Valid {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid authorization token"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": InvalidAuthorizationToken})
 		c.Abort()
 		return
 	}
 
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok || !token.Valid {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid authorization token"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": InvalidAuthorizationToken})
 		c.Abort()
 		return
 	}
 
 	role, ok := claims["role"].(string)
 	if !ok || role != "provider" {
-		c.JSON(http.StatusForbidden, gin.H{"error": "Unauthorized access"})
+		c.JSON(http.StatusForbidden, gin.H{"error": UnAuthorizedAccess})
 		c.Abort()
 		return
 	}
 
 	id, ok := claims["id"].(int)
 	if !ok || id == 0 {
-		c.JSON(http.StatusForbidden, gin.H{"error": "Some Problem in Token"})
+		c.JSON(http.StatusForbidden, gin.H{"error": TokenProblem})
 		c.Abort()
 		return
 	}

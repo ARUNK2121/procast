@@ -48,11 +48,11 @@ func ProviderRoutes(
 				leads.GET("/:id/compare", workHandler.GetAllOtherBidsOnTheLeads) //completed
 			}
 
-			my_works := work.Group("my-works")
+			myWorks := work.Group("my-works")
 			{
-				my_works.GET("", workHandler.GetWorksOfAProvider)         //completed
-				my_works.GET("/on-going", workHandler.GetAllOnGoingWorks) //completed
-				my_works.GET("/completed", workHandler.GetCompletedWorks) //completed
+				myWorks.GET("", workHandler.GetWorksOfAProvider)         //completed
+				myWorks.GET("/on-going", workHandler.GetAllOnGoingWorks) //completed
+				myWorks.GET("/completed", workHandler.GetCompletedWorks) //completed
 			}
 
 			notification := engine.Group("notification")
