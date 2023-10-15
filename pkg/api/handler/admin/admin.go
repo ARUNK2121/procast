@@ -44,17 +44,14 @@ func (ad *AdminHandler) AdminLogin(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
 	defer cancel()
 
-	Tokens, err := ad.usecase.AdminLogin(ctx, adminDetails)
+	Token, err := ad.usecase.AdminLogin(ctx, adminDetails)
 	if err != nil {
 		errRes := response.Response{Data: nil, Error: err.Error()}
 		c.JSON(http.StatusBadRequest, errRes)
 		return
 	}
 
-	c.Set("Access", Tokens.AccessToken)
-	c.Set("Refresh", Tokens.RefreshToken)
-
-	successRes := response.Response{Data: Tokens, Error: nil}
+	successRes := response.Response{Data: Token, Error: nil}
 	c.JSON(http.StatusOK, successRes)
 
 }

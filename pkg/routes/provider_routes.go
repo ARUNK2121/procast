@@ -35,7 +35,7 @@ func ProviderRoutes(
 
 	work := engine.Group("/works")
 	{
-		leads := work.Group("leads")
+		leads := work.Group("/leads")
 		{
 			leads.GET("", workHandler.GetAllLeads)                           //completed
 			leads.GET("/:id", workHandler.ViewLeads)                         //completed
