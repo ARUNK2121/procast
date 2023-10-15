@@ -123,7 +123,7 @@ func (helper *helper) GenerateTokenProvider(details domain.Provider) (string, er
 	}
 
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessTokenClaims)
-	accessTokenString, err := accessToken.SignedString([]byte("accesssecret"))
+	accessTokenString, err := accessToken.SignedString([]byte("providersecret")) //take this from runtime in future avoid hardcoding
 	if err != nil {
 		return "", err
 	}
@@ -143,7 +143,7 @@ func (helper *helper) GenerateTokenUser(details domain.User) (string, error) {
 	}
 
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessTokenClaims)
-	accessTokenString, err := accessToken.SignedString([]byte("accesssecret"))
+	accessTokenString, err := accessToken.SignedString([]byte("usersecret")) //take this from runtime in future avoid hardcoding
 	if err != nil {
 		return "", err
 	}
