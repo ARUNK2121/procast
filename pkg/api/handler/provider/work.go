@@ -60,7 +60,6 @@ func (w *WorkHandler) GetAllLeads(c *gin.Context) {
 // @Tags			Provider
 // @Accept			json
 // @Produce		json
-// @Param			pro-id	query		string	true	"pro-id"
 // @Success		200		{object}	response.Response{}
 // @Failure		500		{object}	response.Response{}
 // @Router			/provider/work/leads/:id [get]
@@ -83,6 +82,16 @@ func (w *WorkHandler) ViewLeads(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
+// @Summary		Place Bid
+// @Description	 A provider can place bid on an opening
+// @Tags			Provider
+// @Accept			json
+// @Produce		json
+// @Param			pro-id	query		string	true	"pro-id"
+// @Param			bid	body		models.PlaceBid	true	"Bid Details"
+// @Success		200		{object}	response.Response{}
+// @Failure		500		{object}	response.Response{}
+// @Router			/provider/work/leads/:id/bid [post]
 func (w *WorkHandler) PlaceBid(c *gin.Context) {
 	fmt.Println("reaches")
 	work_id, err := strconv.Atoi(c.Param("id"))
@@ -124,6 +133,16 @@ func (w *WorkHandler) PlaceBid(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
+// @Summary		Replace Bid with New Bid
+// @Description	 A provider can replace an existing bid on an opening
+// @Tags			Provider
+// @Accept			json
+// @Produce		json
+// @Param			pro-id	query		string	true	"pro-id"
+// @Param			bid	body		models.PlaceBid	true	"Bid Details"
+// @Success		200		{object}	response.Response{}
+// @Failure		500		{object}	response.Response{}
+// @Router			/provider/work/leads/:id/bid [put]
 func (w *WorkHandler) ReplaceBidWithNewBid(c *gin.Context) {
 	work_id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -161,6 +180,14 @@ func (w *WorkHandler) ReplaceBidWithNewBid(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
+// @Summary		Compare All Other Bids On the Work
+// @Description	 A provider can list all the bids placed on the work by various providers and then he can adjust his bid accordingly
+// @Tags			Provider
+// @Accept			json
+// @Produce		json
+// @Success		200		{object}	response.Response{}
+// @Failure		500		{object}	response.Response{}
+// @Router			/provider/work/leads/:id/compare [get]
 func (w *WorkHandler) GetAllOtherBidsOnTheLeads(c *gin.Context) {
 
 	work_id, err := strconv.Atoi(c.Param("id"))
@@ -182,6 +209,15 @@ func (w *WorkHandler) GetAllOtherBidsOnTheLeads(c *gin.Context) {
 
 }
 
+// @Summary		Get Works Of A Provider
+// @Description	 An endpoint to display all the works of a provider
+// @Tags			User
+// @Accept			json
+// @Produce		json
+// @Param			pro_id	query		string	true	"pro_id"
+// @Success		200		{object}	response.Response{}
+// @Failure		500		{object}	response.Response{}
+// @Router			/user/provider/:pro_id/works [get]
 func (w *WorkHandler) GetWorksOfAProvider(c *gin.Context) {
 	provider_id, err := strconv.Atoi(c.Query("pro_id"))
 	if err != nil {
@@ -201,6 +237,15 @@ func (w *WorkHandler) GetWorksOfAProvider(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
+// @Summary		Get All Ongoing Works Of A Provider
+// @Description	 An endpoint to display all the ongoing works of a provider
+// @Tags			Provider
+// @Accept			json
+// @Produce		json
+// @Param			pro_id	query		string	true	"pro-id"
+// @Success		200		{object}	response.Response{}
+// @Failure		500		{object}	response.Response{}
+// @Router			/provider/works/my-works/on-going [get]
 func (w *WorkHandler) GetAllOnGoingWorks(c *gin.Context) {
 	provider_id, err := strconv.Atoi(c.Query("pro_id"))
 	if err != nil {
@@ -220,6 +265,15 @@ func (w *WorkHandler) GetAllOnGoingWorks(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
+// @Summary		Get All Completed Works Of A Provider
+// @Description	 An endpoint to display all the completed works of a provider
+// @Tags			Provider
+// @Accept			json
+// @Produce		json
+// @Param			pro_id	query		string	true	"pro-id"
+// @Success		200		{object}	response.Response{}
+// @Failure		500		{object}	response.Response{}
+// @Router			/provider/works/my-works/completed [get]
 func (w *WorkHandler) GetCompletedWorks(c *gin.Context) {
 	provider_id, err := strconv.Atoi(c.Query("pro_id"))
 	if err != nil {

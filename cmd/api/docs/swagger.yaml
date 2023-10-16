@@ -50,6 +50,13 @@ definitions:
       username:
         type: string
     type: object
+  models.PlaceBid:
+    properties:
+      description:
+        type: string
+      estimate:
+        type: number
+    type: object
   response.Response:
     properties:
       data: {}
@@ -162,38 +169,14 @@ paths:
     post:
       consumes:
       - application/json
-      description: This is the Login handler for providers
+      description: This is the Login handler for procast admins
       parameters:
-      - description: name
-        in: formData
-        name: name
+      - description: Admin login details
+        in: body
+        name: admin
         required: true
-        type: string
-      - description: email
-        in: formData
-        name: email
-        required: true
-        type: string
-      - description: password
-        in: formData
-        name: password
-        required: true
-        type: string
-      - description: re-password
-        in: formData
-        name: re-password
-        required: true
-        type: string
-      - description: phone
-        in: formData
-        name: phone
-        required: true
-        type: string
-      - description: document
-        in: formData
-        name: document
-        required: true
-        type: file
+        schema:
+          $ref: '#/definitions/models.AdminLogin'
       produces:
       - application/json
       responses:
@@ -205,9 +188,9 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/response.Response'
-      summary: Register
+      summary: Admin Login
       tags:
-      - Provider
+      - Admin
   /admin/panel:
     delete:
       consumes:
@@ -848,7 +831,119 @@ paths:
       summary: Provider Login
       tags:
       - Provider
+  /provider/profile/location:
+    delete:
+      consumes:
+      - application/json
+      description: providers can remove a location from their preferred location services
+      parameters:
+      - description: user-id
+        in: query
+        name: user_id
+        required: true
+        type: string
+      - description: district-id
+        in: query
+        name: district_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Remove Preferred Location
+      tags:
+      - Provider
+    post:
+      consumes:
+      - application/json
+      description: providers can add a location to their preferred location services
+      parameters:
+      - description: user-id
+        in: query
+        name: user_id
+        required: true
+        type: string
+      - description: district-id
+        in: query
+        name: district_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Add Preferred Location
+      tags:
+      - Provider
   /provider/profile/service:
+    delete:
+      consumes:
+      - application/json
+      description: providers can remove a service from their providable services
+      parameters:
+      - description: user-id
+        in: query
+        name: user_id
+        required: true
+        type: string
+      - description: service-id
+        in: query
+        name: service_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Delete Service
+      tags:
+      - Provider
+    get:
+      consumes:
+      - application/json
+      description: providers can list their selected services
+      parameters:
+      - description: user-id
+        in: query
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get All Preferred Locations
+      tags:
+      - Provider
     post:
       consumes:
       - application/json
@@ -878,4 +973,280 @@ paths:
       summary: Add Service
       tags:
       - Provider
+  /provider/register:
+    post:
+      consumes:
+      - application/json
+      description: This is the Login handler for providers
+      parameters:
+      - description: name
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: email
+        in: formData
+        name: email
+        required: true
+        type: string
+      - description: password
+        in: formData
+        name: password
+        required: true
+        type: string
+      - description: re-password
+        in: formData
+        name: re-password
+        required: true
+        type: string
+      - description: phone
+        in: formData
+        name: phone
+        required: true
+        type: string
+      - description: document
+        in: formData
+        name: document
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Register
+      tags:
+      - Provider
+  /provider/work/leads:
+    get:
+      consumes:
+      - application/json
+      description: get details of all possible leads that provider can bid on them
+      parameters:
+      - description: pro-id
+        in: query
+        name: pro-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get All Leads For The Provider
+      tags:
+      - Provider
+  /provider/work/leads/:id:
+    get:
+      consumes:
+      - application/json
+      description: a call to this endpoint along with the work_id as parametr will
+        get details of the lead
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get Details of A lead of provider
+      tags:
+      - Provider
+  /provider/work/leads/:id/bid:
+    post:
+      consumes:
+      - application/json
+      description: A provider can place bid on an opening
+      parameters:
+      - description: pro-id
+        in: query
+        name: pro-id
+        required: true
+        type: string
+      - description: Bid Details
+        in: body
+        name: bid
+        required: true
+        schema:
+          $ref: '#/definitions/models.PlaceBid'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Place Bid
+      tags:
+      - Provider
+    put:
+      consumes:
+      - application/json
+      description: A provider can replace an existing bid on an opening
+      parameters:
+      - description: pro-id
+        in: query
+        name: pro-id
+        required: true
+        type: string
+      - description: Bid Details
+        in: body
+        name: bid
+        required: true
+        schema:
+          $ref: '#/definitions/models.PlaceBid'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Replace Bid with New Bid
+      tags:
+      - Provider
+  /provider/work/leads/:id/compare:
+    get:
+      consumes:
+      - application/json
+      description: A provider can list all the bids placed on the work by various
+        providers and then he can adjust his bid accordingly
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Compare All Other Bids On the Work
+      tags:
+      - Provider
+  /provider/works/my-works/completed:
+    get:
+      consumes:
+      - application/json
+      description: An endpoint to display all the completed works of a provider
+      parameters:
+      - description: pro-id
+        in: query
+        name: pro_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get All Completed Works Of A Provider
+      tags:
+      - Provider
+  /provider/works/my-works/on-going:
+    get:
+      consumes:
+      - application/json
+      description: An endpoint to display all the ongoing works of a provider
+      parameters:
+      - description: pro-id
+        in: query
+        name: pro_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get All Ongoing Works Of A Provider
+      tags:
+      - Provider
+  /user/provider/:pro-id:
+    get:
+      consumes:
+      - application/json
+      description: get details of providers when user clicks on provider profile
+      parameters:
+      - description: pro-id
+        in: query
+        name: pro-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get Provider Details For User
+      tags:
+      - User
+  /user/provider/:pro_id/works:
+    get:
+      consumes:
+      - application/json
+      description: An endpoint to display all the works of a provider
+      parameters:
+      - description: pro_id
+        in: query
+        name: pro_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get Works Of A Provider
+      tags:
+      - User
 swagger: "2.0"

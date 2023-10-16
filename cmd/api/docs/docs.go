@@ -166,7 +166,7 @@ const docTemplate = `{
         },
         "/admin/login": {
             "post": {
-                "description": "This is the Login handler for providers",
+                "description": "This is the Login handler for procast admins",
                 "consumes": [
                     "application/json"
                 ],
@@ -174,51 +174,18 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Provider"
+                    "Admin"
                 ],
-                "summary": "Register",
+                "summary": "Admin Login",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "name",
-                        "name": "name",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "email",
-                        "name": "email",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "password",
-                        "name": "password",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "re-password",
-                        "name": "re-password",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "phone",
-                        "name": "phone",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "document",
-                        "name": "document",
-                        "in": "formData",
-                        "required": true
+                        "description": "Admin login details",
+                        "name": "admin",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.AdminLogin"
+                        }
                     }
                 ],
                 "responses": {
@@ -1210,7 +1177,131 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/profile/location": {
+            "post": {
+                "description": "providers can add a location to their preferred location services",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Provider"
+                ],
+                "summary": "Add Preferred Location",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user-id",
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "district-id",
+                        "name": "district_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "providers can remove a location from their preferred location services",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Provider"
+                ],
+                "summary": "Remove Preferred Location",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user-id",
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "district-id",
+                        "name": "district_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/provider/profile/service": {
+            "get": {
+                "description": "providers can list their selected services",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Provider"
+                ],
+                "summary": "Get All Preferred Locations",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user-id",
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "providers can add a service to their providable services",
                 "consumes": [
@@ -1235,6 +1326,462 @@ const docTemplate = `{
                         "type": "string",
                         "description": "service-id",
                         "name": "service_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "providers can remove a service from their providable services",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Provider"
+                ],
+                "summary": "Delete Service",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user-id",
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "service-id",
+                        "name": "service_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/register": {
+            "post": {
+                "description": "This is the Login handler for providers",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Provider"
+                ],
+                "summary": "Register",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "name",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "password",
+                        "name": "password",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "re-password",
+                        "name": "re-password",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "phone",
+                        "name": "phone",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "document",
+                        "name": "document",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/work/leads": {
+            "get": {
+                "description": "get details of all possible leads that provider can bid on them",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Provider"
+                ],
+                "summary": "Get All Leads For The Provider",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "pro-id",
+                        "name": "pro-id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/work/leads/:id": {
+            "get": {
+                "description": "a call to this endpoint along with the work_id as parametr will get details of the lead",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Provider"
+                ],
+                "summary": "Get Details of A lead of provider",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/work/leads/:id/bid": {
+            "put": {
+                "description": "A provider can replace an existing bid on an opening",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Provider"
+                ],
+                "summary": "Replace Bid with New Bid",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "pro-id",
+                        "name": "pro-id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "description": "Bid Details",
+                        "name": "bid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.PlaceBid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "A provider can place bid on an opening",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Provider"
+                ],
+                "summary": "Place Bid",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "pro-id",
+                        "name": "pro-id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "description": "Bid Details",
+                        "name": "bid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.PlaceBid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/work/leads/:id/compare": {
+            "get": {
+                "description": "A provider can list all the bids placed on the work by various providers and then he can adjust his bid accordingly",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Provider"
+                ],
+                "summary": "Compare All Other Bids On the Work",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/works/my-works/completed": {
+            "get": {
+                "description": "An endpoint to display all the completed works of a provider",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Provider"
+                ],
+                "summary": "Get All Completed Works Of A Provider",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "pro-id",
+                        "name": "pro_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/works/my-works/on-going": {
+            "get": {
+                "description": "An endpoint to display all the ongoing works of a provider",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Provider"
+                ],
+                "summary": "Get All Ongoing Works Of A Provider",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "pro-id",
+                        "name": "pro_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/provider/:pro-id": {
+            "get": {
+                "description": "get details of providers when user clicks on provider profile",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get Provider Details For User",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "pro-id",
+                        "name": "pro-id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/provider/:pro_id/works": {
+            "get": {
+                "description": "An endpoint to display all the works of a provider",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get Works Of A Provider",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "pro_id",
+                        "name": "pro_id",
                         "in": "query",
                         "required": true
                     }
@@ -1334,6 +1881,17 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "models.PlaceBid": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "estimate": {
+                    "type": "number"
                 }
             }
         },
