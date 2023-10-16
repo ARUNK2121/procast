@@ -1,6 +1,7 @@
 package providerhandler
 
 import (
+	"fmt"
 	"net/http"
 
 	interfaces "github.com/ARUNK2121/procast/pkg/usecase/provider/interface"
@@ -27,7 +28,7 @@ func NewAuthenticationHandler(use interfaces.AuthenticationUsecase) *Authenticat
 // @Param			name		formData	string	true	"name"
 // @Param			email		formData	string	true	"email"
 // @Param			password		formData	string	true	"password"
-// @Param			re-password		formData	string	true	"re-password"
+// @Param			repassword		formData	string	true	"repassword"
 // @Param			phone		formData	string	true	"phone"
 // @Param           document      formData     file   true   "document"
 // @Success		200		{object}	response.Response{}
@@ -55,6 +56,9 @@ func (a *AuthenticationHandler) Register(c *gin.Context) {
 	model.RePassword = repassword
 	model.Phone = phone
 	model.Document = image
+
+	fmt.Println("model", model)
+
 	//call usecase
 
 	if err := a.Usecase.Register(model); err != nil {

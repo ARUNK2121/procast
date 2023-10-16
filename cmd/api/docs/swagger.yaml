@@ -1033,9 +1033,9 @@ paths:
         name: password
         required: true
         type: string
-      - description: re-password
+      - description: repassword
         in: formData
-        name: re-password
+        name: repassword
         required: true
         type: string
       - description: phone

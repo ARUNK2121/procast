@@ -1433,8 +1433,8 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "re-password",
-                        "name": "re-password",
+                        "description": "repassword",
+                        "name": "repassword",
                         "in": "formData",
                         "required": true
                     },

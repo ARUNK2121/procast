@@ -47,7 +47,7 @@ func AdminAuthMiddleware(c *gin.Context) {
 		return
 	}
 
-	id, ok := claims["id"].(int)
+	id, ok := claims["id"].(float64)
 	if !ok || id == 0 {
 		c.JSON(http.StatusForbidden, gin.H{"error": TokenProblem})
 		c.Abort()
@@ -93,7 +93,7 @@ func SuperAdminAuthMiddleware(c *gin.Context) {
 		return
 	}
 
-	id, ok := claims["id"].(int)
+	id, ok := claims["id"].(float64)
 	if !ok || id == 0 {
 		c.JSON(http.StatusForbidden, gin.H{"error": TokenProblem})
 		c.Abort()

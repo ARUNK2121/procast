@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -9,6 +10,9 @@ import (
 )
 
 func ProviderAuthMiddleware(c *gin.Context) {
+
+	fmt.Println("entered middleware")
+
 	tokenString := c.GetHeader("Authorization")
 	if tokenString == "" {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": MissingAuthorizationToken})
@@ -35,6 +39,8 @@ func ProviderAuthMiddleware(c *gin.Context) {
 		return
 	}
 
+	fmt.Println("role", claims)
+
 	role, ok := claims["role"].(string)
 	if !ok || role != "provider" {
 		c.JSON(http.StatusForbidden, gin.H{"error": UnAuthorizedAccess})
@@ -42,7 +48,7 @@ func ProviderAuthMiddleware(c *gin.Context) {
 		return
 	}
 
-	id, ok := claims["id"].(int)
+	id, ok := claims["id"].(float64)
 	if !ok || id == 0 {
 		c.JSON(http.StatusForbidden, gin.H{"error": TokenProblem})
 		c.Abort()
