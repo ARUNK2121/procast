@@ -14,6 +14,13 @@ const docTemplate = `{
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
+    "securityDefinitions": {
+        "Bearer": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+        }
+        },  
     "paths": {
         "/admin/category": {
             "get": {
