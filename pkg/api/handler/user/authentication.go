@@ -19,6 +19,15 @@ func NewAuthenticationHandler(use interfaces.AuthenticationUsecase) *Authenticat
 	}
 }
 
+// @Summary		User SignUP
+// @Description	 A user can signup using this endpoint
+// @Tags			User
+// @Accept			json
+// @Produce		json
+// @Param			signup	body		models.UserSignup	true	"signup details"
+// @Success		200		{object}	response.Response{}
+// @Failure		500		{object}	response.Response{}
+// @Router			/user/signup [post]
 func (a *AuthenticationHandler) UserSignup(c *gin.Context) {
 
 	var model models.UserSignup
@@ -39,6 +48,15 @@ func (a *AuthenticationHandler) UserSignup(c *gin.Context) {
 	c.JSON(http.StatusCreated, res)
 }
 
+// @Summary		User Login
+// @Description	 A user can Login using this endpoint
+// @Tags			User
+// @Accept			json
+// @Produce		json
+// @Param			login	body		models.Login	true	"login details"
+// @Success		200		{object}	response.Response{}
+// @Failure		500		{object}	response.Response{}
+// @Router			/user/login [post]
 func (a *AuthenticationHandler) Login(c *gin.Context) {
 
 	var model models.Login

@@ -43,8 +43,8 @@ func ProviderRoutes(
 			{
 				leads.GET("", workHandler.GetAllLeads)                           //completed
 				leads.GET("/:id", workHandler.ViewLeads)                         //completed
-				leads.POST("/:id/place-bid", workHandler.PlaceBid)               //completed
-				leads.PUT("/:id/edit-bid", workHandler.ReplaceBidWithNewBid)     //completed
+				leads.POST("/:id/bid", workHandler.PlaceBid)                     //completed
+				leads.PUT("/:id/bid", workHandler.ReplaceBidWithNewBid)          //completed
 				leads.GET("/:id/compare", workHandler.GetAllOtherBidsOnTheLeads) //completed
 			}
 
