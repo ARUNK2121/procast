@@ -10,7 +10,7 @@ import (
 type Helper interface {
 	CompareHashAndPassword(a string, b string) error
 	Copy(a interface{}, b interface{}) (interface{}, error)
-	GenerateTokenAdmin(admin models.AdminDetailsResponse) (string, string, error)
+	GenerateTokenAdmin(admin models.AdminDetailsResponse) (string, error)
 	CreateHashPassword(string) (string, error)
 	UploadToS3(file *multipart.FileHeader) (string, error)
 	GenerateTokenProvider(details domain.Provider) (string, error)

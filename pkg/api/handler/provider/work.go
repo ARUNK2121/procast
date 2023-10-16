@@ -21,6 +21,15 @@ func NewWorkHandler(use interfaces.WorkUseCase) *WorkHandler {
 	}
 }
 
+// @Summary		Get All Leads For The Provider
+// @Description	 get details of all possible leads that provider can bid on them
+// @Tags			Provider
+// @Accept			json
+// @Produce		json
+// @Param			pro-id	query		string	true	"pro-id"
+// @Success		200		{object}	response.Response{}
+// @Failure		500		{object}	response.Response{}
+// @Router			/provider/work/leads [get]
 func (w *WorkHandler) GetAllLeads(c *gin.Context) {
 	provider_id, err := strconv.Atoi(c.Query("pro_id"))
 	if err != nil {
@@ -46,6 +55,15 @@ func (w *WorkHandler) GetAllLeads(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
+// @Summary		Get Details of A lead of provider
+// @Description	 a call to this endpoint along with the work_id as parametr will get details of the lead
+// @Tags			Provider
+// @Accept			json
+// @Produce		json
+// @Param			pro-id	query		string	true	"pro-id"
+// @Success		200		{object}	response.Response{}
+// @Failure		500		{object}	response.Response{}
+// @Router			/provider/work/leads/:id [get]
 func (w *WorkHandler) ViewLeads(c *gin.Context) {
 	work_id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -164,7 +182,7 @@ func (w *WorkHandler) GetAllOtherBidsOnTheLeads(c *gin.Context) {
 
 }
 
-func (w *WorkHandler) GetMyWorks(c *gin.Context) {
+func (w *WorkHandler) GetWorksOfAProvider(c *gin.Context) {
 	provider_id, err := strconv.Atoi(c.Query("pro_id"))
 	if err != nil {
 		res := response.Response{Data: nil, Error: err.Error()}
@@ -172,7 +190,7 @@ func (w *WorkHandler) GetMyWorks(c *gin.Context) {
 		return
 	}
 
-	works, err := w.usecase.GetMyWorks(provider_id)
+	works, err := w.usecase.GetWorksOfAProvider(provider_id)
 	if err != nil {
 		res := response.Response{Data: nil, Error: err.Error()}
 		c.JSON(http.StatusInternalServerError, res)

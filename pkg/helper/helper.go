@@ -47,40 +47,24 @@ func (h *helper) Copy(a interface{}, b interface{}) (interface{}, error) {
 	return a, nil
 }
 
-func (helper *helper) GenerateTokenAdmin(admin models.AdminDetailsResponse) (string, string, error) {
-	accessTokenClaims := &models.AuthCustomClaims{
-		Id:        admin.ID,
-		Email:     admin.Email,
-		Previlege: admin.Previlege,
+func (helper *helper) GenerateTokenAdmin(admin models.AdminDetailsResponse) (string, error) {
+	tokenClaims := &models.AuthCustomClaims{
+		Id:    admin.ID,
+		Email: admin.Email,
+		Role:  admin.Previlege,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Minute * 20).Unix(),
 			IssuedAt:  time.Now().Unix(),
 		},
 	}
 
-	refreshTokenClaims := &models.AuthCustomClaims{
-		Id:        admin.ID,
-		Email:     admin.Email,
-		Previlege: admin.Previlege,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * 24 * 30).Unix(),
-			IssuedAt:  time.Now().Unix(),
-		},
-	}
-
-	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessTokenClaims)
-	accessTokenString, err := accessToken.SignedString([]byte("accesssecret"))
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, tokenClaims)
+	tokenString, err := token.SignedString([]byte("adminsecret")) //take this from runtime in future avoid hardcoding
 	if err != nil {
-		return "", "", err
+		return "", err
 	}
 
-	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshTokenClaims)
-	refreshTokenString, err := refreshToken.SignedString([]byte("refreshsecret"))
-	if err != nil {
-		return "", "", err
-	}
-
-	return accessTokenString, refreshTokenString, nil
+	return tokenString, nil
 }
 
 func (h *helper) CreateHashPassword(password string) (string, error) {
@@ -129,9 +113,9 @@ func (h *helper) UploadToS3(file *multipart.FileHeader) (string, error) {
 
 func (helper *helper) GenerateTokenProvider(details domain.Provider) (string, error) {
 	accessTokenClaims := &models.AuthCustomClaims{
-		Id:        details.ID,
-		Email:     details.Email,
-		Previlege: "Pro",
+		Id:    details.ID,
+		Email: details.Email,
+		Role:  "Provider",
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 24 * 90).Unix(),
 			IssuedAt:  time.Now().Unix(),
@@ -139,7 +123,7 @@ func (helper *helper) GenerateTokenProvider(details domain.Provider) (string, er
 	}
 
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessTokenClaims)
-	accessTokenString, err := accessToken.SignedString([]byte("accesssecret"))
+	accessTokenString, err := accessToken.SignedString([]byte("providersecret")) //take this from runtime in future avoid hardcoding
 	if err != nil {
 		return "", err
 	}
@@ -149,9 +133,9 @@ func (helper *helper) GenerateTokenProvider(details domain.Provider) (string, er
 
 func (helper *helper) GenerateTokenUser(details domain.User) (string, error) {
 	accessTokenClaims := &models.AuthCustomClaims{
-		Id:        details.ID,
-		Email:     details.Email,
-		Previlege: "user",
+		Id:    details.ID,
+		Email: details.Email,
+		Role:  "user",
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 24 * 90).Unix(),
 			IssuedAt:  time.Now().Unix(),
@@ -159,7 +143,7 @@ func (helper *helper) GenerateTokenUser(details domain.User) (string, error) {
 	}
 
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessTokenClaims)
-	accessTokenString, err := accessToken.SignedString([]byte("accesssecret"))
+	accessTokenString, err := accessToken.SignedString([]byte("usersecret")) //take this from runtime in future avoid hardcoding
 	if err != nil {
 		return "", err
 	}

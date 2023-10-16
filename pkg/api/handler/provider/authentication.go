@@ -19,6 +19,20 @@ func NewAuthenticationHandler(use interfaces.AuthenticationUsecase) *Authenticat
 	}
 }
 
+// @Summary		Register
+// @Description	This is the Login handler for providers
+// @Tags			Provider
+// @Accept			json
+// @Produce		json
+// @Param			name		formData	string	true	"name"
+// @Param			email		formData	string	true	"email"
+// @Param			password		formData	string	true	"password"
+// @Param			re-password		formData	string	true	"re-password"
+// @Param			phone		formData	string	true	"phone"
+// @Param           document      formData     file   true   "document"
+// @Success		200		{object}	response.Response{}
+// @Failure		500		{object}	response.Response{}
+// @Router			/provider/register [post]
 func (a *AuthenticationHandler) Register(c *gin.Context) {
 	//take input into model
 	name := c.Request.FormValue("name")
@@ -54,6 +68,15 @@ func (a *AuthenticationHandler) Register(c *gin.Context) {
 	c.JSON(http.StatusCreated, res)
 }
 
+// @Summary		Provider Login
+// @Description	Login handler for jerseyhub providers
+// @Tags			Provider
+// @Accept			json
+// @Produce		json
+// @Param			admin	body		models.Login	true	"Login Details"
+// @Success		200		{object}	response.Response{}
+// @Failure		500		{object}	response.Response{}
+// @Router			/provider/login [post]
 func (a *AuthenticationHandler) Login(c *gin.Context) {
 	//take input into model
 	var model models.Login

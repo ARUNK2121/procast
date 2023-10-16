@@ -8,7 +8,7 @@ import (
 )
 
 type AdminUsecase interface {
-	AdminLogin(context.Context, models.AdminLogin) (models.DoubleTokens, error)
+	AdminLogin(context.Context, models.AdminLogin) (string, error)
 	CreateNewAdmin(context.Context, domain.Admin) error
 	DeleteAdmin(context.Context, int) error
 }

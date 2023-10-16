@@ -141,7 +141,7 @@ func (w *workUseCase) GetAllOtherBidsOnTheLeads(work_id int) ([]models.BidDetail
 	return bids, nil
 }
 
-func (w *workUseCase) GetMyWorks(pro_id int) ([]models.WorkDetails, error) {
+func (w *workUseCase) GetWorksOfAProvider(pro_id int) ([]models.WorkDetails, error) {
 
 	provider, err := w.repository.FindProviderName(pro_id)
 	if err != nil {

@@ -23,21 +23,21 @@ func NewAdminUsecase(repo interfaces.AdminRepository, helper helper.Helper) serv
 	}
 }
 
-func (ad *adminUsecase) AdminLogin(ctx context.Context, model models.AdminLogin) (models.DoubleTokens, error) {
+func (ad *adminUsecase) AdminLogin(ctx context.Context, model models.AdminLogin) (string, error) {
 
 	if ctx.Err() != nil {
-		return models.DoubleTokens{}, errors.New("request time out")
+		return "", errors.New("request time out")
 	}
 	// getting details of the admin based on the email provided
 	adminCompareDetails, err := ad.repository.GetAdminDetailsByEmail(ctx, model.Email)
 	if err != nil {
-		return models.DoubleTokens{}, err
+		return "", err
 	}
 
 	// compare password from database and that provided from admins
 	err = ad.helper.CompareHashAndPassword(adminCompareDetails.Password, model.Password)
 	if err != nil {
-		return models.DoubleTokens{}, err
+		return "", err
 	}
 
 	var adminDetailsResponse models.AdminDetailsResponse
@@ -47,15 +47,12 @@ func (ad *adminUsecase) AdminLogin(ctx context.Context, model models.AdminLogin)
 	adminDetailsResponse.Name = adminCompareDetails.Name
 	adminDetailsResponse.Previlege = adminCompareDetails.Previlege
 
-	access, refresh, err := ad.helper.GenerateTokenAdmin(adminDetailsResponse)
+	token, err := ad.helper.GenerateTokenAdmin(adminDetailsResponse)
 	if err != nil {
-		return models.DoubleTokens{}, err
+		return "", err
 	}
 
-	return models.DoubleTokens{
-		AccessToken:  access,
-		RefreshToken: refresh,
-	}, nil
+	return token, nil
 
 }
 
