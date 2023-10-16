@@ -12,6 +12,25 @@ definitions:
       previlege:
         type: string
     type: object
+  domain.Work:
+    properties:
+      district_id:
+        type: integer
+      id:
+        type: integer
+      pro_id:
+        type: integer
+      state_id:
+        type: integer
+      street:
+        type: string
+      target_profession:
+        type: integer
+      user_id:
+        type: integer
+      work_status:
+        type: string
+    type: object
   models.AddNewDistrict:
     properties:
       district:
@@ -56,6 +75,26 @@ definitions:
         type: string
       estimate:
         type: number
+    type: object
+  models.RatingModel:
+    properties:
+      feedback:
+        type: string
+      rating:
+        type: integer
+    type: object
+  models.UserSignup:
+    properties:
+      confirmpassword:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
     type: object
   response.Response:
     properties:
@@ -1199,6 +1238,32 @@ paths:
       summary: Get All Ongoing Works Of A Provider
       tags:
       - Provider
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: A user can Login using this endpoint
+      parameters:
+      - description: login details
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/models.Login'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: User Login
+      tags:
+      - User
   /user/provider/:pro-id:
     get:
       consumes:
@@ -1247,6 +1312,233 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
       summary: Get Works Of A Provider
+      tags:
+      - User
+  /user/signup:
+    post:
+      consumes:
+      - application/json
+      description: A user can signup using this endpoint
+      parameters:
+      - description: signup details
+        in: body
+        name: signup
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserSignup'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: User SignUP
+      tags:
+      - User
+  /user/works:
+    get:
+      consumes:
+      - application/json
+      description: An endpoint to display all the listed works of a user
+      parameters:
+      - description: id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get All Listed Works
+      tags:
+      - User
+    post:
+      consumes:
+      - application/json
+      description: A user can list a new opening through this endpoint
+      parameters:
+      - description: work details
+        in: body
+        name: work
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Work'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: List New Opening
+      tags:
+      - User
+  /user/works/:id:
+    get:
+      consumes:
+      - application/json
+      description: An endpoint to display deatails of works of a user
+      parameters:
+      - description: id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Work details
+      tags:
+      - User
+  /user/works/:id/assign:
+    put:
+      consumes:
+      - application/json
+      description: An endpoint to assign the work to a particular provider
+      parameters:
+      - description: pro id
+        in: query
+        name: pro_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Assign Work To A Provider
+      tags:
+      - User
+  /user/works/:id/complete:
+    put:
+      consumes:
+      - application/json
+      description: An endpoint to make the work status as completed
+      parameters:
+      - description: pro id
+        in: query
+        name: pro_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Make Work As Completed
+      tags:
+      - User
+  /user/works/:id/rate:
+    post:
+      consumes:
+      - application/json
+      description: Rate The Work By A Provider
+      parameters:
+      - description: 'Rating '
+        in: body
+        name: rating
+        required: true
+        schema:
+          $ref: '#/definitions/models.RatingModel'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Rate Work
+      tags:
+      - User
+  /user/works/completed:
+    get:
+      consumes:
+      - application/json
+      description: An endpoint to display all the completed works of a user
+      parameters:
+      - description: id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get All Completed Works
+      tags:
+      - User
+  /user/works/on-going:
+    get:
+      consumes:
+      - application/json
+      description: An endpoint to display all the Ongoing works of a user
+      parameters:
+      - description: id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get All Ongoing Works
       tags:
       - User
 swagger: "2.0"
