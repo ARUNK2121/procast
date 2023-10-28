@@ -2,7 +2,6 @@ package routes
 
 import (
 	providerhandler "github.com/ARUNK2121/procast/pkg/api/handler/provider"
-	"github.com/ARUNK2121/procast/pkg/api/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,7 +15,7 @@ func ProviderRoutes(
 	engine.POST("/register", proHandler.Register) //completed
 	engine.GET("/login", proHandler.Login)        //completed
 
-	engine.Use(middleware.ProviderAuthMiddleware)
+	// engine.Use(middleware.ProviderAuthMiddleware)
 	{
 
 		profile := engine.Group("/profile")

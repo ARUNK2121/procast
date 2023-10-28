@@ -3,7 +3,6 @@ package routes
 import (
 	providerhandler "github.com/ARUNK2121/procast/pkg/api/handler/provider"
 	userhandler "github.com/ARUNK2121/procast/pkg/api/handler/user"
-	"github.com/ARUNK2121/procast/pkg/api/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,7 +16,7 @@ func UserRoutes(
 	engine.POST("signup", authenticationHandler.UserSignup) //completed
 	engine.GET("login", authenticationHandler.Login)        //completed
 
-	engine.Use(middleware.UserAuthMiddleware)
+	// engine.Use(middleware.UserAuthMiddleware)
 	{
 
 		works := engine.Group("/works")

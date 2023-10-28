@@ -95,7 +95,7 @@ func (a *adminUsecase) DeleteAdmin(ctx context.Context, id int) error {
 
 	err := a.repository.DeleteAdmin(ctx, id)
 	if err != nil || ctx.Err() != nil {
-		return nil
+		return err
 	}
 
 	return nil

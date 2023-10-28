@@ -233,7 +233,7 @@ func (p *ProfileHandler) GetAllPreferredLocations(c *gin.Context) {
 // @Failure		500		{object}	response.Response{}
 // @Router			/user/provider/:pro-id [get]
 func (p *ProfileHandler) GetDetailsOfProviders(c *gin.Context) {
-	pro_id, err := strconv.Atoi(c.Param("pro-id"))
+	pro_id, err := strconv.Atoi(c.Param("pro_id"))
 	if err != nil {
 		res := response.Response{Data: nil, Error: err.Error()}
 		c.JSON(http.StatusBadRequest, res)

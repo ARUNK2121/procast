@@ -2,7 +2,6 @@ package routes
 
 import (
 	adminhandler "github.com/ARUNK2121/procast/pkg/api/handler/admin"
-	"github.com/ARUNK2121/procast/pkg/api/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,10 +16,10 @@ func AdminRoutes(
 	engine.POST("/login", adminHandler.AdminLogin)
 	// engine.DELETE("/logout", adminHandler.AdminLogout)
 
-	engine.Use(middleware.AdminAuthMiddleware)
+	// engine.Use(middleware.AdminAuthMiddleware)
 	{
 		panel := engine.Group("/panel")
-		panel.Use(middleware.SuperAdminAuthMiddleware)
+		// panel.Use(middleware.SuperAdminAuthMiddleware)
 		{
 			panel.POST("", adminHandler.CreateNewAdmin)
 			panel.DELETE("", adminHandler.DeleteAdmin)
