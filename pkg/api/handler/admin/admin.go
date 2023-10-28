@@ -76,8 +76,6 @@ func (ad *AdminHandler) CreateNewAdmin(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
 	defer cancel()
 
-	time.Sleep(20 * time.Second)
-
 	err := ad.usecase.CreateNewAdmin(ctx, adminDetails)
 	if err != nil {
 		res := response.Response{Data: nil, Error: err.Error()}

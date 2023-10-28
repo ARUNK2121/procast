@@ -57,8 +57,7 @@ func (a *AdminRepository) CountOfAdminByEmail(ctx context.Context, email string)
 
 func (a *AdminRepository) DeleteAdmin(ctx context.Context, id int) error {
 	tx := a.DB.Begin()
-	var count int
-	err := tx.Exec("DELETE FROM admins WHERE id = $1", id).Scan(&count).Error
+	err := tx.Exec("DELETE FROM admins WHERE id = $1", id).Error
 	if err != nil {
 		tx.Rollback()
 		return err

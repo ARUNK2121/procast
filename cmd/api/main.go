@@ -25,7 +25,7 @@ func main() {
 	docs.SwaggerInfo.Title = "Procast"
 	docs.SwaggerInfo.Description = utils.Description
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "localhost:3000"
+	docs.SwaggerInfo.Host = "procast.jerseyhubmadebyarunk.store"
 	docs.SwaggerInfo.BasePath = ""
 	docs.SwaggerInfo.Schemes = []string{"http"}
 

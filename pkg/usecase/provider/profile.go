@@ -152,7 +152,12 @@ func (p *profileUsecase) GetDetailsOfProviders(id int) (models.ProviderDetailsFo
 		sum = sum + v
 	}
 
-	average := sum / len(ratings)
+	length := len(ratings)
+	if length == 0 {
+		length = 1
+	}
+
+	average := sum / length
 
 	model.AverageRating = average
 
